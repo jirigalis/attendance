@@ -1,0 +1,40 @@
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+html, body { height: 100%; }
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #f7f7f7;
+}
+
+mat-card {
+    &.small {
+        width: 440px;
+    }
+
+    &.medium {
+        width: 768px;
+    }
+
+    &.large {
+        width: 1248px;
+    }
+}
+
+table.mat-table {
+    width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.content-container {
+    padding: 1px 20px;
+    margin-bottom: 15px;
+    margin-top: 64px;
+}
+
+.content-container {
+  margin-left: 240px;
+}
