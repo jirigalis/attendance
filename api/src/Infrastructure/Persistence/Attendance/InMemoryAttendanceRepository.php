@@ -38,7 +38,7 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 			throw new WrongParameterException("date");
 		}
 
-		return Attendance::whereDate('date', date($date))->get();
+		return Attendance::select('member_id')->whereDate('date', date($date))->pluck('member_id');
 	}
 
 	public function getMembersByDate(string $date): object {
@@ -46,7 +46,7 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 			throw new WrongParameterException("date");
 		}
 
-		return $this->getAttendance($date)->load("member");
+		return $this->getAttendance($date);// ->load("member");
 	}
 
 	public function deleteAttendance(int $memberId, string $date) {

@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './modules/core/core.module';
 import { MaterialModule } from './modules/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { MomentModule } from 'ngx-moment';
 
 @NgModule({
   declarations: [
@@ -29,8 +30,9 @@ import { HttpClientModule } from '@angular/common/http';
     FlexLayoutModule,
     HttpClientModule,
     LoginModule,
+    MaterialModule,
     MembersModule,
-    MaterialModule
+    MomentModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

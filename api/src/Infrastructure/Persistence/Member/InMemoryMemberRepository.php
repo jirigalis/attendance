@@ -75,7 +75,7 @@ class InMemoryMemberRepository implements MemberRepository
         $member = $this->getById($id);
         $update = false;
 
-        if (!V::intVal($id)) {
+        if (!V::intVal()->validate($id)) {
             throw new MemberNotFoundException();
         }
 
@@ -129,7 +129,7 @@ class InMemoryMemberRepository implements MemberRepository
     }
 
     public function getAttendance(int $id) {
-        if (!V::intVal($id)) {
+        if (!V::intVal()->validate($id)) {
             throw new MemberNotFoundException();
         }
 
@@ -139,7 +139,7 @@ class InMemoryMemberRepository implements MemberRepository
     }
 
     public function addAttendance(int $id, string $timestamp) {
-        if (!V::intVal($id)) {
+        if (!V::intVal()->validate($id)) {
             throw new MemberNotFoundException();
         }
 
@@ -150,7 +150,7 @@ class InMemoryMemberRepository implements MemberRepository
     }
 
     public function delete(int $id) {
-        if (!V::intVal($id)) {
+        if (!V::intVal()->validate($id)) {
             throw new MemberNotFoundException();
         }
         

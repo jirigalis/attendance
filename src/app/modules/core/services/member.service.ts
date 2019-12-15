@@ -14,4 +14,8 @@ export class MemberService {
   getAll() {
     return this.http.get<Member[]>(this.apiUrl + `/members`);
   }
+
+  getAttendanceById(id: Number) {
+    return this.http.get(this.apiUrl + `/members/${id}/attendance`);
+  }
 }

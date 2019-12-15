@@ -8,7 +8,7 @@ import { MatTableDataSource, MatSort } from '@angular/material';
   styleUrls: ['./members.component.scss']
 })
 export class MembersComponent implements OnInit {
-  members: any;
+  members;
   dataSource;
   loading = false;
 
@@ -21,7 +21,7 @@ export class MembersComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.memberService.getAll().subscribe(members => {
+    this.memberService.getAll().subscribe((members: any) => {
       this.dataSource = new MatTableDataSource(members.data);
       this.loading = false;
       this.dataSource.sort = this.sort;

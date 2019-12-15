@@ -84,6 +84,10 @@ class ActionPayload implements JsonSerializable
             $payload['error'] = $this->error;
         }
 
+        if ($this->statusCode == 200) {
+            return $this->data;
+        }
         return $payload;
+
     }
 }
