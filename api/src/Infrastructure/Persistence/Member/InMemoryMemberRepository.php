@@ -41,13 +41,13 @@ class InMemoryMemberRepository implements MemberRepository
      */
     public function getById(int $id): Member
     {
-        $index = array_search($id, array_column($this->members, 'id'));
+        $member = Member::find($id);
 
-        if ($index === false) {
+        if ($member == null) {
             throw new MemberNotFoundException();
         }
 
-        return Member::find($id);
+        return $member;
     }
 
 
@@ -133,9 +133,14 @@ class InMemoryMemberRepository implements MemberRepository
             throw new MemberNotFoundException();
         }
 
-        $member = Member::find($id)->attendance;
+        $attendance = Member::find($id)->attendance;
+        $res = [];
 
-        return $member;
+        foreach ($attendance as $a ) {
+            $res[] = $a->date;
+        }
+
+        return $res;
     }
 
     public function addAttendance(int $id, string $timestamp) {

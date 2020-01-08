@@ -4,18 +4,22 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class MemberService {
-  private apiUrl = environment.API_URL;
+    private apiUrl = environment.API_URL;
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
-  getAll() {
-    return this.http.get<Member[]>(this.apiUrl + `/members`);
-  }
+    getAll() {
+        return this.http.get<Member[]>(this.apiUrl + `/members`);
+    }
 
-  getAttendanceById(id: Number) {
-    return this.http.get(this.apiUrl + `/members/${id}/attendance`);
-  }
+    getAllWithAttendance() {
+        return this.http.get<Member[]>(this.apiUrl + `/members/attendance`);
+    }
+
+    getAttendanceById(id: Number) {
+        return this.http.get(this.apiUrl + `/members/${id}/attendance`);
+    }
 }

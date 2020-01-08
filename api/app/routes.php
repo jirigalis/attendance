@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use App\Application\Actions\Member\ListMembersAction;
+use App\Application\Actions\Member\ListMembersWithAttendanceAction;
 use App\Application\Actions\Member\ViewMemberAction;
 use App\Application\Actions\Member\UpdateMemberAction;
 use App\Application\Actions\Member\CreateMemberAction;
@@ -25,15 +26,14 @@ return function (App $app) {
     $app->get($prefix.'/aaa', function (Request $request, Response $response) {
 
     	$test = Member::find(1)->toJson();
-
         
-        //$response->getBody()->write(var_export($test, true));
         $response->getBody()->write($test);
         return $response;
     });
 
     $app->group($prefix.'/members', function (Group $group) use ($container) {
         $group->get('', ListMembersAction::class);
+        $group->get('/attendance', ListMembersWithAttendanceAction::class);
         $group->get('/{id}', ViewMemberAction::class);
         $group->get('/{id}/attendance', GetMemberAttendanceAction::class);
         $group->post('/{id}/attendance', AddMemberAttendanceAction::class);

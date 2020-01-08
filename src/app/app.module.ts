@@ -1,3 +1,4 @@
+import { AttendanceModule } from './modules/attendance/attendance.module';
 import { MembersModule } from './modules/members/members.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { LoginModule } from './modules/login/login.module';
@@ -15,27 +16,29 @@ import { CoreModule } from './modules/core/core.module';
 import { MaterialModule } from './modules/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MomentModule } from 'ngx-moment';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    CoreModule,
-    DashboardModule,
-    FlexLayoutModule,
-    HttpClientModule,
-    LoginModule,
-    MaterialModule,
-    MembersModule,
-    MomentModule
-  ],
-  providers: [httpInterceptorProviders],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    declarations: [AppComponent],
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CoreModule,
+        DashboardModule,
+        FlexLayoutModule,
+        HttpClientModule,
+        LoginModule,
+        MaterialModule,
+        MembersModule,
+        AttendanceModule,
+        MomentModule
+    ],
+    providers: [httpInterceptorProviders],
+    bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule {}
