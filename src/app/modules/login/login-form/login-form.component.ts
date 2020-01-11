@@ -50,19 +50,16 @@ export class LoginFormComponent implements OnInit {
         }
 
         this.loading = true;
-        this.authenticationService.login(this.f.username.value, this.f.password.value)
-            // .pipe(first())
-            .subscribe(
-                data => {
-                    this.snack.open('Success');
-                    this.router.navigate([this.returnUrl]);
-                },
-                error => {
-                    this.error = error;
-                    this.loading = false;
-                    this.snack.open('Error');
-                }
-            );
+        this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
+            data => {
+                this.snack.open('Success');
+                this.router.navigate([this.returnUrl]);
+            },
+            error => {
+                this.error = error;
+                this.loading = false;
+                this.snack.open('Error');
+            }
+        );
     }
-
 }

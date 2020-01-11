@@ -9,7 +9,8 @@ import {
     MatProgressBarModule,
     MatSortModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MAT_DATE_LOCALE
 } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { MatButtonModule, MatIconModule, MatToolbarModule } from '@angular/material';
@@ -32,6 +33,12 @@ import { MatSnackBarModule } from '@angular/material';
         MatSortModule,
         MatTableModule,
         MatToolbarModule
+    ],
+    providers: [
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'cs-CZ'
+        }
     ]
 })
 export class MaterialModule {}

@@ -10,6 +10,7 @@ use App\Application\Actions\Member\DeleteMemberAction;
 use App\Application\Actions\Member\GetMemberAttendanceAction;
 use App\Application\Actions\Member\AddMemberAttendanceAction;
 use App\Application\Actions\Attendance\ListAttendanceForDayAction;
+use App\Application\Actions\Attendance\AddAttendanceForDayAction;
 use App\Application\Actions\Attendance\DeleteAttendanceAction;
 use App\Application\Actions\User\AuthenticateUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -26,7 +27,7 @@ return function (App $app) {
     $app->get($prefix.'/aaa', function (Request $request, Response $response) {
 
     	$test = Member::find(1)->toJson();
-        
+
         $response->getBody()->write($test);
         return $response;
     });
@@ -44,6 +45,7 @@ return function (App $app) {
 
     $app->group($prefix.'/attendance', function (Group $group) use ($container) {
         $group->get('[/{date}]', ListAttendanceForDayAction::class);
+        $group->post('/{date}', AddAttendanceForDayAction::class);
         $group->delete('', DeleteAttendanceAction::class);
     });
 
@@ -51,9 +53,9 @@ return function (App $app) {
         $group->post('/authenticate', AuthenticateUserAction::class);
     });
 
-    
+
     $app->get($prefix.'/{test}', function (Request $request, Response $response, $args) {
-    	
+
         $response->getBody()->write('Hello '.$args["test"]);
         return $response;
     });

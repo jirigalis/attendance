@@ -6,13 +6,20 @@
         <mat-datepicker #attendanceDate></mat-datepicker>
     </mat-form-field>
 
-    <mat-selection-list #aaa>
-        <mat-list-option *ngFor="let member of members" (click)="selectMember(el)">
+    <mat-selection-list #membersList>
+        <mat-list-option
+            *ngFor="let member of members"
+            (click)="selectMember(member)"
+            [ngClass]="{ 'member-selected': member.selected }"
+        >
             {{ member.name }} {{ member.surname }}
         </mat-list-option>
     </mat-selection-list>
     <mat-divider></mat-divider>
-    <p>
-        Members selected: <strong>{{ aaa.selectedOptions.selected.length }}</strong>
-    </p>
+    <mat-card-actions fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            Members selected: <strong>{{ membersList.selectedOptions.selected.length }}</strong>
+        </div>
+        <button mat-raised-button color="primary" (click)="onSubmit()">Confirm</button>
+    </mat-card-actions>
 </mat-card>

@@ -22,20 +22,22 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<any>(this.apiUrl + `/user/authenticate`, { username, password })
-            .pipe(map(data => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                const currentUser = {
-                    token: data,
-                    user: {
-                        username: username
-                    }
-                };
-                console.log(currentUser);
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                this.currentUserSubject.next(data);
-                return data;
-            }));
+        return this.http
+            .post<any>(this.apiUrl + `/user/authenticate`, { username, password })
+            .pipe(
+                map(data => {
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    const currentUser = {
+                        token: data,
+                        user: {
+                            username: username
+                        }
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    this.currentUserSubject.next(data);
+                    return data;
+                })
+            );
     }
 
     logout() {
