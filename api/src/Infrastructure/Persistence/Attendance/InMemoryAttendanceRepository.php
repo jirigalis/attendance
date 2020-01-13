@@ -47,11 +47,11 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 			throw new WrongParameterException("date");
 		}
 
-		return $this->getAttendance($date);// ->load("member");
+		return $this->getAttendance($date);
 	}
 
-	public function addAttendanceForMembers(string $date, array $members) {
-        if (!V::date("Y-m-d")->validate($date)) {
+	public function addAttendanceForMembers(string $dateStr, array $members) {
+        if (!V::date("Y-m-d")->validate($dateStr)) {
             throw new WrongParameterException("date");
 		}
 
@@ -59,11 +59,17 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 			throw new MemberNotFoundException();
 		}
 
+		$str = "";
+
 		foreach ($members as $m) {
 			$member = Member::find($m);
-			$exits = $member->attendance()->where("member_id", $member->id)->where("date", $date);
-			$member->attendance()->firstOrNew(["member_id" => $m, "date" => $date]);
+			$date = date("Y-m-d", strtotime($dateStr));
+			$count = $member->attendance()->where("member_id", $member->id)->where("date", $date)->get()->count();
+			if ($count == 0) {
+				$member->attendance()->create(["member_id" => $m, "date" => $date]);
+			}			
 		}
+		return $count;
 	}
 
 	public function deleteAttendance(int $memberId, string $date) {
