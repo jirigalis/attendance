@@ -10,7 +10,9 @@ import {
     MatSortModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MAT_DATE_LOCALE
+    MAT_DATE_LOCALE,
+    MatTooltipModule,
+    MatDialogModule
 } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { MatButtonModule, MatIconModule, MatToolbarModule } from '@angular/material';
@@ -21,6 +23,7 @@ import { MatSnackBarModule } from '@angular/material';
         MatButtonModule,
         MatCardModule,
         MatDatepickerModule,
+        MatDialogModule,
         MatIconModule,
         MatInputModule,
         MatListModule,
@@ -32,7 +35,8 @@ import { MatSnackBarModule } from '@angular/material';
         MatSnackBarModule,
         MatSortModule,
         MatTableModule,
-        MatToolbarModule
+        MatToolbarModule,
+        MatTooltipModule
     ],
     providers: [
         {

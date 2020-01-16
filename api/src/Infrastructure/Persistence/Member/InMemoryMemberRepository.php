@@ -54,8 +54,8 @@ class InMemoryMemberRepository implements MemberRepository
     public function create(object $data): int {
         $valid = V::alpha()->validate($data->name);
         $valid = $valid && V::alpha()->validate($data->surname);
-        $valid = $valid && V::alnum("- ,")->validate($data->address);
-        $valid = $valid && V::digit("/")->validate($data->rc);        
+        $valid = $valid && V::optional(V::alnum("- ,"))->validate($data->address);
+        $valid = $valid && V::optional(V::digit("/"))->validate($data->rc);
 
         if ($valid) {
             $member = new Member;
@@ -102,7 +102,7 @@ class InMemoryMemberRepository implements MemberRepository
             if (!V::alnum("- ,")->validate($data->address)) {
                 throw new CannotCreateMemberException("address");
             }
-            
+
             $member->address = htmlspecialchars($data->address);
             $update = true;
         }
@@ -111,12 +111,12 @@ class InMemoryMemberRepository implements MemberRepository
             if (!V::digit("/")->validate($data->rc)) {
                 throw new CannotCreateMemberException("rc");
             }
-            
+
             $member->rc = htmlspecialchars($data->rc);
             $update = true;
         }
 
-        if (isset($data->contact) && $member->contact != $data->contact) {            
+        if (isset($data->contact) && $member->contact != $data->contact) {
             $member->contact = htmlspecialchars($data->contact);
             $update = true;
         }
@@ -149,7 +149,7 @@ class InMemoryMemberRepository implements MemberRepository
         }
 
         $member = Member::find($id);
-        $attendance = new Attendance(["date" => gmdate("Y-m-d H:i:s", (int) $timestamp)]);        
+        $attendance = new Attendance(["date" => gmdate("Y-m-d H:i:s", (int) $timestamp)]);
 
         return $member->attendance()->save($attendance);;
     }
@@ -158,10 +158,10 @@ class InMemoryMemberRepository implements MemberRepository
         if (!V::intVal()->validate($id)) {
             throw new MemberNotFoundException();
         }
-        
+
         $res =  Member::destroy($id);
         if ($res) {
-            $res = $res && Attendance::destroy($id);
+            // Attendance::destroy($id);
         }
         return $res;
     }

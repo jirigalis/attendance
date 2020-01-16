@@ -39,7 +39,7 @@ return function (App $app) {
         $group->get('/{id}/attendance', GetMemberAttendanceAction::class);
         $group->post('/{id}/attendance', AddMemberAttendanceAction::class);
         $group->put('/{id}', UpdateMemberAction::class);
-        $group->post('', CreateMemberAction::class);
+        $group->post('/create', CreateMemberAction::class);
         $group->delete('/{id}', DeleteMemberAction::class);
     });
 

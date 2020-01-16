@@ -1,3 +1,4 @@
+import { AddMemberComponent } from './members/add-member/add-member.component';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { MembersComponent } from './members/members/members.component';
 import { LoginFormComponent } from './login/login-form/login-form.component';
@@ -11,6 +12,7 @@ const routes: Routes = [
     { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginFormComponent },
     { path: 'members', component: MembersComponent },
+    { path: 'add-member', component: AddMemberComponent },
     { path: 'attendance', component: AttendanceComponent }
 ];
 

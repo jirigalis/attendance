@@ -1,4 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { filter } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MemberService } from '../../core/services';
 import { MatTableDataSource, MatSort } from '@angular/material';
 
@@ -8,14 +11,17 @@ import { MatTableDataSource, MatSort } from '@angular/material';
     styleUrls: ['./members.component.scss']
 })
 export class MembersComponent implements OnInit {
-    members;
-    dataSource;
-    loading = false;
-
-    displayedColumns: string[] = ['name', 'surname', 'address', 'contact'];
     @ViewChild(MatSort, { static: true }) sort: MatSort;
+    displayedColumns: string[] = ['name', 'surname', 'address', 'contact', 'actions'];
+    loading = false;
+    dataSource;
 
-    constructor(private memberService: MemberService) {}
+    constructor(
+        private memberService: MemberService,
+        private router: Router,
+        private snack: MatSnackBar,
+        private changeDetectorRefs: ChangeDetectorRef
+    ) {}
 
     ngOnInit() {
         this.loading = true;
@@ -28,5 +34,32 @@ export class MembersComponent implements OnInit {
 
     applyFilter(filterValue: string) {
         this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+
+    addMember() {
+        this.router.navigate(['/add-member']);
+    }
+
+    deleteMember(member) {
+        this.loading = true;
+        this.memberService.delete(member.id).subscribe(
+            res => {
+                this.snack.open('Member successfuly deleted.', 'X', { duration: 3000 });
+                this.refresh();
+                this.loading = false;
+            },
+            err => {
+                this.snack.open('Error during deleting this member', 'X', { duration: 3000 });
+                this.loading = false;
+            }
+        );
+    }
+
+    refresh() {
+        this.memberService.getAll().subscribe(res => {
+            this.dataSource.data = res;
+            this.dataSource.sort = this.sort;
+        });
+        this.changeDetectorRefs.detectChanges();
     }
 }
