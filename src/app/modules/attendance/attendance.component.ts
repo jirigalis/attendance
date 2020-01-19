@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { MemberService } from '../core/services';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
     selector: 'app-attendance',
@@ -16,7 +17,11 @@ export class AttendanceComponent implements OnInit {
     loading = false;
     submitted = false;
 
-    constructor(private membersService: MemberService, private attendanceService: AttendanceService) {}
+    constructor(
+        private membersService: MemberService,
+        private attendanceService: AttendanceService,
+        private snack: MatSnackBar
+    ) {}
 
     ngOnInit() {
         this.membersService.getAll().subscribe(members => {
@@ -50,11 +55,14 @@ export class AttendanceComponent implements OnInit {
         });
 
         const date = moment(this.date.value);
-        console.log(date.format('YYYY-MM-DD'));
 
-        this.attendanceService.addAttendance(date.format('YYYY-MM-DD'), memberIds).subscribe(res => {
-            console.log(res);
-            this.loading = false;
-        });
+        this.attendanceService
+            .addAttendance(date.format('YYYY-MM-DD'), memberIds)
+            .subscribe(res => {
+                this.snack.open('Attendance successfully saved.', 'X', {
+                    duration: 3000
+                });
+                this.loading = false;
+            });
     }
 }

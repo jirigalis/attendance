@@ -17,6 +17,7 @@ import { MaterialModule } from './modules/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MomentModule } from 'ngx-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -35,7 +36,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         MaterialModule,
         MembersModule,
         AttendanceModule,
-        MomentModule
+        MomentModule,
+        SharedModule
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent],

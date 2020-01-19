@@ -37,3 +37,12 @@ th.mat-sort-header-sorted {
     margin-bottom: 15px;
     margin-top: 64px;
 }
+
+@media only screen and (max-width: 599px) {
+    table.mat-table,
+    .table-container {
+        margin-left: -20px;
+        margin-right: -20px;
+        width: 100vw;
+    }
+}

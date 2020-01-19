@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Sob 11. led 2020, 19:44
--- Verze serveru: 10.1.38-MariaDB
--- Verze PHP: 7.3.4
+-- Vytvořeno: Čtv 16. led 2020, 23:41
+-- Verze serveru: 10.4.10-MariaDB
+-- Verze PHP: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `attendance` (
   `member_id` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -56,7 +56,17 @@ INSERT INTO `attendance` (`member_id`, `date`) VALUES
 (1, '2020-01-05 23:00:00'),
 (4, '2020-01-05 23:00:00'),
 (3, '2020-01-05 23:00:00'),
-(1, '2020-01-05 23:00:00');
+(1, '2020-01-05 23:00:00'),
+(2, '2020-01-05 23:00:00'),
+(4, '2019-12-07 23:00:00'),
+(2, '2019-12-07 23:00:00'),
+(4, '2019-12-08 23:00:00'),
+(3, '2019-12-08 23:00:00'),
+(3, '2020-01-11 23:00:00'),
+(2, '2020-01-11 23:00:00'),
+(2, '2020-01-12 23:00:00'),
+(4, '2020-01-12 23:00:00'),
+(1, '2020-01-12 23:00:00');
 
 -- --------------------------------------------------------
 
@@ -66,7 +76,7 @@ INSERT INTO `attendance` (`member_id`, `date`) VALUES
 
 CREATE TABLE `member` (
   `id` int(11) NOT NULL,
-  `active` tinyint(4) NOT NULL DEFAULT '1',
+  `active` tinyint(4) NOT NULL DEFAULT 1,
   `name` varchar(30) COLLATE utf8_czech_ci NOT NULL,
   `surname` varchar(40) COLLATE utf8_czech_ci NOT NULL,
   `rc` varchar(11) COLLATE utf8_czech_ci NOT NULL,
@@ -128,7 +138,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pro tabulku `member`
 --
 ALTER TABLE `member`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pro tabulku `user`

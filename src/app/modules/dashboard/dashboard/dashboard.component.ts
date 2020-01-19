@@ -10,7 +10,10 @@ import { AttendanceService } from '../../core/services/attendance.service';
     styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-    constructor(private memberService: MemberService, private attendanceService: AttendanceService) {}
+    constructor(
+        private memberService: MemberService,
+        private attendanceService: AttendanceService
+    ) {}
     dataSource;
     loading = false;
     displayedColumns: string[] = ['name'];
@@ -21,7 +24,7 @@ export class DashboardComponent implements OnInit {
 
     static generateDates() {
         const mondays = [];
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 10; i++) {
             const friday = moment().day(moment().day() >= 1 ? 1 : -2);
             mondays.push(friday.subtract(i, 'w').format('D. M. Y'));
         }
@@ -29,6 +32,7 @@ export class DashboardComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log('Init dashboard');
         moment.locale('cs');
         this.loading = true;
 

@@ -1,4 +1,7 @@
-<mat-sidenav-container class="sidenav-container" [hasBackdrop]="(isHandset$ | async) === true">
+<mat-sidenav-container
+    class="sidenav-container"
+    [hasBackdrop]="(isHandset$ | async) === true"
+>
     <mat-sidenav
         #drawer
         class="sidenav"
@@ -12,15 +15,27 @@
             <span>Attendance</span>
         </mat-toolbar>
         <mat-nav-list>
-            <a mat-list-item [routerLink]="['/']" routerLinkActive="list-item-active">
+            <a
+                mat-list-item
+                [routerLink]="['/']"
+                routerLinkActive="list-item-active"
+            >
                 <mat-icon>dashboard</mat-icon>
                 Dashboard
             </a>
-            <a mat-list-item [routerLink]="['/members']" routerLinkActive="list-item-active">
+            <a
+                mat-list-item
+                [routerLink]="['/members']"
+                routerLinkActive="list-item-active"
+            >
                 <mat-icon>supervisor_account</mat-icon>
                 Members
             </a>
-            <a mat-list-item [routerLink]="['/attendance']" routerLinkActive="list-item-active">
+            <a
+                mat-list-item
+                [routerLink]="['/attendance']"
+                routerLinkActive="list-item-active"
+            >
                 <mat-icon>calendar_today</mat-icon>
                 Attendance
             </a>
@@ -57,7 +72,7 @@
                     </li>
 
                     <li>
-                        <button mat-icon-button>
+                        <button mat-icon-button (click)="logout()">
                             <mat-icon>person_outline</mat-icon>
                         </button>
                         <mat-menu #auth="matMenu">

@@ -1,51 +1,60 @@
 <h1 class="main-heading">Members</h1>
 
-<mat-card>
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-        <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="addMember()">Add new member</button>
-    </div>
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-        </ng-container>
+<div fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-form-field>
+        <input
+            matInput
+            (keyup)="applyFilter($event.target.value)"
+            placeholder="Filter"
+        />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="addMember()">
+        <span fxShow.xs="false">Add new member</span>
+        <mat-icon fxShow.xs="true" fxShow.gt-xs="false">add</mat-icon>
+    </button>
+</div>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="surname">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Surname</th>
-            <td mat-cell *matCellDef="let element">{{ element.surname }}</td>
-        </ng-container>
+    <ng-container matColumnDef="surname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Surname</th>
+        <td mat-cell *matCellDef="let element">{{ element.surname }}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="address">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
-            <td mat-cell *matCellDef="let element">{{ element.address }}</td>
-        </ng-container>
+    <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+        <td mat-cell *matCellDef="let element">{{ element.address }}</td>
+    </ng-container>
 
-        <ng-container matColumnDef="contact">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact</th>
-            <td mat-cell *matCellDef="let element">{{ element.contact }}</td>
-        </ng-container>
+    <ng-container matColumnDef="contact">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs="true">
+            Contact
+        </th>
+        <td mat-cell *matCellDef="let element" fxHide.xs="true">
+            {{ element.contact }}
+        </td>
+    </ng-container>
 
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Actions</th>
-            <td mat-cell *matCellDef="let element">
-                <button
-                    mat-icon-button
-                    color="primary"
-                    matTooltip="Delete member"
-                    matTooltipPosition="right"
-                    aria-label="Delete this member"
-                    (click)="deleteMember(element)"
-                >
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </td>
-        </ng-container>
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+            <button
+                mat-icon-button
+                color="warn"
+                matTooltip="Delete member"
+                matTooltipPosition="right"
+                aria-label="Delete this member"
+                (click)="openDialog(element)"
+            >
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-</mat-card>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
