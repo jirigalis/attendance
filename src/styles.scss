@@ -34,8 +34,13 @@ th.mat-sort-header-sorted {
 
 .content-container {
     padding: 1px 20px;
-    margin-bottom: 15px;
     margin-top: 64px;
+
+    &.fix-height {
+        padding-top: 0px;
+        margin-bottom: 15px;
+        margin-top: 0px;
+    }
 }
 
 @media only screen and (max-width: 599px) {

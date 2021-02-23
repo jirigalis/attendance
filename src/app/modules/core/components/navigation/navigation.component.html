@@ -1,9 +1,7 @@
-<mat-sidenav-container
-    class="sidenav-container"
-    [hasBackdrop]="(isHandset$ | async) === true"
->
+<mat-sidenav-container class="sidenav-container" [hasBackdrop]="(isHandset$ | async) === true">
     <mat-sidenav
         #drawer
+        *ngIf="isLoggedIn()"
         class="sidenav"
         fixedInViewport
         [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
@@ -15,27 +13,15 @@
             <span>Attendance</span>
         </mat-toolbar>
         <mat-nav-list>
-            <a
-                mat-list-item
-                [routerLink]="['/']"
-                routerLinkActive="list-item-active"
-            >
+            <a mat-list-item [routerLink]="['/']" routerLinkActive="list-item-active">
                 <mat-icon>dashboard</mat-icon>
                 Dashboard
             </a>
-            <a
-                mat-list-item
-                [routerLink]="['/members']"
-                routerLinkActive="list-item-active"
-            >
+            <a mat-list-item [routerLink]="['/members']" routerLinkActive="list-item-active">
                 <mat-icon>supervisor_account</mat-icon>
                 Members
             </a>
-            <a
-                mat-list-item
-                [routerLink]="['/attendance']"
-                routerLinkActive="list-item-active"
-            >
+            <a mat-list-item [routerLink]="['/attendance']" routerLinkActive="list-item-active">
                 <mat-icon>calendar_today</mat-icon>
                 Attendance
             </a>
@@ -47,7 +33,7 @@
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-        <mat-toolbar class="toppanel-part" color="primary">
+        <mat-toolbar class="toppanel-part" color="primary" *ngIf="isLoggedIn()">
             <button
                 type="button"
                 aria-label="Toggle sidenav"
@@ -85,7 +71,7 @@
                 </ul>
             </div>
         </mat-toolbar>
-        <div class="content-container">
+        <div class="content-container" [ngClass]="{ 'fix-height': !isLoggedIn() }">
             <router-outlet></router-outlet>
         </div>
     </mat-sidenav-content>

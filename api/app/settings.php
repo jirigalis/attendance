@@ -23,7 +23,8 @@ return function (ContainerBuilder $containerBuilder) {
                 'ignore' => ["/attendance-api/user/authenticate", '/attendance-api/aaa'],
                 'passthrough' => ['/user/authenticate', '/attendance-api/aaa'],
                 'secret' => getenv('JWT_SECRET'),
-                "logger" => $logger                
+                "logger" => $logger,
+                "secure" => false
             ],
             'db' => [
                 'driver' => 'mysql',

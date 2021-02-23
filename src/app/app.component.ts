@@ -4,27 +4,15 @@ import { Component } from '@angular/core';
 import { User } from './modules/core/models/user';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
-  currentUser: User;
+    title = 'app';
+    currentUser: User;
 
-  constructor(
-    private memberService: MemberService,
-    private authenticationService: AuthenticationService
-    )
-    {
-      this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+    constructor(private memberService: MemberService, private authenticationService: AuthenticationService) {
+        this.authenticationService.currentUser.subscribe(x => (this.currentUser = x));
     }
-
-  getAllMembers(): void {
-    this.memberService.getAll()
-      .subscribe(members => {
-        console.log('clicked');
-        console.log(members);
-      });
-  }
 }

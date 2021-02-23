@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  API_URL: '/attendance-api',
+    production: true,
+    API_URL: '/api'
 };

@@ -9,13 +9,24 @@
                 <p>
                     <mat-form-field appearance="standard" fxFill>
                         <mat-label>Username</mat-label>
-                        <input matInput formControlName="username" placeholder="Username"[ngClass]="{ 'is-invalid': submitted && f.username.errors }">
+                        <input
+                            matInput
+                            formControlName="username"
+                            placeholder="Username"
+                            [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+                        />
                     </mat-form-field>
                 </p>
                 <p>
                     <mat-form-field appearance="standard" fxFill>
                         <mat-label>Password</mat-label>
-                        <input matInput formControlName="password" placeholder="Enter your password" [type]="hide ? 'password' : 'text'" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                        <input
+                            matInput
+                            formControlName="password"
+                            placeholder="Enter your password"
+                            [type]="hide ? 'password' : 'text'"
+                            [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                        />
                     </mat-form-field>
                 </p>
             </mat-card-content>

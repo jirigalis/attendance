@@ -87,7 +87,7 @@ class ActionPayload implements JsonSerializable
         if ($this->statusCode == 200) {
             return $this->data;
         }
-        return $payload;
 
+        return $payload;
     }
 }

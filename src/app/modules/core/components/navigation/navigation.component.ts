@@ -14,15 +14,12 @@ import { AuthenticationService } from '../../authentication/authentication.servi
 export class NavigationComponent {
     @ViewChild('drawer', { static: false }) drawer: MatSidenav;
 
-    isHandset$: Observable<boolean> = this.breakpointObserver
-        .observe(Breakpoints.Handset)
-        .pipe(
-            map(result => {
-                console.log(result);
-                return result.matches;
-            }),
-            shareReplay()
-        );
+    isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+        map(result => {
+            return result.matches;
+        }),
+        shareReplay()
+    );
 
     constructor(
         private breakpointObserver: BreakpointObserver,
@@ -38,8 +35,11 @@ export class NavigationComponent {
     }
 
     logout() {
-        console.log('Logout');
         this.authService.logout();
         this.router.navigate(['/login']);
+    }
+
+    isLoggedIn() {
+        return this.authService.currentUserValue !== null;
     }
 }

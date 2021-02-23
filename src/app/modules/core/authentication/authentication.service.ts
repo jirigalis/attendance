@@ -13,9 +13,7 @@ export class AuthenticationService {
     private apiUrl = environment.API_URL;
 
     constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<User>(
-            JSON.parse(localStorage.getItem('currentUser'))
-        );
+        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
@@ -32,18 +30,14 @@ export class AuthenticationService {
             .pipe(
                 map(data => {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    const currentUser = {
+                    const currentUser: any = {
                         token: data,
                         user: {
                             username: username
                         }
                     };
-                    console.log('Add logged user to the local storage');
-                    localStorage.setItem(
-                        'currentUser',
-                        JSON.stringify(currentUser)
-                    );
-                    this.currentUserSubject.next(data);
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    this.currentUserSubject.next(currentUser);
                     return data;
                 })
             );

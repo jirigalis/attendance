@@ -30,7 +30,6 @@ export class LoginFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('LoGIN');
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]
@@ -51,18 +50,15 @@ export class LoginFormComponent implements OnInit {
         }
 
         this.loading = true;
-        this.authenticationService
-            .login(this.f.username.value, this.f.password.value)
-            .subscribe(
-                data => {
-                    this.snack.open('Success');
-                    this.router.navigate([this.returnUrl]);
-                },
-                error => {
-                    this.error = error;
-                    this.loading = false;
-                    this.snack.open('Error');
-                }
-            );
+        this.authenticationService.login(this.f.username.value, this.f.password.value).subscribe(
+            data => {
+                this.router.navigate([this.returnUrl]);
+            },
+            error => {
+                this.error = error;
+                this.loading = false;
+                this.snack.open('Error during login. Check your credentials.', 'X', { duration: 3000 });
+            }
+        );
     }
 }

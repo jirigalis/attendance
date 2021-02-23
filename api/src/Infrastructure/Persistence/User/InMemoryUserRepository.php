@@ -48,12 +48,12 @@ class InMemoryUserRepository implements UserRepository
             throw new CannotAuthenticateUserException();
         }
 
-        $user = User::where('username', $name)->where('password', $password)->first();
+        $user = User::where('username', $name)->first();
 
-        if (is_null($user)) {
+        if (is_null($user) || !\password_verify($password, $user->password)) {
             throw new CannotAuthenticateUserException();
         }
-        
+
         $payload = array(
             "iat" => time(),
             "exp" => time() + (3600 * 24 * 7), // 24 h
