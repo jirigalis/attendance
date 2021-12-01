@@ -18,10 +18,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { MomentModule } from 'ngx-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './modules/shared/shared.module';
+import * as echarts from 'echarts';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
+        // NgxEchartsModule.forRoot({ echarts }),
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
@@ -37,7 +40,7 @@ import { SharedModule } from './modules/shared/shared.module';
         MembersModule,
         AttendanceModule,
         MomentModule,
-        SharedModule
+        SharedModule,
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent],

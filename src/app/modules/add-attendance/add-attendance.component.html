@@ -1,0 +1,25 @@
+<h1>Add attendance</h1>
+<mat-card class="small">
+    <mat-form-field>
+        <input matInput [matDatepicker]="attendanceDate" placeholder="Select date" [formControl]="date" />
+        <mat-datepicker-toggle matSuffix [for]="attendanceDate"></mat-datepicker-toggle>
+        <mat-datepicker #attendanceDate></mat-datepicker>
+    </mat-form-field>
+
+    <mat-selection-list #membersList>
+        <mat-list-option
+            *ngFor="let member of members"
+            (click)="selectMember(member)"
+            [ngClass]="{ 'member-selected': member.selected }"
+        >
+            {{ member.name }} {{ member.surname }}
+        </mat-list-option>
+    </mat-selection-list>
+    <mat-divider></mat-divider>
+    <mat-card-actions fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            Members selected: <strong>{{ membersList.selectedOptions.selected.length }}</strong>
+        </div>
+        <button mat-raised-button color="primary" (click)="onSubmit()">Confirm</button>
+    </mat-card-actions>
+</mat-card>

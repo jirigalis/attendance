@@ -30,8 +30,8 @@ return function (ContainerBuilder $containerBuilder) {
                 'driver' => 'mysql',
                 'host' => 'localhost',
                 //'port' => 3306,
-                'username' => 'root',
-                'password' => '',
+                'username' => getenv('DB_USER'),
+                'password' => getenv('DB_PWD'),
                 'database' => getenv('DATABASE_NAME'),
             ]
 

@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+import { AddAttendanceComponent } from './add-attendance/add-attendance.component';
 
 const routes: Routes = [
     {
@@ -17,13 +18,14 @@ const routes: Routes = [
             { path: 'members', component: MembersComponent, canActivate: [AuthGuard] },
             { path: 'add-member', component: AddMemberComponent, canActivate: [AuthGuard] },
             { path: 'attendance', component: AttendanceComponent, canActivate: [AuthGuard] },
+            { path: 'add-attendance', component: AddAttendanceComponent, canActivate: [AuthGuard] },
             { path: 'login', component: LoginFormComponent }
         ]
     }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
     exports: [RouterModule]
 })
 export class AppRoutingModule {}

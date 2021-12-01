@@ -1,5 +1,5 @@
 import { MemberService } from './../../core/services/member.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import * as moment from 'moment';
 import { AttendanceService } from '../../core/services/attendance.service';
@@ -14,32 +14,15 @@ export class DashboardComponent implements OnInit {
         private memberService: MemberService,
         private attendanceService: AttendanceService
     ) {}
-    dataSource;
-    loading = false;
-    displayedColumns: string[] = ['name'];
-    dateColumns = DashboardComponent.generateDates();
-    allColumns = [...this.displayedColumns, ...this.dateColumns];
-
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-
-    static generateDates() {
-        const mondays = [];
-        for (let i = 0; i < 10; i++) {
-            const friday = moment().day(moment().day() >= 1 ? 1 : -2);
-            mondays.push(friday.subtract(i, 'w').format('D. M. Y'));
-        }
-        return mondays.reverse();
-    }
+    membersLoading = false;
 
     ngOnInit() {
-        console.log('Init dashboard');
         moment.locale('cs');
-        this.loading = true;
+        this.membersLoading = true;
 
         this.memberService.getAllWithAttendance().subscribe(data => {
             this._parseMembers(data);
-            this.loading = false;
-            this.dataSource.sort = this.sort;
+            this.membersLoading = false;
         });
     }
 
@@ -48,21 +31,11 @@ export class DashboardComponent implements OnInit {
 
         data.forEach(val => {
             const finalValue = {
-                name: val.name + ' ' + val.surname
+                name: val.name + ' ' + val.surname,
+                role: val.role
             };
-
-            this.dateColumns.forEach(col => {
-                finalValue[col] = false;
-                val.attendance.forEach(a => {
-                    if (moment(a).isSame(moment(col, 'DD. MM. YYYY'))) {
-                        finalValue[col] = true;
-                        return;
-                    }
-                });
-            });
 
             result.push(finalValue);
         });
-        this.dataSource = new MatTableDataSource(result);
     }
 }

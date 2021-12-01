@@ -25,6 +25,11 @@
         <td mat-cell *matCellDef="let element">{{ element.surname }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+        <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+    </ng-container>
+
     <ng-container matColumnDef="address">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
         <td mat-cell *matCellDef="let element">{{ element.address }}</td>
@@ -36,6 +41,30 @@
         </th>
         <td mat-cell *matCellDef="let element" fxHide.xs="true">
             {{ element.contact }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="application">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Application</th>
+        <td mat-cell *matCellDef="let element" class="check-column">
+            <mat-icon *ngIf="element.application" color="accent">check</mat-icon>
+            <mat-icon *ngIf="!element.application" class="dash">-</mat-icon>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="paid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Paid</th>
+        <td mat-cell *matCellDef="let element" class="check-column">
+            <mat-icon *ngIf="element.paid" color="accent">check</mat-icon>
+            <mat-icon *ngIf="!element.paid" class="dash">-</mat-icon>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="gdpr">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>GDPR</th>
+        <td mat-cell *matCellDef="let element" class="check-column">
+            <mat-icon *ngIf="element.paid" color="accent">check</mat-icon>
+            <mat-icon *ngIf="!element.paid" class="dash">-</mat-icon>
         </td>
     </ng-container>
 

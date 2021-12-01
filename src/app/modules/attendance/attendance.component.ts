@@ -1,9 +1,8 @@
-import { AttendanceService } from './../core/services/attendance.service';
-import { Component, OnInit } from '@angular/core';
+import { MemberService } from '../core/services/member.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatSort } from '@angular/material';
 import * as moment from 'moment';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { MemberService } from '../core/services';
-import { MatSnackBar } from '@angular/material';
+import { AttendanceService } from '../core/services/attendance.service';
 
 @Component({
     selector: 'app-attendance',
@@ -11,58 +10,64 @@ import { MatSnackBar } from '@angular/material';
     styleUrls: ['./attendance.component.scss']
 })
 export class AttendanceComponent implements OnInit {
-    date = new FormControl(new Date());
-    members;
-    attendanceForm: FormGroup;
-    loading = false;
-    submitted = false;
-
     constructor(
-        private membersService: MemberService,
-        private attendanceService: AttendanceService,
-        private snack: MatSnackBar
+        private memberService: MemberService,
+        private attendanceService: AttendanceService
     ) {}
+    dataSource;
+    loading = false;
+    displayedColumns: string[] = ['name', 'role'];
+    dateColumns = AttendanceComponent.generateDates();
+    allColumns = [...this.displayedColumns, ...this.dateColumns];
+    static WEEK_COUNT  = 10;
+
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+    static generateDates() {
+        const mondays = [];
+        for (let i = 0; i < this.WEEK_COUNT; i++) {
+            const monday = moment().day("Monday");
+            mondays.push(monday.subtract(i, 'w').format('D. M. Y'));
+        }
+        return mondays.reverse();
+    }
 
     ngOnInit() {
-        this.membersService.getAll().subscribe(members => {
-            this.members = members;
-        });
-    }
-
-    selectMember(el) {
-        el.selected = !el.selected;
-        const arr = this.members;
-        arr.sort((a, b) => {
-            if (a.selected) {
-                return 1;
-            }
-            if (!a.selected && b.selected) {
-                return -1;
-            }
-            return 0;
-        });
-    }
-
-    onSubmit() {
-        this.submitted = true;
+        moment.locale('cs');
         this.loading = true;
 
-        const memberIds = [];
-        this.members.map(m => {
-            if (m.selected) {
-                memberIds.push(m.id);
-            }
+        this.memberService.getAllWithAttendance().subscribe(data => {
+            this._parseMembers(data);
+            this.loading = false;
+            this.dataSource.sort = this.sort;
         });
+    }
 
-        const date = moment(this.date.value);
+    getTotalAttendance(column, element) {
+        return column.reduce((data, val) => val[element] ? data += 1 : data, 0);        
+    }
 
-        this.attendanceService
-            .addAttendance(date.format('YYYY-MM-DD'), memberIds)
-            .subscribe(res => {
-                this.snack.open('Attendance successfully saved.', 'X', {
-                    duration: 3000
+    private _parseMembers(data) {
+        const result = [];
+
+        data.forEach(val => {
+            const finalValue = {
+                name: val.name + ' ' + val.surname,
+                role: val.role
+            };
+
+            this.dateColumns.forEach(col => {
+                finalValue[col] = false;
+                val.attendance.forEach(a => {
+                    if (moment(a).isSame(moment(col, 'DD. MM. YYYY'))) {
+                        finalValue[col] = true;
+                        return;
+                    }
                 });
-                this.loading = false;
             });
+
+            result.push(finalValue);
+        });
+        this.dataSource = new MatTableDataSource(result);
     }
 }

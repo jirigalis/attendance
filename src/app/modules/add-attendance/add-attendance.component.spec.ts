@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { BasicDialogComponent } from './basic-dialog.component';
+import { AddAttendanceComponent } from './add-attendance.component';
 
-describe('BasicDialogComponent', () => {
-  let component: BasicDialogComponent;
-  let fixture: ComponentFixture<BasicDialogComponent>;
+describe('AddAttendanceComponent', () => {
+  let component: AddAttendanceComponent;
+  let fixture: ComponentFixture<AddAttendanceComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BasicDialogComponent ]
+      declarations: [ AddAttendanceComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BasicDialogComponent);
+    fixture = TestBed.createComponent(AddAttendanceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

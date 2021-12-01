@@ -4,6 +4,7 @@ import {
     MatSidenavModule,
     MatMenuModule,
     MatCardModule,
+    MatCardTitle,
     MatInputModule,
     MatTableModule,
     MatProgressBarModule,
@@ -22,6 +23,7 @@ import { MatSnackBarModule } from '@angular/material';
     exports: [
         MatButtonModule,
         MatCardModule,
+        MatCardTitle,
         MatDatepickerModule,
         MatDialogModule,
         MatIconModule,

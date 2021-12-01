@@ -16,8 +16,12 @@ export class MembersComponent implements OnInit {
     displayedColumns: string[] = [
         'name',
         'surname',
+        'role',
         'address',
         'contact',
+        'application',
+        'paid',
+        'gdpr',
         'actions'
     ];
     loading = false;
