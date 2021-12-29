@@ -1,0 +1,41 @@
+<h1>Upravit člena "{{member.name}} {{member.surname}}"</h1>
+<form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+    <mat-card>
+        <mat-card-content>
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="50px">
+                <div fxLayout="column" fxFlex="50" fxLayoutAlign="start start">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Jméno" formControlName="name" required />
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Přijmení" formControlName="surname" required />
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="RC" formControlName="rc" />
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Adresa" formControlName="address" />
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <textarea matInput placeholder="Kontakt" formControlName="contact"></textarea>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="15px">
+                    <label>Role:</label>
+                    <mat-radio-group formControlName="role">
+                        <mat-radio-button value="D">Dítě</mat-radio-button>
+                        <mat-radio-button value="V">Vedoucí</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-checkbox  formControlName="application">Přihláška</mat-checkbox>
+                    <mat-checkbox formControlName="paid">Zaplaceno</mat-checkbox>
+                    <mat-checkbox formControlName="gdpr">GDPR</mat-checkbox>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button type="submit" [disabled]="!memberForm.valid" mat-raised-button color="primary">
+                Uložit změny
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</form>
