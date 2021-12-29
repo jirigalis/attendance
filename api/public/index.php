@@ -7,6 +7,7 @@ use App\Application\ResponseEmitter\ResponseEmitter;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
+use Respect\Validation\Factory as Factory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -70,6 +71,13 @@ $app->addRoutingMiddleware();
 // Add Error Middleware
 $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);
 $errorMiddleware->setDefaultErrorHandler($errorHandler);
+
+// Add Custom Validation Rules
+Factory::setDefaultInstance(
+    (new Factory())
+        ->withRuleNamespace('App\\Infrastructure\\CustomValidation\\Rules\\')
+        ->withExceptionNamespace('App\\Infrastructure\\CustomValidation\\Exceptions\\')
+);
 
 // Run App & Emit Response
 $response = $app->handle($request);

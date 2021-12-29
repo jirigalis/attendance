@@ -6,9 +6,10 @@ import { CommonModule } from '@angular/common';
 import { MembersComponent } from './members/members.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { EditMemberComponent } from './edit-member/edit-member.component';
 
 @NgModule({
-    declarations: [MembersComponent, AddMemberComponent],
+    declarations: [MembersComponent, AddMemberComponent, EditMemberComponent],
     imports: [
         CommonModule,
         FlexLayoutModule,

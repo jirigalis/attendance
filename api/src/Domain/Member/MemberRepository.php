@@ -26,4 +26,6 @@ interface MemberRepository
     public function getAttendance(int $id);
 
     public function delete(int $id);
+    
+    public function getMembersAddresses();
 }

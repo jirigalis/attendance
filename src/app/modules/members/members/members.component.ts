@@ -1,9 +1,10 @@
-import { filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MemberService } from '../../core/services';
-import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from "@angular/material/dialog";
+import { MatSort } from "@angular/material/sort";
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 
 @Component({
@@ -12,11 +13,12 @@ import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dia
     styleUrls: ['./members.component.scss']
 })
 export class MembersComponent implements OnInit {
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatSort) sort: MatSort;
     displayedColumns: string[] = [
         'name',
         'surname',
         'role',
+        'age',
         'address',
         'contact',
         'application',
@@ -38,6 +40,7 @@ export class MembersComponent implements OnInit {
     ngOnInit() {
         this.loading = true;
         this.memberService.getAll().subscribe((members: any) => {
+            members.map(m => m.age = this.getAge(m.rc));
             this.dataSource = new MatTableDataSource(members);
             this.loading = false;
             this.dataSource.sort = this.sort;
@@ -56,7 +59,7 @@ export class MembersComponent implements OnInit {
         this.loading = true;
         this.memberService.delete(member.id).subscribe(
             res => {
-                this.snack.open('Member successfuly deleted.', 'X', {
+                this.snack.open('Member successfully deleted.', 'X', {
                     duration: 3000
                 });
                 this.refresh();
@@ -81,11 +84,19 @@ export class MembersComponent implements OnInit {
         });
     }
 
+    editMember(memberId) {
+        this.router.navigate(['/edit-member', memberId])
+    }
+
     refresh() {
         this.memberService.getAll().subscribe(res => {
             this.dataSource.data = res;
             this.dataSource.sort = this.sort;
         });
         this.changeDetectorRefs.detectChanges();
+    }
+
+    getAge(rc) {
+        return MemberService.getAgeFromRC(rc);
     }
 }

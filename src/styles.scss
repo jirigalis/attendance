@@ -43,6 +43,14 @@ th.mat-sort-header-sorted {
     }
 }
 
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+
+mat-form-field.full-width {
+    width: 100%;
+}
+
 @media only screen and (max-width: 599px) {
     table.mat-table,
     .table-container {

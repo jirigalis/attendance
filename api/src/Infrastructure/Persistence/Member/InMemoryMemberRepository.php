@@ -52,10 +52,11 @@ class InMemoryMemberRepository implements MemberRepository
 
 
     public function create(object $data): int {
-        $valid = V::alpha()->validate($data->name);
-        $valid = $valid && V::alpha()->validate($data->surname);
-        $valid = $valid && V::optional(V::alnum("- ,"))->validate($data->address);
+        $valid = V::alphaCZ()->validate($data->name);
+        $valid = $valid && V::alphaCZ()->validate($data->surname);
+        $valid = $valid && V::optional(V::alnum("- ,ěščřžýáíéďťňĚŠČŘŽÝÁÍÉĎŤŇÚŮ"))->validate($data->address);
         $valid = $valid && V::optional(V::digit("/"))->validate($data->rc);
+        $valid = $valid && V::anyOf(V::equals("D"), V::equals("V"))->validate($data->role);
 
         if ($valid) {
             $member = new Member;
@@ -81,7 +82,7 @@ class InMemoryMemberRepository implements MemberRepository
 
 
         if (isset($data->name) && $member->name != $data->name) {
-            if (!V::alpha()->validate($data->name)) {
+            if (!V::alphaCZ()->validate($data->name)) {
                 throw new CannotCreateMemberException("name");
             }
 
@@ -90,7 +91,7 @@ class InMemoryMemberRepository implements MemberRepository
         }
 
         if (isset($data->surname) && $member->surname != $data->surname) {
-            if (!V::alpha()->validate($data->surname)) {
+            if (!V::alphaCZ()->validate($data->surname)) {
                 throw new CannotCreateMemberException("surname");
             }
 
@@ -99,7 +100,7 @@ class InMemoryMemberRepository implements MemberRepository
         }
 
         if (isset($data->address) && $member->address != $data->address) {
-            if (!V::alnum("- ,")->validate($data->address)) {
+            if (!V::optional(V::alnum("- ,ěščřžýáíéďťňĚŠČŘŽÝÁÍÉĎŤŇÚŮ"))->validate($data->address)) {
                 throw new CannotCreateMemberException("address");
             }
 
@@ -116,8 +117,32 @@ class InMemoryMemberRepository implements MemberRepository
             $update = true;
         }
 
+        if (isset($data->role) && $member->role != $data->role) {
+            if (!V::anyOf(V::equals("D"), V::equals("V"))->validate($data->role)) {
+                throw new CannotCreateMemberException("role");
+            }
+
+            $member->role = htmlspecialchars($data->role);
+            $update = true;
+        }
+
         if (isset($data->contact) && $member->contact != $data->contact) {
             $member->contact = htmlspecialchars($data->contact);
+            $update = true;
+        }
+
+        if (isset($data->application) && $member->application != $data->application) {
+            $member->application = $data->application;
+            $update = true;
+        }
+
+        if (isset($data->paid) && $member->paid != $data->paid) {
+            $member->paid = $data->paid;
+            $update = true;
+        }
+
+        if (isset($data->gdpr) && $member->gdpr != $data->gdpr) {
+            $member->gdpr = $data->gdpr;
             $update = true;
         }
 
@@ -164,5 +189,9 @@ class InMemoryMemberRepository implements MemberRepository
             // Attendance::destroy($id);
         }
         return $res;
+    }
+
+    public function getMembersAddresses() {
+        return array_column($this->members->toArray(), 'address', 'id');
     }
 }

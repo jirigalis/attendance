@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { MemberService } from '../core/services';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'add-attendance',

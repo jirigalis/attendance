@@ -1,28 +1,40 @@
-<h1>Add new member</h1>
+<h1>Přidat nového člena</h1>
 <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
     <mat-card>
         <mat-card-content>
-            <div fxLayout="column" fxLayoutAlign="start start">
-                <mat-form-field>
-                    <input matInput placeholder="Name" formControlName="name" required />
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="Surname" formControlName="surname" required />
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="Address" formControlName="address" />
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="Contact" formControlName="contact" />
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="RC" formControlName="rc" />
-                </mat-form-field>
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="50px">
+                <div fxLayout="column" fxFlex="50">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Name" formControlName="name" required />
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Surname" formControlName="surname" required />
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="RC" formControlName="rc" />
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Address" formControlName="address" />
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <textarea matInput placeholder="Contact" formControlName="contact"></textarea>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="15px">
+                    <label>Role:</label>
+                    <mat-radio-group formControlName="role">
+                        <mat-radio-button value="D">Dítě</mat-radio-button>
+                        <mat-radio-button value="V">Vedoucí</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-checkbox  formControlName="application">Přihláška</mat-checkbox>
+                    <mat-checkbox formControlName="paid">Zaplaceno</mat-checkbox>
+                    <mat-checkbox formControlName="gdpr">GDPR</mat-checkbox>
+                </div>
             </div>
         </mat-card-content>
         <mat-card-actions>
             <button type="submit" [disabled]="!memberForm.valid" mat-raised-button color="primary">
-                Add new Member
+                Přidat člena
             </button>
         </mat-card-actions>
     </mat-card>

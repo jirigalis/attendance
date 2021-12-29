@@ -1,6 +1,7 @@
 import { MemberService } from '../core/services/member.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from "@angular/material/sort";
 import * as moment from 'moment';
 import { AttendanceService } from '../core/services/attendance.service';
 

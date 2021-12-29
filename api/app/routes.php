@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use App\Application\Actions\Member\ListMembersAction;
 use App\Application\Actions\Member\ListMembersWithAttendanceAction;
+use App\Application\Actions\Member\ListMembersAddressesAction;
 use App\Application\Actions\Member\ViewMemberAction;
 use App\Application\Actions\Member\UpdateMemberAction;
 use App\Application\Actions\Member\CreateMemberAction;
@@ -32,9 +33,13 @@ return function (App $app) {
         return $response;
     });
 
+    $app->group($prefix . '/stats', function (Group $group) use ($container) {
+    });
+
     $app->group($prefix.'/members', function (Group $group) use ($container) {
         $group->get('', ListMembersAction::class);
         $group->get('/attendance', ListMembersWithAttendanceAction::class);
+        $group->get('/addresses', ListMembersAddressesAction::class);
         $group->get('/{id}', ViewMemberAction::class);
         $group->get('/{id}/attendance', GetMemberAttendanceAction::class);
         $group->post('/{id}/attendance', AddMemberAttendanceAction::class);

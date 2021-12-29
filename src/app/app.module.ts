@@ -15,16 +15,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './modules/core/core.module';
 import { MaterialModule } from './modules/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
-import { MomentModule } from 'ngx-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './modules/shared/shared.module';
 import * as echarts from 'echarts';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { MomentModule } from 'ngx-moment';
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
-        // NgxEchartsModule.forRoot({ echarts }),
         AppRoutingModule,
         BrowserModule,
         BrowserAnimationsModule,
@@ -39,8 +38,13 @@ import { NgxEchartsModule } from 'ngx-echarts';
         MaterialModule,
         MembersModule,
         AttendanceModule,
-        MomentModule,
+        MomentModule.forRoot({
+            relativeTimeThresholdOptions: {
+              'm': 59
+            }
+          }),
         SharedModule,
+        NgxEchartsModule.forRoot({ echarts }),
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent],
