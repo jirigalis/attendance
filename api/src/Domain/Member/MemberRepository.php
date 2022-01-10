@@ -10,6 +10,10 @@ interface MemberRepository
      */
     public function findAll(): object;
 
+    public function listNames(): object;
+
+    public function getByRole($role);
+
     /**
      * @param int $id
      * @return Member

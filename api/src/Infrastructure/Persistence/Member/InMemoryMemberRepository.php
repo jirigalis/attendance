@@ -36,6 +36,14 @@ class InMemoryMemberRepository implements MemberRepository
         return $this->members;
     }
 
+    public function listNames(): object {
+        return Member::select("id", "name", "surname")->get();
+    }
+
+    public function getByRole($role) {
+        return Member::where("role", $role)->get();
+    }
+
     /**
      * {@inheritdoc}
      */

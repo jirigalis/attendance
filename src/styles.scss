@@ -26,6 +26,14 @@ mat-card {
 
 table.mat-table {
     width: 100%;
+
+    tr.gray {
+        background-color: #efefef;
+    }
+}
+
+.data-table-img {
+    max-height: 50px;
 }
 
 th.mat-sort-header-sorted {
@@ -41,6 +49,10 @@ th.mat-sort-header-sorted {
         margin-bottom: 15px;
         margin-top: 0px;
     }
+}
+
+.page-actions {
+    margin-bottom: 16px;
 }
 
 .mat-radio-button ~ .mat-radio-button {

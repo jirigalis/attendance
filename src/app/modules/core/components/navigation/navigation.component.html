@@ -19,20 +19,37 @@
             </a>
             <a mat-list-item [routerLink]="['/members']" routerLinkActive="list-item-active">
                 <mat-icon>supervisor_account</mat-icon>
-                Members
+                Členové
             </a>
             <a mat-list-item [routerLink]="['/attendance']" routerLinkActive="list-item-active">
                 <mat-icon>calendar_today</mat-icon>
-                Attendance
+                Docházka
             </a>
             <a mat-list-item [routerLink]="['/add-attendance']" routerLinkActive="list-item-active">
                 <mat-icon>add_circle_outline</mat-icon>
-                Add Attendance
+                Zapsat docházku
+            </a>
+            <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="['/points']" routerLinkActive="list-item-active">
+                <mat-icon>assessment</mat-icon>
+                Bodování
+            </a>
+            <a mat-list-item [routerLink]="['/bodovani']" routerLinkActive="list-item-active">
+                <mat-icon>assessment</mat-icon>
+                Veřejné bodování
+            </a>
+            <a mat-list-item [routerLink]="['/badges']" routerLinkActive="list-item-active">
+                <mat-icon>local_police</mat-icon>
+                Odznaky
+            </a>
+            <a mat-list-item [routerLink]="['/reasons']" routerLinkActive="list-item-active">
+                <mat-icon>list</mat-icon>
+                Kategorie
             </a>
             <mat-divider></mat-divider>
             <a mat-list-item href="#">
                 <mat-icon>settings_applications</mat-icon>
-                Settings
+                Nastavení
             </a>
         </mat-nav-list>
     </mat-sidenav>

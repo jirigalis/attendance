@@ -21,6 +21,12 @@ export class MemberService {
             );
     }
 
+    listNames(): Observable<Member[]> {
+        return this.http.get<Member[]>(this.apiUrl + '/names').pipe(
+            map(data => data.map(data => new Member().deserialize(data)))
+        );
+    }
+
     getById(id: Number) {
         return this.http.get<Member>(this.apiUrl + '/' + id).pipe(
             map(data => new Member().deserialize(data)),
@@ -41,7 +47,6 @@ export class MemberService {
     }
 
     update(member: Member) {
-        console.log(member);
         return this.http.put(this.apiUrl + '/' + member.id, member);
     }
 

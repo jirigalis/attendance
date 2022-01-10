@@ -1,7 +1,6 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div class="main-container">
     <div class="mat-app-background nav-container">
-        <navigation></navigation>
+        <navigation *ngIf="showNavigation"></navigation>
         <router-outlet></router-outlet>
     </div>
 </div>

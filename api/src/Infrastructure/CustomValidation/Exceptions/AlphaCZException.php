@@ -1,6 +1,5 @@
 <?php
 namespace App\Infrastructure\CustomValidation\Exceptions;
-// namespace Respect\Validation\Exceptions;
 
 use Respect\Validation\Exceptions\ValidationException;
 

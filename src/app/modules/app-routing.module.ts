@@ -9,6 +9,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { AddAttendanceComponent } from './add-attendance/add-attendance.component';
+import { PointsDashboardComponent } from './points/points-dashboard/points-dashboard.component';
+import { BadgesComponent } from './points/badges/badges.component';
+import { ReasonComponent } from './points/reason/reason.component';
+import { BodovaniComponent } from './points/bodovani/bodovani.component';
 
 const routes: Routes = [
     {
@@ -21,7 +25,11 @@ const routes: Routes = [
             { path: 'edit-member/:memberId', component: EditMemberComponent, canActivate: [AuthGuard] },
             { path: 'attendance', component: AttendanceComponent, canActivate: [AuthGuard] },
             { path: 'add-attendance', component: AddAttendanceComponent, canActivate: [AuthGuard] },
-            { path: 'login', component: LoginFormComponent }
+            { path: 'login', component: LoginFormComponent },
+            { path: 'points', component: PointsDashboardComponent, canActivate: [AuthGuard]},
+            { path: 'bodovani', component: BodovaniComponent },
+            { path: 'badges', component: BadgesComponent, canActivate: [AuthGuard]},
+            { path: 'reasons', component: ReasonComponent, canActivate: [AuthGuard]},
         ]
     }
 ];

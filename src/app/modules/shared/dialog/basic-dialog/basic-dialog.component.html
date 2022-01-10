@@ -1,13 +1,13 @@
-<h2 mat-dialog-title>Confirm action</h2>
+<h2 mat-dialog-title>Potvrdit akci</h2>
 
 <div mat-dialog-content>
-    Do you really want to delete this item?
+    Opravdu si přejete odstranit tuto položku?
 </div>
 
 <div mat-dialog-actions>
-    <button mat-raised-button (click)="close(false)">Cancel</button>
+    <button mat-raised-button (click)="close(false)">Zrušit</button>
     <button mat-raised-button (click)="close(true)" color="warn">
         <mat-icon>delete</mat-icon>
-        Delete
+        Odstranit
     </button>
 </div>

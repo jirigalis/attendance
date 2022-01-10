@@ -8,9 +8,9 @@
             <td mat-footer-cell *matFooterCellDef> Počet lidí celkem </td>
         </ng-container>
 
-        <ng-container matColumnDef="role" sticky>
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-column">Role</th>
-            <td mat-cell *matCellDef="let element" class="sticky-column">{{ element.role }}</td>
+        <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="role-column">Role</th>
+            <td mat-cell *matCellDef="let element">{{ element.role }}</td>
             <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
