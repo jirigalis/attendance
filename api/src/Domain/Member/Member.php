@@ -5,6 +5,7 @@ namespace App\Domain\Member;
 
 use JsonSerializable;
 use App\Domain\Attendance\Attendance;
+use App\Domain\Badge\Badge;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Member extends Eloquent
@@ -19,6 +20,10 @@ class Member extends Eloquent
 
     public function attendance() {
         return $this->hasMany(Attendance::class, 'member_id', 'id');
+    }
+
+    public function badge() {
+        return $this->belongsToMany(Badge::class, "member_badge");
     }
 
 }

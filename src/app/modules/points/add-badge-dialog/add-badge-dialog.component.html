@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Přidat odznak členovi</h2>
+
+<div mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Jméno člena</mat-label>
+        <mat-select [(ngModel)]="result.member_id">
+            <mat-option *ngFor="let m of allMembers" [value]="m.id">{{ m.name }} {{ m.surname }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Odznak</mat-label>
+        <mat-select [(ngModel)]="result.badge_id">
+            <mat-option *ngFor="let b of badges" [value]="b.id">{{ b.name }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="cancel()">Zrušit</button>
+    <button mat-raised-button (click)="submit()" color="primary">
+        <mat-icon>save</mat-icon>
+        Uložit
+    </button>
+</div>

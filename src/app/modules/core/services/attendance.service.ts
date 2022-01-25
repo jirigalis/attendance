@@ -3,7 +3,7 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class AttendanceService {
     private apiUrl = environment.API_URL;
@@ -16,5 +16,9 @@ export class AttendanceService {
 
     addAttendance(date: String, memberIds) {
         return this.http.post(this.apiUrl + `/attendance/${date}`, memberIds);
+    }
+
+    getMembersByAttendanceCount() {
+        return this.http.get<any>(this.apiUrl + '/attendance/best-members');
     }
 }

@@ -32,4 +32,8 @@ interface MemberRepository
     public function delete(int $id);
     
     public function getMembersAddresses();
+
+    public function getBadges($memberId);
+
+    public function addBadge($memberId, $badgeId);
 }

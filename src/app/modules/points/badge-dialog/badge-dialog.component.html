@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Přidat nový odznak</h2>
+
+<div mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Název odznaku</mat-label>
+        <input matInput placeholder="Zadejte název kategorie" [(ngModel)]="badge.name">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+          <mat-label>Logo</mat-label>
+          <input matInput placeholder="Vyberte logo" [(ngModel)]="badge.logo">
+        </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="cancel()">Zrušit</button>
+    <button mat-raised-button (click)="submit()" color="primary">
+        <mat-icon>save</mat-icon>
+        Uložit
+    </button>
+</div>

@@ -1,13 +1,7 @@
 <mat-sidenav-container class="sidenav-container" [hasBackdrop]="(isHandset$ | async) === true">
-    <mat-sidenav
-        #drawer
-        *ngIf="isLoggedIn()"
-        class="sidenav"
-        fixedInViewport
-        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-        [mode]="(isHandset$ | async) ? 'over' : 'side'"
-        [opened]="(isHandset$ | async) === false"
-    >
+    <mat-sidenav #drawer *ngIf="isLoggedIn()" class="sidenav" fixedInViewport
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+        [opened]="(isHandset$ | async) === false">
         <mat-toolbar class="sidepanel-part" color="primary">
             <mat-icon color="accent">person_outline</mat-icon>
             <span>Attendance</span>
@@ -40,7 +34,7 @@
             </a>
             <a mat-list-item [routerLink]="['/badges']" routerLinkActive="list-item-active">
                 <mat-icon>local_police</mat-icon>
-                Odznaky
+                Seznam odznaků
             </a>
             <a mat-list-item [routerLink]="['/reasons']" routerLinkActive="list-item-active">
                 <mat-icon>list</mat-icon>
@@ -55,13 +49,8 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <mat-toolbar class="toppanel-part" color="primary" *ngIf="isLoggedIn()">
-            <button
-                type="button"
-                aria-label="Toggle sidenav"
-                mat-icon-button
-                (click)="drawer.toggle()"
-                *ngIf="isHandset$ | async"
-            >
+            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+                *ngIf="isHandset$ | async">
                 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
             <div fxFlex fxLayout fxLayoutAlign="flex-end">

@@ -13,29 +13,73 @@ import { PointsDashboardComponent } from './points/points-dashboard/points-dashb
 import { BadgesComponent } from './points/badges/badges.component';
 import { ReasonComponent } from './points/reason/reason.component';
 import { BodovaniComponent } from './points/bodovani/bodovani.component';
+import { MemberDetailComponent } from './points/member-detail/member-detail.component';
 
 const routes: Routes = [
     {
         path: '',
         // component: DashboardComponent,
         children: [
-            { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
-            { path: 'members', component: MembersComponent, canActivate: [AuthGuard] },
-            { path: 'add-member', component: AddMemberComponent, canActivate: [AuthGuard] },
-            { path: 'edit-member/:memberId', component: EditMemberComponent, canActivate: [AuthGuard] },
-            { path: 'attendance', component: AttendanceComponent, canActivate: [AuthGuard] },
-            { path: 'add-attendance', component: AddAttendanceComponent, canActivate: [AuthGuard] },
+            {
+                path: '',
+                component: DashboardComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'members',
+                component: MembersComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'add-member',
+                component: AddMemberComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'edit-member/:memberId',
+                component: EditMemberComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'attendance',
+                component: AttendanceComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'add-attendance',
+                component: AddAttendanceComponent,
+                canActivate: [AuthGuard],
+            },
             { path: 'login', component: LoginFormComponent },
-            { path: 'points', component: PointsDashboardComponent, canActivate: [AuthGuard]},
+            {
+                path: 'points',
+                component: PointsDashboardComponent,
+                canActivate: [AuthGuard],
+            },
             { path: 'bodovani', component: BodovaniComponent },
-            { path: 'badges', component: BadgesComponent, canActivate: [AuthGuard]},
-            { path: 'reasons', component: ReasonComponent, canActivate: [AuthGuard]},
-        ]
-    }
+            {
+                path: 'bodovani/:id',
+                component: MemberDetailComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'badges',
+                component: BadgesComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'reasons',
+                component: ReasonComponent,
+                canActivate: [AuthGuard],
+            },
+        ],
+    },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
-    exports: [RouterModule]
+    imports: [
+        RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
+    ],
+    exports: [RouterModule],
 })
 export class AppRoutingModule {}

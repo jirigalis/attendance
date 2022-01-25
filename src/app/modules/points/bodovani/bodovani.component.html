@@ -1,0 +1,48 @@
+<h1>Bodování oddílu Zálesák Ždánice</h1>
+<div class="table-container mat-elevation-z4">
+    <mat-tab-group>
+        <mat-tab label="Bodování">
+            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
+                    <td mat-cell *matCellDef="let element">
+                        <a [routerLink]="['/']" routerLinkActive="router-link-active"
+                            class="link-name">{{ element.name }}
+                            {{ element.surname }}</a>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="sum_points">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Body</th>
+                    <td mat-cell *matCellDef="let element">{{ element.sum_points }} b.</td>
+                </ng-container>
+
+                <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns"
+                    [ngClass]="{'gray': !even}"></tr>
+            </table>
+        </mat-tab>
+        <mat-tab label="Odznaky">
+            <table mat-table [dataSource]="badgeDataSource" matSort class="mat-elevation-z1">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="link-name">{{ element.name }} {{ element.surname }}</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="badges">
+                    <th mat-header-cell *matHeaderCellDef> Získané odznaky </th>
+                    <td mat-cell *matCellDef="let row">
+                        <img *ngFor="let b of row.badge" matTooltip="{{b.name}}" matTooltipPosition="above"
+                            class="badge-table" src="/assets/badges/{{b.logo}}" />
+                    </td>
+                </ng-container>
+
+                <tr mat-row *matRowDef="let row; let even = even; columns: displayedBadgesColumns"
+                    [ngClass]="{'gray': !even}"></tr>
+
+
+            </table>
+        </mat-tab>
+    </mat-tab-group>
+</div>

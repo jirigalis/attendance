@@ -1,0 +1,26 @@
+:host {
+    display: block;
+    margin: 30px;
+}
+
+table {
+    td {
+        font-size: xx-large;
+    }
+    tr {
+        height: 70px;
+    }
+}
+
+.mat-tab-label-content {
+    font-size: 16px;
+}
+
+.link-name {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

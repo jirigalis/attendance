@@ -12,15 +12,19 @@ use App\Application\Actions\Member\CreateMemberAction;
 use App\Application\Actions\Member\DeleteMemberAction;
 use App\Application\Actions\Member\GetMemberAttendanceAction;
 use App\Application\Actions\Member\AddMemberAttendanceAction;
+use App\Application\Actions\Member\GetBadgesAction;
+use App\Application\Actions\Member\AddBadgeAction;
 
 use App\Application\Actions\Attendance\ListAttendanceForDayAction;
 use App\Application\Actions\Attendance\AddAttendanceForDayAction;
 use App\Application\Actions\Attendance\DeleteAttendanceAction;
+use App\Application\Actions\Attendance\GetMembersByAttendanceOrderAction;
 
 use App\Application\Actions\Badge\ListBadgesAction;
 use App\Application\Actions\Badge\CreateBadgeAction;
 use App\Application\Actions\Badge\DeleteBadgeAction;
 use App\Application\Actions\Badge\UpdateBadgeAction;
+use App\Application\Actions\Badge\GetForAllMembersAction;
 
 use App\Application\Actions\Points\ListPointsAction;
 use App\Application\Actions\Points\CreatePointsAction;
@@ -67,9 +71,12 @@ return function (App $app) {
         $group->put('/{id}', UpdateMemberAction::class);
         $group->post('/create', CreateMemberAction::class);
         $group->delete('/{id}', DeleteMemberAction::class);
+        $group->get('/{id}/badges', GetBadgesAction::class);
+        $group->post('/{id}/badges', AddBadgeAction::class);
     });
 
     $app->group($prefix.'/attendance', function (Group $group) use ($container) {
+        $group->get('/best-members', GetMembersByAttendanceOrderAction::class);
         $group->get('[/{date}]', ListAttendanceForDayAction::class);
         $group->post('/{date}', AddAttendanceForDayAction::class);
         $group->delete('', DeleteAttendanceAction::class);
@@ -84,6 +91,7 @@ return function (App $app) {
         $group->post('/create', CreateBadgeAction::class);
         $group->delete('/{id}', DeleteBadgeAction::class);
         $group->put('/{id}', UpdateBadgeAction::class);
+        $group->get('/members', GetForAllMembersAction::class);
     });
 
     $app->group($prefix . '/points', function (Group $group) use ($container) {

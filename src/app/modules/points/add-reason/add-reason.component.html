@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Přidat novou kategorii bodování</h2>
+
+<div mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Název kategorie</mat-label>
+        <input matInput placeholder="Zadejte název kategorie" [(ngModel)]="reason.name">
+      </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="cancel()">Zrušit</button>
+    <button mat-raised-button (click)="submit()" color="primary">
+        <mat-icon>save</mat-icon>
+        Uložit
+    </button>
+</div>

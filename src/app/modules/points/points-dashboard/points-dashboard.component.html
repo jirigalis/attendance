@@ -1,0 +1,72 @@
+<h1 class="main-heading">Bodování a odznaky členů</h1>
+
+<mat-tab-group>
+    <mat-tab label="Bodování">
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="page-actions">
+            <button mat-raised-button color="primary" (click)="addPoints()">
+                <mat-icon fxShow.xs="true" fxShow.gt-xs="false">add</mat-icon>
+                <span fxShow.xs="false">Přidat body</span>
+            </button>
+        </div>
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
+                <td mat-cell *matCellDef="let element">
+                    <a [routerLink]="['/edit-member/' + element.member_id]" routerLinkActive="router-link-active"
+                        class="link-name">{{ element.name }}
+                        {{ element.surname }}</a>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="sum_points">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Body</th>
+                <td mat-cell *matCellDef="let element">{{ element.sum_points }} b.</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Akce</th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button matTooltip="Přidat body tomuto členovi" matTooltipPosition="right"
+                        aria-label="Přidat body tomuto členovi" (click)="addPoints(element)">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </mat-tab>
+    <mat-tab label="Odznaky">
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="page-actions">
+            <button mat-raised-button color="primary" (click)="addBadge()">
+                <mat-icon fxShow.xs="true" fxShow.gt-xs="false">add</mat-icon>
+                <span fxShow.xs="false">Přidat odznak</span>
+            </button>
+        </div>
+
+        <table mat-table [dataSource]="badgeDataSource" matSort class="mat-elevation-z1">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
+                <td mat-cell *matCellDef="let element">
+                    <a [routerLink]="['/edit-member/' + element.id]" routerLinkActive="router-link-active"
+                        class="link-name">{{ element.name }}
+                        {{ element.surname }}</a>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="badges">
+                <th mat-header-cell *matHeaderCellDef> Získané odznaky </th>
+                <td mat-cell *matCellDef="let row">
+                    <img *ngFor="let b of row.badge" matTooltip="{{b.name}}" matTooltipPosition="above"
+                        class="badge-table" src="/assets/badges/{{b.logo}}" />
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedBadgesColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: displayedBadgesColumns"
+                [ngClass]="{'gray': !even}"></tr>
+
+        </table>
+    </mat-tab>
+</mat-tab-group>

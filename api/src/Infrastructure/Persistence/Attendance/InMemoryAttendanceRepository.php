@@ -83,4 +83,13 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 
 		return Attendance::whereDate('date', date($date))->where("member_id", $memberId)->delete();
 	}
+
+    public function getMembersByAttendanceOrder(): object {
+        $members = Member::select("id", "name", "surname")
+            ->withCount('attendance')
+            ->orderby("attendance_count", "desc")
+            ->take(10);
+        
+        return $members->get();
+    }
 }

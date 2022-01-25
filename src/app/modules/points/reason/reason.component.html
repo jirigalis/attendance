@@ -1,0 +1,48 @@
+<h1 class="main-heading">Kategorie bodování</h1>
+
+<div fxLayout="row" fxLayoutAlign="space-between center" class="page-actions">
+    <button mat-raised-button color="primary" (click)="addReason()">
+        <mat-icon fxShow.xs="true" fxShow.gt-xs="false">add</mat-icon>
+        <span fxShow.xs="false">Vytvořit novou kategorii</span>
+    </button>
+</div>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Název kategorie</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Akce</th>
+        <td mat-cell *matCellDef="let element">
+            <button
+                mat-icon-button
+                matTooltip="Upravit"
+                matTooltipPosition="right"
+                aria-label="Upravit"
+                (click)="editReason(element)"
+            >
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button
+                mat-icon-button
+                color="warn"
+                matTooltip="Odstranit"
+                matTooltipPosition="right"
+                aria-label="Odstranit"
+                (click)="deleteReason(element.id)"
+            >
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

@@ -14,4 +14,6 @@ interface AttendanceRepository {
 	public function getMembersByDate(string $date): object;
 
 	public function addAttendanceForMembers(string $date, array $members);
+
+    public function getMembersByAttendanceOrder(): object;
 }

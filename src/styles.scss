@@ -28,7 +28,7 @@ table.mat-table {
     width: 100%;
 
     tr.gray {
-        background-color: #efefef;
+        background-color: #f3f3f3;
     }
 }
 
@@ -61,6 +61,10 @@ th.mat-sort-header-sorted {
 
 mat-form-field.full-width {
     width: 100%;
+}
+
+img.badge-table {
+    height: 40px;
 }
 
 @media only screen and (max-width: 599px) {

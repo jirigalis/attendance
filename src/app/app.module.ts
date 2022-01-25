@@ -27,9 +27,11 @@ import { AddReasonComponent } from './modules/points/add-reason/add-reason.compo
 import { BadgeDialogComponent } from './modules/points/badge-dialog/badge-dialog.component';
 import { AddPointsDialogComponent } from './modules/points/add-points-dialog/add-points-dialog.component';
 import { BodovaniComponent } from './modules/points/bodovani/bodovani.component';
+import { MemberDetailComponent } from './modules/points/member-detail/member-detail.component';
+import { AddBadgeDialogComponent } from './modules/points/add-badge-dialog/add-badge-dialog.component';
 
 @NgModule({
-    declarations: [AppComponent, PointsDashboardComponent, ReasonComponent, BadgesComponent, AddReasonComponent, BadgeDialogComponent, AddPointsDialogComponent, BodovaniComponent],
+    declarations: [AppComponent, PointsDashboardComponent, ReasonComponent, BadgesComponent, AddReasonComponent, BadgeDialogComponent, AddPointsDialogComponent, BodovaniComponent, MemberDetailComponent, AddBadgeDialogComponent],
     imports: [
         AppRoutingModule,
         BrowserModule,

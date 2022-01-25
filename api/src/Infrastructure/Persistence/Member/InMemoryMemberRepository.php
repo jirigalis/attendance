@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Member;
 
 use App\Domain\Member\Member;
+use App\Domain\Badge\Badge;
 use App\Domain\Attendance\Attendance;
 use App\Domain\Member\MemberNotFoundException;
 use App\Domain\Member\CannotCreateMemberException;
+use App\Domain\DomainException\InputNotValidException;
 use App\Domain\Member\MemberRepository;
 use Illuminate\Database\Capsule\Manager as DB;
 use Respect\Validation\Validator as V;
@@ -201,5 +203,31 @@ class InMemoryMemberRepository implements MemberRepository
 
     public function getMembersAddresses() {
         return array_column($this->members->toArray(), 'address', 'id');
+    }
+
+    public function getBadges($memberId) {
+        if (!V::intVal()->validate($memberId)) {
+            throw new MemberNotFoundException();
+        }
+
+        $member = Member::find($memberId);
+        return $member->badge()->get();
+    }
+
+    public function addBadge($memberId, $badgeId) {
+        if (!V::intVal()->validate($memberId)) {
+            throw new MemberNotFoundException();
+        }
+
+        if (!V::intVal()->validate($badgeId)) {
+            throw new InputNotValidException();
+        }
+
+        $badge = Badge::find($badgeId);
+        $member = Member::find($memberId);
+        
+        $member->badge()->attach($badge);
+
+        return true;
     }
 }

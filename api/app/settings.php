@@ -20,8 +20,8 @@ return function (ContainerBuilder $containerBuilder) {
                 'level' => Logger::DEBUG,
             ],
             'jwt-auth' => [
-                'ignore' => ["/attendance-api/user/authenticate", '/attendance-api/aaa'],
-                'passthrough' => ['/user/authenticate', '/attendance-api/aaa'],
+                'ignore' => [getenv("API_PREFIX") . "/user/authenticate", getenv("API_PREFIX") . '/points/sum/role/D'],
+                'passthrough' => ['/user/authenticate', '/points/sum/role/D'],
                 'secret' => getenv('JWT_SECRET'),
                 "logger" => $logger,
                 "secure" => false

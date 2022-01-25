@@ -4,7 +4,7 @@
         <mat-card class="mat-elevation-z4">
             <mat-card-title>Počet členů</mat-card-title>
             <mat-card-content>
-                <div echarts [options]="membersCountOptions"  [loading]="membersLoading"  class="demo-chart"></div>
+                <div echarts [options]="membersCountOptions" [loading]="membersLoading" class="demo-chart"></div>
             </mat-card-content>
             <mat-card-footer>
                 <mat-progress-bar mode="indeterminate" *ngIf="membersLoading"></mat-progress-bar>
@@ -24,13 +24,26 @@
     </div>
     <div fxFlex.gt-lg="33" fxFlex.gt-md="48" fxFlex="100">
         <mat-card class="mat-elevation-z4">
+            <mat-card-title>Nejpoctivější docházka:</mat-card-title>
+            <mat-card-content *ngIf="membersByAttendance">
+                <div *ngFor="let m of membersByAttendance">
+                    <p>{{m.name}} {{m.surname}} - {{ m.attendance_count }}</p>
+                </div>
+            </mat-card-content>
+            <mat-card-footer>
+
+            </mat-card-footer>
+        </mat-card>
+    </div>
+    <div fxFlex.gt-lg="33" fxFlex.gt-md="48" fxFlex="100">
+        <mat-card class="mat-elevation-z4">
             <mat-card-title>Nejbližší narozeniny:</mat-card-title>
             <mat-card-content *ngIf="soonestBirthday">
                 <h2 class="text-center">Jméno: {{ soonestBirthday.getFullName() }}</h2>
                 <h2 class="text-center">Narozeniny: {{ soonestBirthday.getBirthday() }}</h2>
             </mat-card-content>
             <mat-card-footer>
-                
+
             </mat-card-footer>
         </mat-card>
     </div>
