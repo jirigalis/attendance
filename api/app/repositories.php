@@ -7,12 +7,14 @@ use App\Domain\User\UserRepository;
 use App\Domain\Badge\BadgeRepository;
 use App\Domain\Points\PointsRepository;
 use App\Domain\Reason\ReasonRepository;
+use App\Domain\MeetingDates\MeetingDatesRepository;
 use App\Infrastructure\Persistence\Member\InMemoryMemberRepository;
 use App\Infrastructure\Persistence\Attendance\InMemoryAttendanceRepository;
 use App\Infrastructure\Persistence\User\InMemoryUserRepository;
 use App\Infrastructure\Persistence\Badge\InMemoryBadgeRepository;
 use App\Infrastructure\Persistence\Points\InMemoryPointsRepository;
 use App\Infrastructure\Persistence\Reason\InMemoryReasonRepository;
+use App\Infrastructure\Persistence\MeetingDates\InMemoryMeetingDatesRepository;
 use DI\ContainerBuilder;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -23,5 +25,6 @@ return function (ContainerBuilder $containerBuilder) {
         BadgeRepository::class => \DI\autowire(InMemoryBadgeRepository::class),
         PointsRepository::class => \DI\autowire(InMemoryPointsRepository::class),
         ReasonRepository::class => \DI\autowire(InMemoryReasonRepository::class),
+        MeetingDatesRepository::class => \DI\autowire(InMemoryMeetingDatesRepository::class),
     ]);
 };

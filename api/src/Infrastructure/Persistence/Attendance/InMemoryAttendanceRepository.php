@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Attendance;
 
 use App\Domain\Attendance\Attendance;
+use App\Domain\MeetingDates\MeetingDates;
 use App\Domain\Member\Member;
 use App\Domain\Attendance\AttendanceRepository;
 use App\Domain\Attendance\CannotDeleteAttendanceException;
@@ -60,10 +61,17 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 		}
 
 		$str = "";
+        $date = date("Y-m-d", strtotime($dateStr));
+
+        $meetingDateCount = MeetingDates::where("date", $date)->get()->count();
+        if ($meetingDateCount == 0) {
+            $md = new MeetingDates();
+            $md->date = $date;
+            $md->save();
+        }
 
 		foreach ($members as $m) {
 			$member = Member::find($m);
-			$date = date("Y-m-d", strtotime($dateStr));
 			$count = $member->attendance()->where("member_id", $member->id)->where("date", $date)->get()->count();
 			if ($count == 0) {
 				$member->attendance()->create(["member_id" => $m, "date" => $date]);

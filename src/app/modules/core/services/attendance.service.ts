@@ -21,4 +21,16 @@ export class AttendanceService {
     getMembersByAttendanceCount() {
         return this.http.get<any>(this.apiUrl + '/attendance/best-members');
     }
+
+    getAllDates() {
+        return this.http.get<any>(this.apiUrl + `/meetingdates`);
+    }
+
+    addMeetingDate(date) {
+        return this.http.post(this.apiUrl + `/meetingdates/create`, date);
+    }
+
+    deleteMeetingDate(id: number) {
+        return this.http.delete(this.apiUrl + '/meetingdates/' + id);
+    }
 }

@@ -39,6 +39,10 @@ use App\Application\Actions\Reason\CreateReasonAction;
 use App\Application\Actions\Reason\DeleteReasonAction;
 use App\Application\Actions\Reason\UpdateReasonAction;
 
+use App\Application\Actions\MeetingDates\ListMeetingDatesAction;
+use App\Application\Actions\MeetingDates\CreateMeetingDatesAction;
+use App\Application\Actions\MeetingDates\DeleteMeetingDatesAction;
+
 use App\Application\Actions\User\AuthenticateUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -109,6 +113,12 @@ return function (App $app) {
         $group->post('/create', CreateReasonAction::class);
         $group->put('/{id}', UpdateReasonAction::class);
         $group->delete('/{id}', DeleteReasonAction::class);
+    });
+
+    $app->group($prefix . '/meetingdates', function (Group $group) use ($container) {
+        $group->get('', ListMeetingDatesAction::class);
+        $group->post('/create', CreateMeetingDatesAction::class);
+        $group->delete('/{id}', DeleteMeetingDatesAction::class);
     });
 
     $app->get($prefix.'/{test}', function (Request $request, Response $response, $args) {

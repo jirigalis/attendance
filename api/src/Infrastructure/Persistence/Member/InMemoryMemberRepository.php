@@ -172,7 +172,8 @@ class InMemoryMemberRepository implements MemberRepository
         $res = [];
 
         foreach ($attendance as $a ) {
-            $res[] = $a->date;
+            $date = new \DateTime($a->date);
+            $res[] = $date->format("d. m. Y");
         }
 
         return $res;

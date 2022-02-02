@@ -29,9 +29,27 @@ import { AddPointsDialogComponent } from './modules/points/add-points-dialog/add
 import { BodovaniComponent } from './modules/points/bodovani/bodovani.component';
 import { MemberDetailComponent } from './modules/points/member-detail/member-detail.component';
 import { AddBadgeDialogComponent } from './modules/points/add-badge-dialog/add-badge-dialog.component';
+import {
+    DateAdapter,
+    MAT_DATE_FORMATS,
+    MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import { CUSTOM_DATE_FORMATS } from './modules/core/custom-date-formats';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 @NgModule({
-    declarations: [AppComponent, PointsDashboardComponent, ReasonComponent, BadgesComponent, AddReasonComponent, BadgeDialogComponent, AddPointsDialogComponent, BodovaniComponent, MemberDetailComponent, AddBadgeDialogComponent],
+    declarations: [
+        AppComponent,
+        PointsDashboardComponent,
+        ReasonComponent,
+        BadgesComponent,
+        AddReasonComponent,
+        BadgeDialogComponent,
+        AddPointsDialogComponent,
+        BodovaniComponent,
+        MemberDetailComponent,
+        AddBadgeDialogComponent,
+    ],
     imports: [
         AppRoutingModule,
         BrowserModule,
@@ -49,14 +67,26 @@ import { AddBadgeDialogComponent } from './modules/points/add-badge-dialog/add-b
         AttendanceModule,
         MomentModule.forRoot({
             relativeTimeThresholdOptions: {
-              'm': 59
-            }
-          }),
+                m: 59,
+            },
+        }),
         SharedModule,
         NgxEchartsModule.forRoot({ echarts }),
     ],
-    providers: [httpInterceptorProviders],
+    providers: [
+        httpInterceptorProviders,
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE],
+        },
+        {
+            provide: MAT_DATE_FORMATS,
+            useValue: CUSTOM_DATE_FORMATS,
+        },
+        { provide: MAT_DATE_LOCALE, useValue: 'cs-CZ' },
+    ],
     bootstrap: [AppComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

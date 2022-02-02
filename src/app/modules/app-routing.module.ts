@@ -14,6 +14,7 @@ import { BadgesComponent } from './points/badges/badges.component';
 import { ReasonComponent } from './points/reason/reason.component';
 import { BodovaniComponent } from './points/bodovani/bodovani.component';
 import { MemberDetailComponent } from './points/member-detail/member-detail.component';
+import { MeetingDatesComponent } from './attendance/meeting-dates/meeting-dates.component';
 
 const routes: Routes = [
     {
@@ -48,6 +49,11 @@ const routes: Routes = [
             {
                 path: 'add-attendance',
                 component: AddAttendanceComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'meeting-dates',
+                component: MeetingDatesComponent,
                 canActivate: [AuthGuard],
             },
             { path: 'login', component: LoginFormComponent },
