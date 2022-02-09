@@ -3,20 +3,19 @@ import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MemberService } from '../../core/services';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from "@angular/material/dialog";
-import { MatSort } from "@angular/material/sort";
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 
 @Component({
     selector: 'members',
     templateUrl: './members.component.html',
-    styleUrls: ['./members.component.scss']
+    styleUrls: ['./members.component.scss'],
 })
 export class MembersComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     displayedColumns: string[] = [
         'name',
-        'surname',
         'role',
         'age',
         'address',
@@ -24,7 +23,7 @@ export class MembersComponent implements OnInit {
         'application',
         'paid',
         'gdpr',
-        'actions'
+        'actions',
     ];
     loading = false;
     dataSource;
@@ -40,7 +39,7 @@ export class MembersComponent implements OnInit {
     ngOnInit() {
         this.loading = true;
         this.memberService.getAll().subscribe((members: any) => {
-            members.map(m => m.age = this.getAge(m.rc));
+            members.map((m) => (m.age = this.getAge(m.rc)));
             this.dataSource = new MatTableDataSource(members);
             this.loading = false;
             this.dataSource.sort = this.sort;
@@ -58,16 +57,16 @@ export class MembersComponent implements OnInit {
     deleteMember(member) {
         this.loading = true;
         this.memberService.delete(member.id).subscribe(
-            res => {
+            (res) => {
                 this.snack.open('Member successfully deleted.', 'X', {
-                    duration: 3000
+                    duration: 3000,
                 });
                 this.refresh();
                 this.loading = false;
             },
-            err => {
+            (err) => {
                 this.snack.open('Error during deleting this member', 'X', {
-                    duration: 3000
+                    duration: 3000,
                 });
                 this.loading = false;
             }
@@ -77,7 +76,7 @@ export class MembersComponent implements OnInit {
     openDialog(member) {
         const dialogRef = this.dialog.open(BasicDialogComponent);
 
-        dialogRef.afterClosed().subscribe(res => {
+        dialogRef.afterClosed().subscribe((res) => {
             if (res) {
                 this.deleteMember(member);
             }
@@ -85,11 +84,11 @@ export class MembersComponent implements OnInit {
     }
 
     editMember(memberId) {
-        this.router.navigate(['/edit-member', memberId])
+        this.router.navigate(['/edit-member', memberId]);
     }
 
     refresh() {
-        this.memberService.getAll().subscribe(res => {
+        this.memberService.getAll().subscribe((res) => {
             this.dataSource.data = res;
             this.dataSource.sort = this.sort;
         });

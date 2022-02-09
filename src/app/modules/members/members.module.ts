@@ -7,6 +7,7 @@ import { MembersComponent } from './members/members.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { EditMemberComponent } from './edit-member/edit-member.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [MembersComponent, AddMemberComponent, EditMemberComponent],
@@ -15,8 +16,9 @@ import { EditMemberComponent } from './edit-member/edit-member.component';
         FlexLayoutModule,
         MaterialModule,
         ReactiveFormsModule,
-        SharedModule
+        RouterModule,
+        SharedModule,
     ],
-    exports: [MembersComponent, AddMemberComponent]
+    exports: [MembersComponent, AddMemberComponent],
 })
 export class MembersModule {}

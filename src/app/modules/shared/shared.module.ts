@@ -7,6 +7,6 @@ import { MaterialModule } from '../material/material.module';
     declarations: [BasicDialogComponent],
     imports: [CommonModule, MaterialModule],
     exports: [BasicDialogComponent],
-    entryComponents: [BasicDialogComponent]
+    entryComponents: [BasicDialogComponent],
 })
 export class SharedModule {}

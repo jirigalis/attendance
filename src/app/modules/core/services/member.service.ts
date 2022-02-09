@@ -67,6 +67,10 @@ export class MemberService {
         });
     }
 
+    getBadges(memberId: number): Observable<any> {
+        return this.http.get(this.apiUrl + `/${memberId}/badges`);
+    }
+
     static getAgeFromRC(rc) {
         const birthdayStr = this.getBirthdayFromRC(rc);
         const birthday = moment(birthdayStr, 'DD. MM. YYYY');

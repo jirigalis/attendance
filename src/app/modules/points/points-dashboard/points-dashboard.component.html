@@ -1,6 +1,6 @@
 <h1 class="main-heading">Bodování a odznaky členů</h1>
 
-<mat-tab-group>
+<mat-tab-group class="mat-elevation-z2">
     <mat-tab label="Bodování">
         <div fxLayout="row" fxLayoutAlign="space-between center" class="page-actions">
             <button mat-raised-button color="primary" (click)="addPoints()">
@@ -46,7 +46,7 @@
             </button>
         </div>
 
-        <table mat-table [dataSource]="badgeDataSource" matSort class="mat-elevation-z1">
+        <mat-table [dataSource]="badgeDataSource" matSort class="mat-elevation-z1">
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
                 <td mat-cell *matCellDef="let element">
@@ -67,6 +67,6 @@
             <tr mat-row *matRowDef="let row; let even = even; columns: displayedBadgesColumns"
                 [ngClass]="{'gray': !even}"></tr>
 
-        </table>
+        </mat-table>
     </mat-tab>
 </mat-tab-group>

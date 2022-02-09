@@ -20,15 +20,6 @@ import { SharedModule } from './modules/shared/shared.module';
 import * as echarts from 'echarts';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { MomentModule } from 'ngx-moment';
-import { PointsDashboardComponent } from './modules/points/points-dashboard/points-dashboard.component';
-import { ReasonComponent } from './modules/points/reason/reason.component';
-import { BadgesComponent } from './modules/points/badges/badges.component';
-import { AddReasonComponent } from './modules/points/add-reason/add-reason.component';
-import { BadgeDialogComponent } from './modules/points/badge-dialog/badge-dialog.component';
-import { AddPointsDialogComponent } from './modules/points/add-points-dialog/add-points-dialog.component';
-import { BodovaniComponent } from './modules/points/bodovani/bodovani.component';
-import { MemberDetailComponent } from './modules/points/member-detail/member-detail.component';
-import { AddBadgeDialogComponent } from './modules/points/add-badge-dialog/add-badge-dialog.component';
 import {
     DateAdapter,
     MAT_DATE_FORMATS,
@@ -36,20 +27,10 @@ import {
 } from '@angular/material/core';
 import { CUSTOM_DATE_FORMATS } from './modules/core/custom-date-formats';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { PointsModule } from './modules/points/points.module';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        PointsDashboardComponent,
-        ReasonComponent,
-        BadgesComponent,
-        AddReasonComponent,
-        BadgeDialogComponent,
-        AddPointsDialogComponent,
-        BodovaniComponent,
-        MemberDetailComponent,
-        AddBadgeDialogComponent,
-    ],
+    declarations: [AppComponent],
     imports: [
         AppRoutingModule,
         BrowserModule,
@@ -65,6 +46,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
         MaterialModule,
         MembersModule,
         AttendanceModule,
+        PointsModule,
         MomentModule.forRoot({
             relativeTimeThresholdOptions: {
                 m: 59,

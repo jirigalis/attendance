@@ -30,6 +30,15 @@ table.mat-table {
     tr.gray {
         background-color: #f3f3f3;
     }
+
+    .link-name {
+        text-decoration: none;
+        color: inherit;
+    
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .data-table-img {

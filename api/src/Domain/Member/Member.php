@@ -23,7 +23,7 @@ class Member extends Eloquent
     }
 
     public function badge() {
-        return $this->belongsToMany(Badge::class, "member_badge");
+        return $this->belongsToMany(Badge::class, "member_badge")->withPivot('created_at');;
     }
 
 }

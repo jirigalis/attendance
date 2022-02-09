@@ -1,1 +1,51 @@
-<h1 class="main-heading">Bodování - {{ member.getFullName() }}</h1>
+<h1 class="main-heading" *ngIf="member">Bodování - {{ member.getFullName() }}</h1>
+<mat-tab-group class="mat-elevation-z2">
+    <mat-tab label="Body">
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="reason">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Činnost</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="points">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="points">Body</th>
+                <td mat-cell *matCellDef="let element">{{ element.points }} b.</td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="created_at">Datum</th>
+                <td mat-cell *matCellDef="let element">{{ element.created_at }}
+                    {{ format(element.created_at)}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{'gray': !even}">
+            </tr>
+        </table>
+    </mat-tab>
+    <mat-tab label="Odznaky">
+        <table mat-table [dataSource]="badgesDataSource">
+            <ng-container matColumnDef="badge">
+                <th mat-header-cell *matHeaderCellDef>Odznak</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="logo">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element"><img src="/assets/badges/{{element.logo}}" class="badge-table">
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Datum</th>
+                <td mat-cell *matCellDef="let element">{{ element.pivot.created_at }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="badgesColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: badgesColumns" [ngClass]="{'gray': !even}">
+            </tr>
+        </table>
+    </mat-tab>
+</mat-tab-group>

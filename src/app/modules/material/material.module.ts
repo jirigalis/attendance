@@ -47,8 +47,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
+    imports: [MatFormFieldModule, MatTabsModule, MatTableModule, MatIconModule],
     exports: [
         A11yModule,
         CdkAccordionModule,
@@ -70,6 +72,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
         MatDialogModule,
         MatDividerModule,
         MatExpansionModule,
+        MatFormFieldModule,
         MatGridListModule,
         MatIconModule,
         MatInputModule,

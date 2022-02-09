@@ -66,7 +66,7 @@ const routes: Routes = [
             {
                 path: 'bodovani/:id',
                 component: MemberDetailComponent,
-                canActivate: [AuthGuard],
+                // canActivate: [AuthGuard],
             },
             {
                 path: 'badges',
