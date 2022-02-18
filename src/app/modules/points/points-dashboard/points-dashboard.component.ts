@@ -8,6 +8,7 @@ import { BadgeService } from '../../core/services/badge.service';
 import { PointsService } from '../../core/services/points.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { AddBadgeDialogComponent } from '../add-badge-dialog/add-badge-dialog.component';
+import { AddBulkPointsDialogComponent } from '../add-bulk-points-dialog/add-bulk-points-dialog.component';
 import { AddPointsDialogComponent } from '../add-points-dialog/add-points-dialog.component';
 
 @Component({
@@ -52,6 +53,23 @@ export class PointsDashboardComponent implements OnInit {
             if (points) {
                 this.loading = true;
                 this.pointsService.add(points).subscribe((res) => {
+                    this.snack.open('Body byly úspěšně přidány', 'X', {
+                        duration: 3000,
+                    });
+                    this.refresh();
+                    this.loading = false;
+                });
+            }
+        });
+    }
+
+    addBulkPoints() {
+        const dialogRef = this.dialog.open(AddBulkPointsDialogComponent);
+
+        dialogRef.afterClosed().subscribe((points) => {
+            if (points) {
+                this.loading = true;
+                this.pointsService.addBulk(points).subscribe((res) => {
                     this.snack.open('Body byly úspěšně přidány', 'X', {
                         duration: 3000,
                     });

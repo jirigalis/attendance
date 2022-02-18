@@ -9,7 +9,7 @@ import { ReasonService } from '../../core/services/reason.service';
 @Component({
     selector: 'add-points-dialog',
     templateUrl: './add-points-dialog.component.html',
-    styleUrls: ['./add-points-dialog.component.scss']
+    styleUrls: ['./add-points-dialog.component.scss'],
 })
 export class AddPointsDialogComponent implements OnInit {
     points: Points = new Points();
@@ -21,19 +21,19 @@ export class AddPointsDialogComponent implements OnInit {
         private memberService: MemberService,
         private dialogRef: MatDialogRef<AddPointsDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data
-    ) { }
+    ) {}
 
     ngOnInit(): void {
-        this.memberService.listNames().subscribe(names => {
+        this.memberService.listNames().subscribe((names) => {
             this.allMembers = names;
             if (this.data != null) {
                 this.points.member_id = this.data.member_id;
             }
-        })
+        });
 
-        this.reasonService.getAll().subscribe(reasons => {
+        this.reasonService.getAll().subscribe((reasons) => {
             this.reasons = reasons;
-        })
+        });
     }
 
     submit() {
@@ -43,5 +43,4 @@ export class AddPointsDialogComponent implements OnInit {
     cancel() {
         this.dialogRef.close(null);
     }
-
 }

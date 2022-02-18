@@ -1,15 +1,19 @@
 <h1 class="main-heading">Bodování a odznaky členů</h1>
 
-<mat-tab-group class="mat-elevation-z2">
+<mat-tab-group class="mat-elevation-z4">
     <mat-tab label="Bodování">
-        <div fxLayout="row" fxLayoutAlign="space-between center" class="page-actions">
+        <div fxLayout="row" fxLayoutAlign="start center" class="page-actions" fxLayoutGap="16px">
             <button mat-raised-button color="primary" (click)="addPoints()">
                 <mat-icon fxShow.xs="true" fxShow.gt-xs="false">add</mat-icon>
                 <span fxShow.xs="false">Přidat body</span>
             </button>
+            <button mat-raised-button color="primary" (click)="addBulkPoints()">
+                <mat-icon fxShow.xs="true" fxShow.gt-xs="false">add</mat-icon>
+                <span fxShow.xs="false">Přidat body hromadně</span>
+            </button>
         </div>
         <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+        <table mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
                 <td mat-cell *matCellDef="let element">
@@ -35,7 +39,8 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{'gray': !even}">
+            </tr>
         </table>
     </mat-tab>
     <mat-tab label="Odznaky">
@@ -46,7 +51,7 @@
             </button>
         </div>
 
-        <mat-table [dataSource]="badgeDataSource" matSort class="mat-elevation-z1">
+        <table mat-table [dataSource]="badgeDataSource" matSort>
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
                 <td mat-cell *matCellDef="let element">
@@ -67,6 +72,6 @@
             <tr mat-row *matRowDef="let row; let even = even; columns: displayedBadgesColumns"
                 [ngClass]="{'gray': !even}"></tr>
 
-        </mat-table>
+        </table>
     </mat-tab>
 </mat-tab-group>

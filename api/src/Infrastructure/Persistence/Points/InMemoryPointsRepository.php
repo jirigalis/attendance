@@ -52,6 +52,13 @@ class InMemoryPointsRepository implements PointsRepository
         throw new CannotCreateDomainRecordException();
     }
 
+    public function createBulk(array $data): int {
+        foreach ($data as $points) {
+            $this->create($points);
+        }
+        return 1;
+    }
+
     public function update(int $id, object $data)
     {
         $points = $this->getById($id);

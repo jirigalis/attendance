@@ -14,6 +14,7 @@ import { BodovaniComponent } from './bodovani/bodovani.component';
 import { MemberDetailComponent } from './member-detail/member-detail.component';
 import { AddBadgeDialogComponent } from './add-badge-dialog/add-badge-dialog.component';
 import { RouterModule } from '@angular/router';
+import { AddBulkPointsDialogComponent } from './add-bulk-points-dialog/add-bulk-points-dialog.component';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { RouterModule } from '@angular/router';
         BodovaniComponent,
         PointsDashboardComponent,
         ReasonComponent,
+        AddBulkPointsDialogComponent,
     ],
     imports: [
         CommonModule,

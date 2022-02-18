@@ -23,5 +23,7 @@ interface PointsRepository {
 
     public function create(object $data): int;
 
+    public function createBulk(array $data): int;
+
     public function delete(int $id);
 }

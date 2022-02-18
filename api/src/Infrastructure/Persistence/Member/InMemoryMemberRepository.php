@@ -39,7 +39,7 @@ class InMemoryMemberRepository implements MemberRepository
     }
 
     public function listNames(): object {
-        return Member::select("id", "name", "surname")->get();
+        return Member::select("id", "name", "surname", "role")->get();
     }
 
     public function getByRole($role) {

@@ -7,6 +7,7 @@ import { Member } from '../../core/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { PointsService } from '../../core/services/points.service';
 import { MatSort } from '@angular/material/sort';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'edit-member',
@@ -27,7 +28,7 @@ export class EditMemberComponent implements OnInit {
         private memberService: MemberService,
         private pointsService: PointsService,
         private route: ActivatedRoute,
-        private router: Router
+        private location: Location
     ) {
         this.memberForm = this.fb.group({
             name: ['', Validators.required],
@@ -58,6 +59,10 @@ export class EditMemberComponent implements OnInit {
             this.dataSource.sort = this.sort;
             this.loading = false;
         });
+    }
+
+    goBack() {
+        this.location.back();
     }
 
     onSubmit() {

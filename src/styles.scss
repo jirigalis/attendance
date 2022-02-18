@@ -28,6 +28,10 @@ table.mat-table {
     width: 100%;
 
     tr.gray {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
         background-color: #f3f3f3;
     }
 

@@ -4,12 +4,12 @@ import { environment } from './../../../../environments/environment';
 import { Points } from './../models/points';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class PointsService {
     private apiUrl = environment.API_URL + '/points';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
     getAll() {
         return this.http.get<Points[]>(this.apiUrl);
@@ -33,6 +33,10 @@ export class PointsService {
 
     add(points: Points) {
         return this.http.post(this.apiUrl + '/create', points);
+    }
+
+    addBulk(points: Points[]) {
+        return this.http.post(this.apiUrl + '/bulk', points);
     }
 
     update(points: Points) {

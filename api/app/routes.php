@@ -28,6 +28,7 @@ use App\Application\Actions\Badge\GetForAllMembersAction;
 
 use App\Application\Actions\Points\ListPointsAction;
 use App\Application\Actions\Points\CreatePointsAction;
+use App\Application\Actions\Points\CreatePointsBulkAction;
 use App\Application\Actions\Points\UpdatePointsAction;
 use App\Application\Actions\Points\DeletePointsAction;
 use App\Application\Actions\Points\GetPointsByMemberIdAction;
@@ -101,6 +102,7 @@ return function (App $app) {
     $app->group($prefix . '/points', function (Group $group) use ($container) {
         $group->get('', ListPointsAction::class);
         $group->post('/create', CreatePointsAction::class);
+        $group->post('/bulk', CreatePointsBulkAction::class);
         $group->put('/{id}', UpdatePointsAction::class);
         $group->get('/sum[/role/{role}]', GetSumForAllMembersAction::class);
         $group->get('/{id}', GetPointsByMemberIdAction::class);
