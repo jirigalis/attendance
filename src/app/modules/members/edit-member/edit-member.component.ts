@@ -17,8 +17,10 @@ import { Location } from '@angular/common';
 export class EditMemberComponent implements OnInit {
     memberForm: FormGroup;
     member: Member;
-    displayedColumns: string[] = ['reason', 'points', 'date'];
+    displayedColumns: string[] = ['reason', 'points', 'created_at'];
     dataSource: MatTableDataSource<any>;
+    badgesColumns: string[] = ['badge_name', 'logo', 'created_at'];
+    badgeDataSource: MatTableDataSource<any>;
     @ViewChild(MatSort) sort: MatSort;
     loading = false;
 
@@ -52,6 +54,10 @@ export class EditMemberComponent implements OnInit {
         this.memberService.getById(memberId).subscribe((res) => {
             this.member = res;
             this.memberForm.patchValue(res);
+        });
+
+        this.memberService.getBadges(memberId).subscribe((badges) => {
+            this.badgeDataSource = new MatTableDataSource(badges);
         });
 
         this.pointsService.getByMember(memberId).subscribe((data) => {

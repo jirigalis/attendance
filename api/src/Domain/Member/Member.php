@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class Member extends Eloquent
 {
     protected $table = "member";
+    protected $dateFormat = "U";
 
     public $timestamps = false;
 

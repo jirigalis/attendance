@@ -8,10 +8,18 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Points extends Eloquent {
     protected $table = "points";
-
-    public $timestamps = false;
+    protected $dateFormat = "U";
     
     public static function boot() {
         parent::boot();
     }
+
+    public function setUpdatedAt($value) {
+        // Do nothing.
+    }
+
+    public function getUpdatedAtColumn() {
+        return null;
+    }
+
 }

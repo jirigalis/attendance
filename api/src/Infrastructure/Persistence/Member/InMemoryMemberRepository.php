@@ -227,7 +227,7 @@ class InMemoryMemberRepository implements MemberRepository
         $badge = Badge::find($badgeId);
         $member = Member::find($memberId);
         
-        $member->badge()->attach($badge);
+        $member->badge()->attach($badge, ["created_at" => (new \DateTime())->getTimestamp()]);
 
         return true;
     }
