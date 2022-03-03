@@ -9,15 +9,10 @@ import { BadgeDialogComponent } from '../badge-dialog/badge-dialog.component';
 @Component({
     selector: 'badge',
     templateUrl: './badges.component.html',
-    styleUrls: ['./badges.component.scss']
+    styleUrls: ['./badges.component.scss'],
 })
 export class BadgesComponent implements OnInit {
-    displayedColumns: string[] = [
-        'id',
-        'name',
-        'logo',
-        'actions',
-    ];
+    displayedColumns: string[] = ['id', 'name', 'logo', 'actions'];
     loading = false;
     dataSource;
 
@@ -26,64 +21,70 @@ export class BadgesComponent implements OnInit {
         private snack: MatSnackBar,
         private changeDetectorRefs: ChangeDetectorRef,
         private dialog: MatDialog
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.loading = true;
-        this.badgeService.getAll().subscribe(badges => {
+        this.badgeService.getAll().subscribe((badges) => {
             this.dataSource = new MatTableDataSource(badges);
             this.loading = false;
-        })
+        });
     }
 
     addBadge() {
-        const dialogRef = this.dialog.open(BadgeDialogComponent)
+        const dialogRef = this.dialog.open(BadgeDialogComponent);
 
-        dialogRef.afterClosed().subscribe(badge => {
-            if (badge !== null) {
+        dialogRef.afterClosed().subscribe((badge) => {
+            console.log(badge);
+            if (badge) {
                 this.loading = true;
-                this.badgeService.add(badge).subscribe(res => {
+                this.badgeService.add(badge).subscribe((res) => {
                     this.snack.open('Odznak vytvořen', 'X', { duration: 3000 });
                     this.refresh();
                     this.loading = false;
-                })
+                });
             }
-        })
-    } 
+        });
+    }
 
     editBadge(badge) {
-        const dialogRef = this.dialog.open(BadgeDialogComponent, { data: badge});
-        dialogRef.afterClosed().subscribe(badge => {
+        const dialogRef = this.dialog.open(BadgeDialogComponent, {
+            data: badge,
+        });
+        dialogRef.afterClosed().subscribe((badge) => {
             if (badge) {
                 this.loading = true;
-                this.badgeService.update(badge).subscribe(res => {
-                    this.snack.open('Odznak byl aktualizován', 'X', { duration: 3000 })
+                this.badgeService.update(badge).subscribe((res) => {
+                    this.snack.open('Odznak byl aktualizován', 'X', {
+                        duration: 3000,
+                    });
                     this.refresh();
                     this.loading = false;
-                })
+                });
             }
         });
     }
 
     deleteBadge(badgeId) {
         const dialogRef = this.dialog.open(BasicDialogComponent);
-        dialogRef.afterClosed().subscribe(res => {
+        dialogRef.afterClosed().subscribe((res) => {
             if (res) {
                 this.loading = true;
-                this.badgeService.delete(badgeId).subscribe(res2 => {
-                    this.snack.open('Odznak byl odstraněn', 'X', { duration: 3000 });
+                this.badgeService.delete(badgeId).subscribe((res2) => {
+                    this.snack.open('Odznak byl odstraněn', 'X', {
+                        duration: 3000,
+                    });
                     this.refresh();
                     this.loading = false;
-                })
+                });
             }
-        })
+        });
     }
 
     private refresh() {
-        this.badgeService.getAll().subscribe(res => {
+        this.badgeService.getAll().subscribe((res) => {
             this.dataSource.data = res;
         });
         this.changeDetectorRefs.detectChanges();
     }
-
 }

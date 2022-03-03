@@ -5,7 +5,7 @@ import { Badge } from '../../core/models/badge';
 @Component({
     selector: 'badge-dialog',
     templateUrl: './badge-dialog.component.html',
-    styleUrls: ['./badge-dialog.component.scss']
+    styleUrls: ['./badge-dialog.component.scss'],
 })
 export class BadgeDialogComponent implements OnInit {
     badge = new Badge();
@@ -13,7 +13,7 @@ export class BadgeDialogComponent implements OnInit {
     constructor(
         private dialogRef: MatDialogRef<BadgeDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data
-        ) { }
+    ) {}
 
     ngOnInit(): void {
         this.badge = this.data !== null ? this.data : new Badge();
@@ -27,4 +27,8 @@ export class BadgeDialogComponent implements OnInit {
         this.dialogRef.close(null);
     }
 
+    convertToFilename(badgeName) {
+        badgeName = badgeName.toLowerCase().replaceAll(' ', '-');
+        this.badge.logo = badgeName + '.png';
+    }
 }
