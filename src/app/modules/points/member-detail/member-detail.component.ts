@@ -14,8 +14,8 @@ import { PointsService } from '../../core/services/points.service';
 })
 export class MemberDetailComponent implements OnInit {
     member?: Member;
-    displayedColumns: string[] = ['reason', 'points', 'date'];
-    badgesColumns: string[] = ['badge', 'logo', 'date'];
+    displayedColumns: string[] = ['reason', 'points', 'created_at'];
+    badgesColumns: string[] = ['badge', 'logo', 'created_at'];
     dataSource: MatTableDataSource<any>;
     badgesDataSource: MatTableDataSource<any>;
     @ViewChild(MatSort) sort: MatSort;
@@ -43,10 +43,5 @@ export class MemberDetailComponent implements OnInit {
             this.dataSource.sort = this.sort;
             this.loading = false;
         });
-    }
-
-    format(date) {
-        // return formatDate(date, 'yyyy-MM-dd hh:mm:ss', 'cs-CZ');
-        return formatDate('2022-01-05T15:34:13', 'HH:mm:ss', this.locale);
     }
 }
