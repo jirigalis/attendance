@@ -1,6 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
@@ -24,6 +24,10 @@ export class AttendanceService {
 
     getAllDates() {
         return this.http.get<any>(this.apiUrl + `/meetingdates`);
+    }
+
+    getAllDatesBySchoolyear(schoolyearId) {
+        return this.http.get<any>(this.apiUrl + `/meetingdates/` + schoolyearId);
     }
 
     addMeetingDate(date) {

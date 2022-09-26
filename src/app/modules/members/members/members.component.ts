@@ -22,7 +22,6 @@ export class MembersComponent implements OnInit {
         'contact',
         'application',
         'paid',
-        'gdpr',
         'actions',
     ];
     loading = false;

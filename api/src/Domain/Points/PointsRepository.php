@@ -17,7 +17,11 @@ interface PointsRepository {
 
     public function getSumForAllMembers();
 
+    public function getSumForAllMembersBySchoolyear($schoolyearId);
+    
     public function getSumForAllMembersByRole($role);
+
+    public function getPublicSum($schoolyearId);
 
     public function update(int $id, object $data);
 

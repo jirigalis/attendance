@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Member;
 
 use App\Domain\Member\Member;
+use App\Domain\Schoolyear\Schoolyear;
 use App\Domain\Badge\Badge;
 use App\Domain\Attendance\Attendance;
 use App\Domain\Member\MemberNotFoundException;
@@ -38,8 +39,12 @@ class InMemoryMemberRepository implements MemberRepository
         return $this->members;
     }
 
-    public function listNames(): object {
-        return Member::select("id", "name", "surname", "role")->get();
+    public function listNames($schoolyearId): object {
+        return Member::
+            join('member_schoolyear', 'member.id', '=', 'member_schoolyear.member_id')
+            ->select("id", "name", "surname", "role")
+            ->where('member_schoolyear.schoolyear_id', $schoolyearId)
+            ->get();
     }
 
     public function getByRole($role) {
@@ -52,7 +57,6 @@ class InMemoryMemberRepository implements MemberRepository
     public function getById(int $id): Member
     {
         $member = Member::find($id);
-
         if ($member == null) {
             throw new MemberNotFoundException();
         }
@@ -60,13 +64,42 @@ class InMemoryMemberRepository implements MemberRepository
         return $member;
     }
 
+    public function getByIdAndSchoolyear(int $memberId, int $schoolyearId) {
+        return Member::
+        join('member_schoolyear', 'member.id', '=', 'member_schoolyear.member_id')
+        ->select(
+            "member.*",
+            "member_schoolyear.application",
+            "member_schoolyear.paid",
+        )
+        ->where('member.id', $memberId)
+        ->where('member_schoolyear.schoolyear_id', $schoolyearId)
+        ->first();
+    }
+
+    public function getBySchoolyear(int $schoolyearId) {
+        return Member::
+            join('member_schoolyear', 'member.id', '=', 'member_schoolyear.member_id')
+            ->select(
+                "member.*",
+                "member_schoolyear.application",
+                "member_schoolyear.paid",
+            )
+            ->where('member_schoolyear.schoolyear_id', $schoolyearId)
+            ->orderby('role')
+            ->orderby('name')
+            ->get();
+    }
+
 
     public function create(object $data): int {
         $valid = V::alphaCZ()->validate($data->name);
         $valid = $valid && V::alphaCZ()->validate($data->surname);
-        $valid = $valid && V::optional(V::alnum("- ,ěščřžýáíéďťňĚŠČŘŽÝÁÍÉĎŤŇÚŮ"))->validate($data->address);
+        $valid = $valid && V::optional(V::alnum("- ,ěščřžýáíéďťňúůĚŠČŘŽÝÁÍÉĎŤŇÚŮ"))->validate($data->address);
+        $valid = $valid && V::optional(V::email())->validate($data->email);
         $valid = $valid && V::optional(V::digit("/"))->validate($data->rc);
         $valid = $valid && V::anyOf(V::equals("D"), V::equals("V"))->validate($data->role);
+        $valid = $valid && V::optional(V::alnum("- ,ěščřžýáíéďťňúůĚŠČŘŽÝÁÍÉĎŤŇÚŮ"))->validate($data->requirements);
 
         if ($valid) {
             $member = new Member;
@@ -74,7 +107,11 @@ class InMemoryMemberRepository implements MemberRepository
             $member->surname = htmlspecialchars($data->surname);
             $member->rc = htmlspecialchars($data->rc);
             $member->address = htmlspecialchars($data->address);
+            $member->email = htmlspecialchars($data->email);
             $member->contact = htmlspecialchars($data->contact);
+            if (isset($data->requirements)){
+                $member->requirements = htmlspecialchars($data->requirements);
+            }
 
             $member->save();
             return $member->id;
@@ -118,6 +155,15 @@ class InMemoryMemberRepository implements MemberRepository
             $update = true;
         }
 
+        if (isset($data->email) && $member->email != $data->email) {
+            if (!V::optional(V::email())->validate($data->email)) {
+                throw new CannotCreateMemberException("email");
+            }
+
+            $member->email = htmlspecialchars($data->email);
+            $update = true;
+        }
+
         if (isset($data->rc) && $member->rc != $data->rc) {
             if (!V::digit("/")->validate($data->rc)) {
                 throw new CannotCreateMemberException("rc");
@@ -141,18 +187,18 @@ class InMemoryMemberRepository implements MemberRepository
             $update = true;
         }
 
-        if (isset($data->application) && $member->application != $data->application) {
-            $member->application = $data->application;
+        if (isset($data->requirements) && $member->requirements != $data->requirements) {
+            $member->requirements = htmlspecialchars($data->requirements);
             $update = true;
         }
 
-        if (isset($data->paid) && $member->paid != $data->paid) {
-            $member->paid = $data->paid;
+        if (isset($data->application) && $data->schoolyearId) {
+            $member->schoolyear()->syncWithoutDetaching([$data->schoolyearId => ['application' => $data->application]]);
             $update = true;
         }
 
-        if (isset($data->gdpr) && $member->gdpr != $data->gdpr) {
-            $member->gdpr = $data->gdpr;
+        if (isset($data->paid) && $data->schoolyearId) {
+            $member->schoolyear()->syncWithoutDetaching([$data->schoolyearId => ['paid' => $data->paid]]);
             $update = true;
         }
 
@@ -163,17 +209,22 @@ class InMemoryMemberRepository implements MemberRepository
         return $member;
     }
 
-    public function getAttendance(int $id) {
-        if (!V::intVal()->validate($id)) {
+    public function getAttendance(int $memberId, int $schoolyearId) {
+        if (!V::intVal()->validate($memberId)) {
             throw new MemberNotFoundException();
         }
 
-        $attendance = Member::find($id)->attendance;
+        $schoolyear = Schoolyear::find($schoolyearId);
+        $attendance = Member::find($memberId)->attendance;
         $res = [];
 
         foreach ($attendance as $a ) {
             $date = new \DateTime($a->date);
-            $res[] = $date->format("d. m. Y");
+            $startDate = new \DateTime($schoolyear->startDate);
+            $endDate = new \DateTime($schoolyear->endDate);
+            if ($date >= $startDate && $date <= $endDate) {
+                $res[] = $date->format("d. m. Y");
+            }
         }
 
         return $res;
@@ -187,7 +238,7 @@ class InMemoryMemberRepository implements MemberRepository
         $member = Member::find($id);
         $attendance = new Attendance(["date" => gmdate("Y-m-d H:i:s", (int) $timestamp)]);
 
-        return $member->attendance()->save($attendance);;
+        return $member->attendance()->save($attendance);
     }
 
     public function delete(int $id) {

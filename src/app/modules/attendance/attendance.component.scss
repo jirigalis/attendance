@@ -2,6 +2,7 @@
 
 .sticky-column {
     width: 80px;
+    min-width: 170px;
 }
 
 .mat-column-role {
@@ -10,10 +11,6 @@
 
 .table-container {
     overflow: auto;
-}
-
-table {
-    min-width: 1300px;
 }
 
 .check-column {

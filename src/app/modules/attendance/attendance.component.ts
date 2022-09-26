@@ -1,18 +1,18 @@
-import { MemberService } from '../core/services/member.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
-    ChangeDetectionStrategy,
     Component,
     OnInit,
-    ViewChild,
+    ViewChild
 } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
-import { AttendanceService } from '../core/services/attendance.service';
 import { forkJoin, Observable } from 'rxjs';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';
+import { AuthenticationService } from '../core/authentication/authentication.service';
 import { Member } from '../core/models';
+import { AttendanceService } from '../core/services/attendance.service';
+import { MemberService } from '../core/services/member.service';
 
 @Component({
     selector: 'app-attendance',
@@ -22,8 +22,7 @@ import { Member } from '../core/models';
 export class AttendanceComponent implements OnInit {
     dataSource;
     loading = false;
-    displayedColumns: string[] = ['name', 'role'];
-    dateColumns = AttendanceComponent.generateDates();
+    displayedColumns: string[] = ['name'];
     allColumns;
     static WEEK_COUNT = 10;
     meetingDates = [];
@@ -44,17 +43,18 @@ export class AttendanceComponent implements OnInit {
     constructor(
         private memberService: MemberService,
         private attendanceService: AttendanceService,
+        private authService: AuthenticationService,
         private breakpointObserver: BreakpointObserver
     ) {}
 
-    static generateDates() {
+    /* static generateDates() {
         const mondays = [];
         for (let i = 0; i < this.WEEK_COUNT; i++) {
             const monday = moment().day('Monday');
             mondays.push(monday.subtract(i, 'w').format('DD. MM. Y'));
         }
         return mondays.reverse();
-    }
+    } */
 
     ngOnInit() {
         moment.locale('cs');
@@ -71,8 +71,8 @@ export class AttendanceComponent implements OnInit {
     }
 
     private _prepareData() {
-        const dates$ = this.attendanceService.getAllDates();
-        const members$ = this.memberService.getAllWithAttendance();
+        const dates$ = this.attendanceService.getAllDatesBySchoolyear(this.authService.getSchoolyear());
+        const members$ = this.memberService.getAllWithAttendance(this.authService.getSchoolyear());
 
         forkJoin([dates$, members$]).subscribe((results) => {
             this.members = results[1];

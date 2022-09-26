@@ -1,16 +1,20 @@
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { AddMemberComponent } from './add-member/add-member.component';
-import { MaterialModule } from './../material/material.module';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MembersComponent } from './members/members.component';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../shared/shared.module';
-import { EditMemberComponent } from './edit-member/edit-member.component';
 import { RouterModule } from '@angular/router';
+import { SchoolyearMembersComponent } from '../schoolyear/schoolyear-members/schoolyear-members.component';
+import { SharedModule } from '../shared/shared.module';
+import { MaterialModule } from './../material/material.module';
+import { AddMemberComponent } from './add-member/add-member.component';
+import { EditMemberComponent } from './edit-member/edit-member.component';
+import { MembersComponent } from './members/members.component';
 
 @NgModule({
-    declarations: [MembersComponent, AddMemberComponent, EditMemberComponent],
+    declarations: [
+        MembersComponent,
+        SchoolyearMembersComponent,
+        AddMemberComponent, EditMemberComponent],
     imports: [
         CommonModule,
         FlexLayoutModule,
@@ -21,4 +25,4 @@ import { RouterModule } from '@angular/router';
     ],
     exports: [MembersComponent, AddMemberComponent],
 })
-export class MembersModule {}
+export class MembersModule { }

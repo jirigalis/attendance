@@ -22,6 +22,7 @@ export class PointsDashboardComponent implements OnInit {
     loading = false;
     dataSource;
     badgeDataSource;
+    onlyCurrentSchoolyear: boolean = true;
 
     constructor(
         private pointsService: PointsService,

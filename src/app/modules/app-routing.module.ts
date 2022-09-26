@@ -1,20 +1,23 @@
-import { AddMemberComponent } from './members/add-member/add-member.component';
-import { EditMemberComponent } from './members/edit-member/edit-member.component';
-import { AttendanceComponent } from './attendance/attendance.component';
-import { MembersComponent } from './members/members/members.component';
-import { LoginFormComponent } from './login/login-form/login-form.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AttendanceComponent } from './attendance/attendance.component';
+import { LoginFormComponent } from './login/login-form/login-form.component';
+import { AddMemberComponent } from './members/add-member/add-member.component';
+import { EditMemberComponent } from './members/edit-member/edit-member.component';
+import { MembersComponent } from './members/members/members.component';
 
+import { AddAttendanceComponent } from './add-attendance/add-attendance.component';
+import { MeetingDatesComponent } from './attendance/meeting-dates/meeting-dates.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
-import { AddAttendanceComponent } from './add-attendance/add-attendance.component';
-import { PointsDashboardComponent } from './points/points-dashboard/points-dashboard.component';
 import { BadgesComponent } from './points/badges/badges.component';
-import { ReasonComponent } from './points/reason/reason.component';
 import { BodovaniComponent } from './points/bodovani/bodovani.component';
 import { MemberDetailComponent } from './points/member-detail/member-detail.component';
-import { MeetingDatesComponent } from './attendance/meeting-dates/meeting-dates.component';
+import { PointsDashboardComponent } from './points/points-dashboard/points-dashboard.component';
+import { ReasonComponent } from './points/reason/reason.component';
+import { SchoolyearMembersComponent } from './schoolyear/schoolyear-members/schoolyear-members.component';
+import { SchoolyearComponent } from './schoolyear/schoolyear/schoolyear.component';
+import { SettingsComponent } from './settings/settings/settings.component';
 
 const routes: Routes = [
     {
@@ -76,6 +79,21 @@ const routes: Routes = [
             {
                 path: 'reasons',
                 component: ReasonComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'schoolyear',
+                component: SchoolyearComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'schoolyear-members',
+                component: SchoolyearMembersComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'settings',
+                component: SettingsComponent,
                 canActivate: [AuthGuard],
             },
         ],

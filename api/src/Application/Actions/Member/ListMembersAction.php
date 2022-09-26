@@ -12,10 +12,8 @@ class ListMembersAction extends MemberAction
      */
     protected function action(): Response
     {
-        $this->logger->info("Members list was viewed.");
-        
+        $this->logger->info("Members list was viewed.");        
         $members = $this->memberRepository->findAll();
-
         return $this->respondWithData($members);
     }
 }

@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Přidat člena do školního roku {{schoolyear.label}}</h2>
+
+<div mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Jméno člena</mat-label>
+        <mat-select [(ngModel)]="selectedMember">
+            <mat-option *ngFor="let m of members" [value]="m.id">{{ m.name }} {{ m.surname }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="cancel()">Zrušit</button>
+    <button mat-raised-button (click)="submit()" color="primary">
+        <mat-icon>save</mat-icon>
+        Uložit
+    </button>
+</div>

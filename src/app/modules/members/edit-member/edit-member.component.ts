@@ -1,13 +1,14 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MemberService } from '../../core/services';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Member } from '../../core/models';
-import { MatTableDataSource } from '@angular/material/table';
-import { PointsService } from '../../core/services/points.service';
-import { MatSort } from '@angular/material/sort';
 import { Location } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
+import { Member } from '../../core/models';
+import { MemberService } from '../../core/services';
+import { PointsService } from '../../core/services/points.service';
 
 @Component({
     selector: 'edit-member',
@@ -29,6 +30,7 @@ export class EditMemberComponent implements OnInit {
         private snack: MatSnackBar,
         private memberService: MemberService,
         private pointsService: PointsService,
+        private authService: AuthenticationService,
         private route: ActivatedRoute,
         private location: Location
     ) {
@@ -36,13 +38,15 @@ export class EditMemberComponent implements OnInit {
             name: ['', Validators.required],
             surname: ['', Validators.required],
             address: [''],
+            email: [''],
             contact: [''],
             rc: ['', Validators.minLength(10)],
             role: ['D', Validators.required],
             application: [],
             paid: [],
-            gdpr: [],
             id: [],
+            schoolyearId: [this.authService.getSchoolyear()],
+            requirements: [],
         });
     }
 
@@ -51,7 +55,7 @@ export class EditMemberComponent implements OnInit {
         const routerParams = this.route.snapshot.paramMap;
         const memberId = Number(routerParams.get('memberId'));
 
-        this.memberService.getById(memberId).subscribe((res) => {
+        this.memberService.getByIdAndSchoolyear(memberId, this.authService.getSchoolyear()).subscribe((res) => {
             this.member = res;
             this.memberForm.patchValue(res);
         });

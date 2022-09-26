@@ -1,7 +1,7 @@
-import { Deserializable } from "./deserializable";
 import * as moment from "moment";
+import { Deserializable } from "./deserializable";
 
-export class Member implements Deserializable{
+export class Member implements Deserializable {
     id: number;
     name: string;
     surname: string;

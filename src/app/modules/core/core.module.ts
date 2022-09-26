@@ -1,15 +1,16 @@
-import { AppRoutingModule } from './../app-routing.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MaterialModule } from './../material/material.module';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { NavigationComponent } from './components/navigation/navigation.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { SharedModule } from '../shared/shared.module';
+import { AppRoutingModule } from './../app-routing.module';
+import { MaterialModule } from './../material/material.module';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { MatListModule } from '@angular/material/list';
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    SharedModule,
   ],
   declarations: [
     NavigationComponent

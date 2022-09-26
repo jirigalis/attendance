@@ -31,6 +31,10 @@ export class PointsService {
         return this.http.get<any>(this.apiUrl + '/sum/role/' + role);
     }
 
+    getPublicSum(schoolyearId) {
+        return this.http.get<any>(this.apiUrl + '/sum/public/' + schoolyearId);
+    }
+
     add(points: Points) {
         return this.http.post(this.apiUrl + '/create', points);
     }

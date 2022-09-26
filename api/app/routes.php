@@ -6,7 +6,9 @@ use App\Application\Actions\Member\ListMemberNamesAction;
 use App\Application\Actions\Member\GetByRoleAction;
 use App\Application\Actions\Member\ListMembersWithAttendanceAction;
 use App\Application\Actions\Member\ListMembersAddressesAction;
+use App\Application\Actions\Member\ListMembersBySchoolyearAction;
 use App\Application\Actions\Member\ViewMemberAction;
+use App\Application\Actions\Member\GetByIdAndSchoolyearAction;
 use App\Application\Actions\Member\UpdateMemberAction;
 use App\Application\Actions\Member\CreateMemberAction;
 use App\Application\Actions\Member\DeleteMemberAction;
@@ -32,6 +34,7 @@ use App\Application\Actions\Points\CreatePointsBulkAction;
 use App\Application\Actions\Points\UpdatePointsAction;
 use App\Application\Actions\Points\DeletePointsAction;
 use App\Application\Actions\Points\GetPointsByMemberIdAction;
+use App\Application\Actions\Points\GetPublicSumAction;
 use App\Application\Actions\Points\GetSumByMemberAction;
 use App\Application\Actions\Points\GetSumForAllMembersAction;
 
@@ -41,10 +44,21 @@ use App\Application\Actions\Reason\DeleteReasonAction;
 use App\Application\Actions\Reason\UpdateReasonAction;
 
 use App\Application\Actions\MeetingDates\ListMeetingDatesAction;
+use App\Application\Actions\MeetingDates\GetMeetingDatesBySchoolyearAction;
 use App\Application\Actions\MeetingDates\CreateMeetingDatesAction;
 use App\Application\Actions\MeetingDates\DeleteMeetingDatesAction;
 
+use App\Application\Actions\Schoolyear\ListSchoolyearAction;
+use App\Application\Actions\Schoolyear\ViewSchoolyearAction;
+use App\Application\Actions\Schoolyear\CreateSchoolyearAction;
+use App\Application\Actions\Schoolyear\DeleteSchoolyearAction;
+use App\Application\Actions\Schoolyear\UpdateSchoolyearAction;
+use App\Application\Actions\Schoolyear\GetMembersAction;
+use App\Application\Actions\Schoolyear\AddMemberAction;
+use App\Application\Actions\Schoolyear\RemoveMemberAction;
+
 use App\Application\Actions\User\AuthenticateUserAction;
+use App\Application\Actions\User\SelectSchoolyearAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -57,17 +71,14 @@ return function (App $app) {
     $prefix = getenv("API_PREFIX");
 
     $app->get($prefix.'/aaa', function (Request $request, Response $response) {
-
-    	$test = Member::find(1)->toJson();
-
+        $test = Member::find(1)->toJson();
         $response->getBody()->write($test);
         return $response;
     });
 
     $app->group($prefix.'/members', function (Group $group) use ($container) {
         $group->get('', ListMembersAction::class);
-        $group->get('/names', ListMemberNamesAction::class);
-        $group->get('/attendance', ListMembersWithAttendanceAction::class);
+        $group->get('/names/schoolyear/{schoolyearId}', ListMemberNamesAction::class);
         $group->get('/addresses', ListMembersAddressesAction::class);
         $group->get('/role/{role}', GetByRoleAction::class);
         $group->get('/{id}', ViewMemberAction::class);
@@ -78,6 +89,9 @@ return function (App $app) {
         $group->delete('/{id}', DeleteMemberAction::class);
         $group->get('/{id}/badges', GetBadgesAction::class);
         $group->post('/{id}/badges', AddBadgeAction::class);
+        $group->get('/{memberId}/schoolyear/{schoolyearId}', GetByIdAndSchoolyearAction::class);
+        $group->get('/schoolyear/{schoolyearId}', ListMembersBySchoolyearAction::class);
+        $group->get('/schoolyear/{schoolyearId}/attendance', ListMembersWithAttendanceAction::class);
     });
 
     $app->group($prefix.'/attendance', function (Group $group) use ($container) {
@@ -89,6 +103,7 @@ return function (App $app) {
 
     $app->group($prefix.'/user', function (Group $group) use ($container) {
         $group->post('/authenticate', AuthenticateUserAction::class);
+        $group->post('/{id}/select-schoolyear', SelectSchoolyearAction::class);
     });
 
     $app->group($prefix . '/badges', function (Group $group) use ($container) {
@@ -105,6 +120,8 @@ return function (App $app) {
         $group->post('/bulk', CreatePointsBulkAction::class);
         $group->put('/{id}', UpdatePointsAction::class);
         $group->get('/sum[/role/{role}]', GetSumForAllMembersAction::class);
+        $group->get('/sum/public/{schoolyearId}', GetPublicSumAction::class);
+        $group->get('/sum/schoolyear/{schoolyearId}', GetSumForAllMembersAction::class);
         $group->get('/{id}', GetPointsByMemberIdAction::class);
         $group->get('/sum/{id}', GetSumByMemberAction::class);
         $group->delete('/{id}', DeletePointsAction::class);
@@ -120,7 +137,19 @@ return function (App $app) {
     $app->group($prefix . '/meetingdates', function (Group $group) use ($container) {
         $group->get('', ListMeetingDatesAction::class);
         $group->post('/create', CreateMeetingDatesAction::class);
+        $group->get('/{schoolyearId}', GetMeetingDatesBySchoolyearAction::class);
         $group->delete('/{id}', DeleteMeetingDatesAction::class);
+    });
+
+    $app->group($prefix . '/schoolyear', function (Group $group) use ($container) {
+        $group->get('', ListSchoolyearAction::class);
+        $group->post('/create', CreateSchoolyearAction::class);
+        $group->get('/{id}', ViewSchoolyearAction::class);
+        $group->put('/{id}', UpdateSchoolyearAction::class);
+        $group->delete('/{id}', DeleteSchoolyearAction::class);
+        $group->get('/{id}/members', GetMembersAction::class);
+        $group->post('/{id}/add-member', AddMemberAction::class);
+        $group->post('/{id}/remove-member', RemoveMemberAction::class);
     });
 
     $app->get($prefix.'/{test}', function (Request $request, Response $response, $args) {

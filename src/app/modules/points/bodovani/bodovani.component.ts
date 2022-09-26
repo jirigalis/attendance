@@ -21,6 +21,7 @@ export class BodovaniComponent implements OnInit {
     constructor(
         private pointsService: PointsService,
         private badgeService: BadgeService,
+        private authService: AuthenticationService,
         private authenticationService: AuthenticationService
     ) {
         this.authenticationService.currentUser.subscribe(
@@ -31,7 +32,7 @@ export class BodovaniComponent implements OnInit {
     ngOnInit(): void {
         this.loading = true;
         this.pointsService
-            .getSumForAllMembersByRole('D')
+            .getPublicSum(2) // 2 = 2022/2023 TODO: add schooleyr select to the page
             .subscribe((points) => {
                 this.dataSource = new MatTableDataSource(points);
                 this.loading = false;

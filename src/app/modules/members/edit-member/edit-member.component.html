@@ -24,7 +24,13 @@
                             <input matInput placeholder="Adresa" formControlName="address" />
                         </mat-form-field>
                         <mat-form-field class="full-width">
+                            <input matInput placeholder="E-mail" formControlName="email" />
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
                             <textarea matInput placeholder="Kontakt" formControlName="contact"></textarea>
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <textarea matInput placeholder="requirements" formControlName="requirements"></textarea>
                         </mat-form-field>
                     </div>
                     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="15px">
@@ -35,7 +41,6 @@
                         </mat-radio-group>
                         <mat-checkbox formControlName="application">Přihláška</mat-checkbox>
                         <mat-checkbox formControlName="paid">Zaplaceno</mat-checkbox>
-                        <mat-checkbox formControlName="gdpr">GDPR</mat-checkbox>
                     </div>
                 </div>
             </mat-card-content>

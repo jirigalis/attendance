@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Points } from '../../core/models/points';
 import { MemberService } from '../../core/services';
 import { ReasonService } from '../../core/services/reason.service';
@@ -21,11 +22,12 @@ export class AddBulkPointsDialogComponent implements OnInit {
     constructor(
         private reasonService: ReasonService,
         private memberService: MemberService,
+        private authService: AuthenticationService,
         private dialogRef: MatDialogRef<AddBulkPointsDialogComponent>
     ) {}
 
     ngOnInit(): void {
-        this.memberService.listNames().subscribe((names) => {
+        this.memberService.listNames(this.authService.getSchoolyear()).subscribe((names) => {
             this.allMembers = names.filter((m) => m.role === 'D');
         });
 

@@ -1,0 +1,94 @@
+<h1 class="main-heading">Školní roky</h1>
+
+<div fxLayout="row" fxLayoutAlign="space-between center" class="page-actions">
+    <button mat-raised-button color="primary" (click)="addSchoolyear()">
+        <mat-icon fxShow.xs="true" fxShow.gt-xs="false">add</mat-icon>
+        <span fxShow.xs="false">Vytvořit nový školní rok</span>
+    </button>
+</div>
+<mat-progress-bar mode="indeterminate" *ngIf="schoolyearLoading"></mat-progress-bar>
+<div fxFlexFill fxLayoutGap="16px grid">
+    <div fxFlex.gt-lg="33" fxFlex.gt-md="50">
+        <h3>Školní rok</h3>
+        <table mat-table [dataSource]="schoolyearDataSource" class="mat-elevation-z1">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let element">{{element.id}}</td>
+            </ng-container>
+            <ng-container matColumnDef="label">
+                <th mat-header-cell *matHeaderCellDef>Školní rok</th>
+                <td mat-cell *matCellDef="let element">{{element.label}}</td>
+            </ng-container>
+            <ng-container matColumnDef="startDate">
+                <th mat-header-cell *matHeaderCellDef>Začátek</th>
+                <td mat-cell *matCellDef="let element">{{element.startDate | date:'d. M. YYYY'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="endDate">
+                <th mat-header-cell *matHeaderCellDef>Konec</th>
+                <td mat-cell *matCellDef="let element">{{element.endDate | date:'d. M. YYYY'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Akce</th>
+                <td mat-cell *matCellDef="let element">
+                    <button
+                        mat-icon-button
+                        matTooltip="Upravit"
+                        matTooltipPosition="right"
+                        aria-label="Upravit"
+                        (click)="editSchoolyear(element)"
+                    >
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        matTooltip="Přidat člena do školního roku"
+                        matTooltipPosition="right"
+                        aria-label="Přidat člena do školního roku"
+                        (click)="addMemberToSchoolyear(element)"
+                    >
+                        <mat-icon>person_add</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        matTooltip="Odstranit"
+                        matTooltipPosition="right"
+                        aria-label="Odstranit"
+                        (click)="deleteSchoolyear(element.id)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="schoolyearColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: schoolyearColumns" (click)="selectSchoolyear(row.id)"></tr>
+        </table>
+    </div>
+    <div fxFlex.gt-lg="33" fxFlex.gt-md="50" *ngIf="selectedSchoolyear">
+        <h3>Členové pro školní rok {{selectedSchoolyear.label}}</h3>
+
+        <table mat-table [dataSource]="schoolyearMembersDataSource" class="mat-elevation-z1">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Jméno</th>
+                <td mat-cell *matCellDef="let element">{{element.name}} {{element.surname}}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Akce</th>
+                <td mat-cell *matCellDef="let element">
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        matTooltip="Odebrat člena z tohoto školního roku"
+                        matTooltipPosition="right"
+                        aria-label="Odebrat člena z tohoto školního roku"
+                        (click)="removeMemberFromSchoolyear(element.id)"
+                    >
+                        <mat-icon>person_remove</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="membersColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: membersColumns"></tr>
+        </table>
+    </div>
+</div>

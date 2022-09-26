@@ -17,17 +17,17 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=8.0",
         "ext-json": "*",
         "firebase/php-jwt": "^5.0",
-        "illuminate/database": "^6.2",
-        "illuminate/events": "^6.5",
+        "illuminate/database": "^9.24.0",
+        "illuminate/events": "^9.24",
         "monolog/monolog": "^1.24",
         "php-di/php-di": "^6.0",
         "respect/validation": "^2.1",
         "slim/psr7": "^1.5",
-        "slim/slim": "^4.1",
-        "tuupola/slim-jwt-auth": "^3.4",
+        "slim/slim": "^4.10.0",
+        "tuupola/slim-jwt-auth": "^3.6.0",
         "vlucas/phpdotenv": "^3.6"
     },
     "require-dev": {
@@ -48,7 +48,7 @@
         "sort-packages": true,
         "platform-check": false,
         "platform": {
-            "php": "7.3.0"
+            "php": "8.1.4"
         }
     },
     "scripts": {

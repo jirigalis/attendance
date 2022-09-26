@@ -19,6 +19,8 @@ interface UserRepository
 
     public function authenticate(String $name, String $password);
 
+    public function selectSchoolyear(int $userId, int $schoolyearId);
+
     //public function getByName(string $name): array;
 
     // public function update(int $id, object $data);

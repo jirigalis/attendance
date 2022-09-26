@@ -10,7 +10,7 @@ interface MemberRepository
      */
     public function findAll(): object;
 
-    public function listNames(): object;
+    public function listNames($schoolyearId): object;
 
     public function getByRole($role);
 
@@ -19,7 +19,11 @@ interface MemberRepository
      * @return Member
      * @throws MemberNotFoundException
      */
-    public function getById(int $id): Member;
+    public function getById(int $id);
+
+    public function getByIdAndSchoolyear(int $memberId, int $schoolyearId);
+
+    public function getBySchoolyear(int $schoolyearId);
 
     //public function getByName(string $name): array;
 
@@ -27,7 +31,7 @@ interface MemberRepository
 
     public function create(object $data): int;
 
-    public function getAttendance(int $id);
+    public function getAttendance(int $memberId, int $schoolyearId);
 
     public function delete(int $id);
     

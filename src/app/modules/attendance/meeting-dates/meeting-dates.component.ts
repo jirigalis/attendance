@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
-import { map, tap } from 'rxjs/operators';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { AttendanceService } from '../../core/services/attendance.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 
@@ -20,6 +20,7 @@ export class MeetingDatesComponent implements OnInit {
 
     constructor(
         private attendanceService: AttendanceService,
+        private authService: AuthenticationService,
         private snack: MatSnackBar,
         private changeDetectorRefs: ChangeDetectorRef,
         private dialog: MatDialog
@@ -69,7 +70,7 @@ export class MeetingDatesComponent implements OnInit {
     }
 
     private getDates() {
-        this.attendanceService.getAllDates().subscribe((dates: any) => {
+        this.attendanceService.getAllDatesBySchoolyear(this.authService.getSchoolyear()).subscribe((dates: any) => {
             dates.map(
                 (d) =>
                     (d.date = moment(d.date, 'YYYY-MM-DD hh:mm:ss').format(

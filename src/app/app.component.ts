@@ -1,8 +1,8 @@
-import { AuthenticationService } from './modules/core/authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
-import { User } from './modules/core/models/user';
-import { Router, NavigationEnd } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthenticationService } from './modules/core/authentication/authentication.service';
+import { User } from './modules/core/models/user';
 
 @Component({
     selector: 'app-root',
@@ -12,7 +12,7 @@ import { filter } from 'rxjs/operators';
 export class AppComponent implements OnInit{
     title = 'app';
     currentUser: User;
-    showNavigation = false;
+    showNavigation = true;
 
     constructor(
         private authenticationService: AuthenticationService,

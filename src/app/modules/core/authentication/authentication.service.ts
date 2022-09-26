@@ -1,8 +1,9 @@
-import { environment } from './../../../../environments/environment';
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import jwt_decode from "jwt-decode";
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from './../../../../environments/environment';
 
 import { User } from '../models';
 
@@ -13,7 +14,11 @@ export class AuthenticationService {
     private apiUrl = environment.API_URL;
 
     constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+        const userLS = this.getCurrentUserObjectFromToken()
+        if (userLS && this.getSchoolyearFromLS()) {
+            userLS.schoolyear = this.getSchoolyearFromLS();
+        }
+        this.currentUserSubject = new BehaviorSubject<User>(userLS);
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
@@ -28,25 +33,63 @@ export class AuthenticationService {
                 password
             })
             .pipe(
-                map(data => {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    const currentUser: any = {
-                        token: data,
-                        user: {
-                            username: username
-                        }
-                    };
-                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    this.currentUserSubject.next(currentUser);
-                    return data;
+                map(token => {                    
+                    localStorage.setItem('apiToken', token);
+                    this.currentUserSubject.next(this.getCurrentUserObjectFromToken(token));
+                    this.saveSchoolyearToLS();
+                    return token;
                 })
             );
     }
 
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('apiToken');
         this.currentUserSubject.next(null);
         location.reload();
+    }
+
+    public jwtDecode(token) {
+        return jwt_decode(token);
+    }
+
+    private getCurrentUserObjectFromToken(token = ''): any {
+        if (!token) {
+            token = localStorage.getItem('apiToken');
+        }
+        if (!token) {
+            return null;
+        }
+        const decodedToken: any = this.jwtDecode(token);
+        return {
+            username: decodedToken.context.user.username,
+            id: decodedToken.context.user.id,
+            schoolyear: decodedToken.context.user.schoolyear,
+            token: token
+        }
+    }
+
+    public getSchoolyear() {
+        return this.currentUserValue.schoolyear;
+    }
+
+    public selectSchoolyear(schoolyearId) {
+        this.http.post(this.apiUrl + `/user/${this.currentUserValue.id}/select-schoolyear`, {schoolyear: schoolyearId}).subscribe(res => {
+            if (res) {;
+                const user = this.currentUserValue;
+                user.schoolyear = schoolyearId;
+                this.currentUserSubject.next(user);
+                this.saveSchoolyearToLS();
+            }
+        })
+    }
+
+    private saveSchoolyearToLS() {
+        console.log(this.currentUserValue)
+        localStorage.setItem('schoolyear', this.currentUserValue.schoolyear.toString());
+    }
+
+    private getSchoolyearFromLS() {
+        return Number(localStorage.getItem('schoolyear'));
     }
 }

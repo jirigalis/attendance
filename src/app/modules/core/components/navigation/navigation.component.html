@@ -3,7 +3,8 @@
         [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
         [opened]="(isHandset$ | async) === false">
         <mat-toolbar class="sidepanel-part" color="primary">
-            <mat-icon color="accent">person_outline</mat-icon>
+            <button mat-icon-button color="accent" (click)="drawer.toggle()">
+            <mat-icon color="accent">person_outline</mat-icon></button>
             <span>Attendance</span>
         </mat-toolbar>
         <mat-nav-list>
@@ -11,7 +12,8 @@
                 <mat-icon>dashboard</mat-icon>
                 Dashboard
             </a>
-            <a mat-list-item [routerLink]="['/members']" routerLinkActive="list-item-active">
+            <divider-with-text>Školní rok</divider-with-text>
+            <a mat-list-item [routerLink]="['/schoolyear-members']" routerLinkActive="list-item-active">
                 <mat-icon>supervisor_account</mat-icon>
                 Členové
             </a>
@@ -36,6 +38,7 @@
                 <mat-icon>assessment</mat-icon>
                 Veřejné bodování
             </a>
+            <divider-with-text>Obecné</divider-with-text>
             <a mat-list-item [routerLink]="['/badges']" routerLinkActive="list-item-active">
                 <mat-icon>local_police</mat-icon>
                 Seznam odznaků
@@ -45,7 +48,16 @@
                 Kategorie
             </a>
             <mat-divider></mat-divider>
-            <a mat-list-item href="#">
+            <a mat-list-item [routerLink]="['/schoolyear']" routerLinkActive="list-item-active">
+                <mat-icon>school</mat-icon>
+                Školní roky
+            </a>
+            <a mat-list-item [routerLink]="['/members']" routerLinkActive="list-item-active">
+                <mat-icon>groups</mat-icon>
+                Všichni členové
+            </a>
+            <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="['/settings']" routerLinkActive="list-item-active">
                 <mat-icon>settings_applications</mat-icon>
                 Nastavení
             </a>
@@ -54,10 +66,16 @@
     <mat-sidenav-content>
         <mat-toolbar class="toppanel-part" color="primary" *ngIf="isLoggedIn()">
             <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
-                *ngIf="isHandset$ | async">
+                *ngIf="(isHandset$ | async)|| !this.drawer?.opened">
                 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
-            <div fxFlex fxLayout fxLayoutAlign="flex-end">
+            <div fxFlex fxLayout fxLayoutAlign="flex-end center">
+                <mat-form-field appearance="fill" class="schoolyear-select">
+                    <mat-label>Vybraný školní rok</mat-label>
+                    <mat-select [(value)]="schoolyear" (selectionChange)="updateSchoolyear($event.value)">
+                        <mat-option *ngFor="let sy of schoolyears" [value]="sy.id">{{sy.label}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
                 <ul fxLayout fxLayoutGap="20px" class="navigation-items">
                     <li fxHide.xs>
                         <button mat-icon-button>

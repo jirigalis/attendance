@@ -59,8 +59,7 @@ class InMemoryPointsRepository implements PointsRepository
         return 1;
     }
 
-    public function update(int $id, object $data)
-    {
+    public function update(int $id, object $data) {
         $points = $this->getById($id);
         $update = false;
 
@@ -146,6 +145,22 @@ class InMemoryPointsRepository implements PointsRepository
             ->get();
     }
 
+    public function getSumForAllMembersBySchoolyear($schoolyearId) {
+        return Points::
+        join("member", "points.member_id", "=", "member.id")
+        ->join("member_schoolyear", "member_schoolyear.member_id", "=", "member.id")
+        ->select(
+            "points.member_id",
+            "member.name",
+            "member.surname",
+            DB::raw("SUM(points) as sum_points")
+        )
+        ->where("member_schoolyear.schoolyear_id", $schoolyearId)
+        ->groupBy("member_id")
+        ->orderBy("sum_points", "desc")
+        ->get();
+    }
+
     public function getSumForAllMembersByRole($role) {
         return Points::
             join("member", "points.member_id", "=", "member.id")
@@ -159,6 +174,23 @@ class InMemoryPointsRepository implements PointsRepository
             ->groupBy("member_id")
             ->orderBy("sum_points", "desc")
             ->get();
+    }
+
+    public function getPublicSum($schoolyearId) {
+        return Points::
+        join("member", "points.member_id", "=", "member.id")
+        ->join("member_schoolyear", "member_schoolyear.member_id", "=", "member.id")
+        ->select(
+            "points.member_id",
+            "member.name",
+            "member.surname",
+            DB::raw("SUM(points) as sum_points")
+        )
+        ->where("member.role", 'D')
+        ->where("member_schoolyear.schoolyear_id", $schoolyearId)
+        ->groupBy("member_id")
+        ->orderBy("sum_points", "desc")
+        ->get();
     }
 
     public function delete(int $id) {

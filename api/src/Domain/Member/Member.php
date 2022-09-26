@@ -6,6 +6,7 @@ namespace App\Domain\Member;
 use JsonSerializable;
 use App\Domain\Attendance\Attendance;
 use App\Domain\Badge\Badge;
+use App\Domain\Schoolyear\Schoolyear;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Member extends Eloquent
@@ -24,7 +25,11 @@ class Member extends Eloquent
     }
 
     public function badge() {
-        return $this->belongsToMany(Badge::class, "member_badge")->withPivot('created_at');;
+        return $this->belongsToMany(Badge::class, "member_badge")->withPivot('created_at');
+    }
+
+    public function schoolyear() {
+        return $this->belongsToMany(Schoolyear::class, "member_schoolyear")->withPivot('application', 'paid');
     }
 
 }

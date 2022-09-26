@@ -20,7 +20,13 @@ return function (ContainerBuilder $containerBuilder) {
                 'level' => Logger::DEBUG,
             ],
             'jwt-auth' => [
-                'ignore' => [getenv("API_PREFIX") . "/user/authenticate", getenv("API_PREFIX") . '/points/sum/role/D'],
+                'ignore' => [
+                    getenv("API_PREFIX") . "/user/authenticate",
+                    getenv("API_PREFIX") . '/points/sum/role/D',
+                    getenv("API_PREFIX") . '/points/sum/public',
+                    getenv("API_PREFIX") . '/badges/members',
+                    getenv("API_PREFIX") . '/aaa'
+                ],
                 'passthrough' => ['/user/authenticate', '/points/sum/role/D'],
                 'secret' => getenv('JWT_SECRET'),
                 "logger" => $logger,

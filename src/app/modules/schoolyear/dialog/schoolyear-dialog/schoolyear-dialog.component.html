@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Školní rok</h2>
+
+<div mat-dialog-content fxLayout="row" fxLayoutGap="8px">
+    <mat-form-field appearance="fill">
+        <mat-label>Název školního roku</mat-label>
+        <input matInput placeholder="Zadejte školní rok" [(ngModel)]="schoolyear.label">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Začátek</mat-label>
+        <input matInput [matDatepicker]="startpicker" [(ngModel)]="schoolyear.startDate">
+        <mat-datepicker-toggle matSuffix [for]="startpicker"></mat-datepicker-toggle>
+        <mat-datepicker #startpicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Konec</mat-label>
+        <input matInput [matDatepicker]="endpicker" [(ngModel)]="schoolyear.endDate">
+        <mat-datepicker-toggle matSuffix [for]="endpicker"></mat-datepicker-toggle>
+        <mat-datepicker #endpicker></mat-datepicker>
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="cancel()">Zrušit</button>
+    <button mat-raised-button (click)="submit()" color="primary">
+        <mat-icon>save</mat-icon>
+        Uložit
+    </button>
+</div>

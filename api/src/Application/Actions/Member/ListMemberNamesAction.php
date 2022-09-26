@@ -12,10 +12,9 @@ class ListMemberNamesAction extends MemberAction
      */
     protected function action(): Response
     {
-        $this->logger->info("Members names list was viewed.");
-        
-        $members = $this->memberRepository->listNames();
-
+        $schoolyearId = (int) $this->resolveArg("schoolyearId");
+        $this->logger->info("Members names list for schoolyear $schoolyearId was viewed.");        
+        $members = $this->memberRepository->listNames($schoolyearId);
         return $this->respondWithData($members);
     }
 }

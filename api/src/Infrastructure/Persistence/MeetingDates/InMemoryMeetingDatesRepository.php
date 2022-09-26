@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\MeetingDates;
 
 use App\Domain\MeetingDates\MeetingDates;
+use App\Domain\Schoolyear\Schoolyear;
 use App\Domain\MeetingDates\MeetingDatesRepository;
 use App\Domain\DomainException\DomainRecordNotFoundException;
 use App\Domain\DomainException\InputNotValidException;
@@ -31,6 +32,14 @@ class InMemoryMeetingDatesRepository implements MeetingDatesRepository
         }
 
         return $meetingDates;
+    }
+
+    public function getBySchoolyear($schoolyearId) {
+        $schoolyear = Schoolyear::find($schoolyearId);
+        return MeetingDates::
+            where('date', '>=', $schoolyear->startDate)
+            ->where('date', '<=', $schoolyear->endDate)
+            ->orderBy('date')->get();
     }
 
     public function create($data): int

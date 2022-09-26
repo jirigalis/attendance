@@ -22,12 +22,13 @@ export class AddMemberComponent implements OnInit {
             name: ['', Validators.required],
             surname: ['', Validators.required],
             address: [''],
+            email: [''],
             contact: [''],
             rc: ['', Validators.minLength(10)],
             role: ['D', Validators.required],
             application: [],
             paid: [],
-            gdpr: [],
+            requirements: [],
             id: []
         });
     }

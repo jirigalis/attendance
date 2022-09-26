@@ -12,14 +12,12 @@ class ListMembersWithAttendanceAction extends MemberAction
      */
     protected function action(): Response
     {
-        $this->logger->info("Members list was viewed.");
-        
-        $members = $this->memberRepository->findAll();
-
+        $schoolyearId = (int) $this->resolveArg('schoolyearId');
+        $members = $this->memberRepository->getBySchoolyear($schoolyearId);
+        $this->logger->info("Members list with Attendance was viewed for schoolyear $schoolyearId.");        
         foreach( $members as $m ) {
-            $m->attendance = $this->memberRepository->getAttendance($m->id);
+            $m->attendance = $this->memberRepository->getAttendance($m->id, $schoolyearId);
         }
-
         return $this->respondWithData($members);
     }
 }

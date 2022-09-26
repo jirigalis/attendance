@@ -1,10 +1,10 @@
-import { environment } from './../../../../environments/environment';
-import { Member } from './../models/member';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from './../../../../environments/environment';
+import { Member } from './../models/member';
 
 @Injectable({
     providedIn: 'root',
@@ -24,9 +24,19 @@ export class MemberService {
             );
     }
 
-    listNames(): Observable<Member[]> {
+    getAllBySchoolyear(schoolyearId: number): Observable<Member[]> {
         return this.http
-            .get<Member[]>(this.apiUrl + '/names')
+            .get<Member[]>(this.apiUrl + `/schoolyear/${schoolyearId}`)
+            .pipe(
+                map((data) =>
+                    data.map((data) => new Member().deserialize(data))
+                )
+            );
+    }
+
+    listNames(schoolyearId: Number): Observable<Member[]> {
+        return this.http
+            .get<Member[]>(this.apiUrl + '/names/schoolyear/' + schoolyearId)
             .pipe(
                 map((data) =>
                     data.map((data) => new Member().deserialize(data))
@@ -41,8 +51,15 @@ export class MemberService {
         );
     }
 
-    getAllWithAttendance(): Observable<Member[]> {
-        return this.http.get<Member[]>(this.apiUrl + `/attendance`);
+    getByIdAndSchoolyear(memberId: Number, schoolyearId) {
+        return this.http.get<Member>(this.apiUrl + '/' + memberId + `/schoolyear/` + schoolyearId).pipe(
+            map((data) => new Member().deserialize(data)),
+            catchError(() => throwError('Uživatel nenalezen'))
+        );
+    }
+
+    getAllWithAttendance(schoolyearId: Number): Observable<Member[]> {
+        return this.http.get<Member[]>(this.apiUrl + `/schoolyear/${schoolyearId}/attendance`);
     }
 
     getAttendanceById(id: Number) {

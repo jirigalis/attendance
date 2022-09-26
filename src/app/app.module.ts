@@ -1,33 +1,35 @@
+import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from './modules/app-routing.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
-import { MembersModule } from './modules/members/members.module';
+import { httpInterceptorProviders } from './modules/core/interceptors/index';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { LoginModule } from './modules/login/login.module';
-import { AppRoutingModule } from './modules/app-routing.module';
-import { httpInterceptorProviders } from './modules/core/interceptors/index';
-import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { MembersModule } from './modules/members/members.module';
 
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppComponent } from './app.component';
 
-import { CoreModule } from './modules/core/core.module';
-import { MaterialModule } from './modules/material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from './modules/shared/shared.module';
-import * as echarts from 'echarts';
-import { NgxEchartsModule } from 'ngx-echarts';
-import { MomentModule } from 'ngx-moment';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import {
     DateAdapter,
     MAT_DATE_FORMATS,
-    MAT_DATE_LOCALE,
+    MAT_DATE_LOCALE
 } from '@angular/material/core';
+import * as echarts from 'echarts';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { MomentModule } from 'ngx-moment';
+import { CoreModule } from './modules/core/core.module';
 import { CUSTOM_DATE_FORMATS } from './modules/core/custom-date-formats';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MaterialModule } from './modules/material/material.module';
 import { PointsModule } from './modules/points/points.module';
+import { SchoolyearModule } from './modules/schoolyear/schoolyear.module';
+import { SettingsModule } from './modules/settings/settings.module';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -52,7 +54,9 @@ import { PointsModule } from './modules/points/points.module';
                 m: 59,
             },
         }),
+        SettingsModule,
         SharedModule,
+        SchoolyearModule,
         NgxEchartsModule.forRoot({ echarts }),
     ],
     providers: [
@@ -67,6 +71,7 @@ import { PointsModule } from './modules/points/points.module';
             useValue: CUSTOM_DATE_FORMATS,
         },
         { provide: MAT_DATE_LOCALE, useValue: 'cs-CZ' },
+        { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true}}
     ],
     bootstrap: [AppComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
