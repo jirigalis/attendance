@@ -27,7 +27,6 @@ export class SchoolyearDialogComponent implements OnInit {
     }
 
     public submit() {
-        console.log(this.schoolyear);
         this.dialogRef.close(this.schoolyear);
     }
 

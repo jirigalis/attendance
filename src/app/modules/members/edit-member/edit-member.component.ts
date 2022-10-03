@@ -8,7 +8,9 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
 import { MemberService } from '../../core/services';
+import { AttendanceService } from '../../core/services/attendance.service';
 import { PointsService } from '../../core/services/points.service';
+import { KpiCardColor, KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
 
 @Component({
     selector: 'edit-member',
@@ -18,18 +20,40 @@ import { PointsService } from '../../core/services/points.service';
 export class EditMemberComponent implements OnInit {
     memberForm: FormGroup;
     member: Member;
+    attendancePoints;
     displayedColumns: string[] = ['reason', 'points', 'created_at'];
     dataSource: MatTableDataSource<any>;
     badgesColumns: string[] = ['badge_name', 'logo', 'created_at'];
     badgeDataSource: MatTableDataSource<any>;
     @ViewChild(MatSort) sort: MatSort;
     loading = false;
+    kpiAttendancePoints: KpiCardSettings = {
+        label: 'Počet bodů za docházku',
+        value: 0,
+        icon: 'event',
+        color: KpiCardColor.AMBER,
+    }
+
+    kpiPoints: KpiCardSettings = {
+        label: 'Počet bodů ze schůzek',
+        value: 0,
+        icon: 'timeline',
+        color: KpiCardColor.DEEPORANGE,
+    }
+
+    kpiSumPoints: KpiCardSettings = {
+        label: 'Celkový počet bodů',
+        value: 0,
+        icon: 'functions',
+        color: KpiCardColor.INDIGO
+    }
 
     constructor(
         private fb: FormBuilder,
         private snack: MatSnackBar,
         private memberService: MemberService,
         private pointsService: PointsService,
+        private attendanceService: AttendanceService,
         private authService: AuthenticationService,
         private route: ActivatedRoute,
         private location: Location
@@ -68,7 +92,17 @@ export class EditMemberComponent implements OnInit {
             this.dataSource = new MatTableDataSource(data);
             this.dataSource.sort = this.sort;
             this.loading = false;
+            let sum = 0;
+            data.forEach((obj) => sum  += parseInt(obj.points));
+            this.kpiPoints.value = sum;            
+            this.kpiSumPoints.value = sum;            
         });
+
+        this.attendanceService.getMembersAttendancePoints(memberId).subscribe(points => {
+            this.attendancePoints = points;
+            this.kpiAttendancePoints.value = points;
+            this.kpiSumPoints.value +=points;
+        })
     }
 
     goBack() {

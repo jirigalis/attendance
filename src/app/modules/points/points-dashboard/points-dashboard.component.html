@@ -12,8 +12,13 @@
                 <span fxShow.xs="false">Přidat body hromadně</span>
             </button>
             <mat-checkbox class="example-margin"
-                    [checked]="onlyCurrentSchoolyear">
-                Zobrazit jen tento školní rok
+                    [(ngModel)]="sumParams.currentSchoolyear" (change)="fetchDataFromServer()">
+                Zobrazit členy jen tohoto školního roku
+            </mat-checkbox>
+            <mat-divider inset vertical></mat-divider>
+            <mat-checkbox class="example-margin"
+                    [(ngModel)]="sumParams.schoolyearSum" (change)="fetchDataFromServer()">
+                Zobrazit body jen za tento školní rok
             </mat-checkbox>
         </div>
         <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
@@ -28,8 +33,18 @@
             </ng-container>
 
             <ng-container matColumnDef="sum_points">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Body</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Body ze schůzek</th>
                 <td mat-cell *matCellDef="let element">{{ element.sum_points }} b.</td>
+            </ng-container>
+
+            <ng-container matColumnDef="sum_attendance">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Body za docházku</th>
+                <td mat-cell *matCellDef="let element">{{ element.sum_attendance }} b.</td>
+            </ng-container>
+
+            <ng-container matColumnDef="sum_overall">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Body celkem</th>
+                <td mat-cell *matCellDef="let element">{{ element.sum_overall }} b.</td>
             </ng-container>
 
             <ng-container matColumnDef="actions">

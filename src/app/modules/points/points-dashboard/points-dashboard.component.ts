@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
 import { MemberService } from '../../core/services';
 import { BadgeService } from '../../core/services/badge.service';
@@ -17,29 +18,29 @@ import { AddPointsDialogComponent } from '../add-points-dialog/add-points-dialog
     styleUrls: ['./points-dashboard.component.scss'],
 })
 export class PointsDashboardComponent implements OnInit {
-    displayedColumns: string[] = ['name', 'sum_points', 'actions'];
+    displayedColumns: string[] = ['name', 'sum_points', 'sum_attendance', 'sum_overall', 'actions'];
     displayedBadgesColumns: string[] = ['name', 'badges'];
     loading = false;
     dataSource;
     badgeDataSource;
-    onlyCurrentSchoolyear: boolean = true;
+    sumParams = {
+        currentSchoolyear: true,
+        schoolyearSum: true,
+        schoolyearId: null,
+    }
 
     constructor(
         private pointsService: PointsService,
         private badgeService: BadgeService,
         private memberService: MemberService,
+        private authService: AuthenticationService,
         private snack: MatSnackBar,
         private changeDetectorRefs: ChangeDetectorRef,
         private dialog: MatDialog
     ) {}
 
     ngOnInit(): void {
-        this.loading = true;
-        this.pointsService.getSumForAllMembers().subscribe((points) => {
-            this.dataSource = new MatTableDataSource(points);
-            this.loading = false;
-        });
-
+        this.fetchDataFromServer();
         this.badgeService.getForAllMembers().subscribe((badges) => {
             this.badgeDataSource = new MatTableDataSource(badges);
         });
@@ -115,6 +116,18 @@ export class PointsDashboardComponent implements OnInit {
                     this.loading = false;
                 });
             }
+        });
+    }
+
+    public fetchDataFromServer() {
+        this.loading = true;
+        this.sumParams.schoolyearId = this.authService.getSchoolyear();
+        this.pointsService.getSumForAllMembers(this.sumParams).subscribe((points) => {
+            points.map(p => {
+                p.sum_overall = parseInt(p.sum_points) + parseInt(p.sum_attendance);
+            })
+            this.dataSource = new MatTableDataSource(points);
+            this.loading = false;
         });
     }
 

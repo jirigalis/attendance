@@ -4,7 +4,10 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Points;
 
 use App\Domain\Points\Points;
+use App\Domain\Member\Member;
+use App\Domain\Schoolyear\Schoolyear;
 use App\Domain\Points\PointsRepository;
+use App\Domain\Attendance\AttendanceRepository;
 use App\Domain\DomainException\DomainRecordNotFoundException;
 use App\Domain\DomainException\CannotCreateDomainRecordException;
 use App\Domain\DomainException\WrongParameterException;
@@ -131,8 +134,11 @@ class InMemoryPointsRepository implements PointsRepository
             ;
     }
 
+    /**
+     * Return all members with points sum, no schoolyear restrictions.
+     */
     public function getSumForAllMembers() {
-        return Points::
+        $result = Points::
             join("member", "points.member_id", "=", "member.id")
             ->select(
                 "member_id",
@@ -143,10 +149,51 @@ class InMemoryPointsRepository implements PointsRepository
             ->groupBy("member_id")
             ->orderBy("sum_points", "desc")
             ->get();
+
+        foreach ($result as $r) {
+            $member = Member::find($r->member_id);
+            $r["sum_attendance"] = intval($member->attendance()->count()/2);
+        }
+
+        return $result;        
     }
 
+    /**
+     * Return members of given schoolyear and their points sum during selected schoolyear.
+     */
     public function getSumForAllMembersBySchoolyear($schoolyearId) {
-        return Points::
+        $schoolyear = Schoolyear::find($schoolyearId);
+
+        $result = Points::
+        join("member", "points.member_id", "=", "member.id")
+        ->join("member_schoolyear", "member_schoolyear.member_id", "=", "member.id")
+        ->select(
+            "points.member_id",
+            "member.name",
+            "member.surname",
+            DB::raw("SUM(points) as sum_points")
+        )
+        ->where("member_schoolyear.schoolyear_id", $schoolyearId)
+        ->where("points.created_at", ">=", strtotime($schoolyear->startDate))
+        ->where("points.created_at", "<=", strtotime($schoolyear->endDate))
+        ->groupBy("member_id")
+        ->orderBy("sum_points", "desc")
+        ->get();
+
+        foreach ($result as $r) {
+            $member = Member::find($r->member_id);
+            $r["sum_attendance"] = intval($member->attendanceBySchoolyear($schoolyear->startDate, $schoolyear->endDate)->count()/2);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Return Overall (all years included) Sum for members of the given schoolyear.
+     */
+    public function getOverallSumForAllMembersBySchoolyear($schoolyearId) {
+        $schoolyear = Schoolyear::find($schoolyearId);
+        $result =  Points::
         join("member", "points.member_id", "=", "member.id")
         ->join("member_schoolyear", "member_schoolyear.member_id", "=", "member.id")
         ->select(
@@ -159,11 +206,19 @@ class InMemoryPointsRepository implements PointsRepository
         ->groupBy("member_id")
         ->orderBy("sum_points", "desc")
         ->get();
+
+        foreach ($result as $r) {
+            $member = Member::find($r->member_id);
+            $r["sum_attendance"] = intval($member->attendance()->count()/2);
+        }
+
+        return $result;
     }
 
     public function getSumForAllMembersByRole($role) {
         return Points::
             join("member", "points.member_id", "=", "member.id")
+            ->join("member_schoolyear", "member_schoolyear.member_id", "=", "member.id")
             ->select(
                 "member_id",
                 "member.name",
@@ -176,21 +231,34 @@ class InMemoryPointsRepository implements PointsRepository
             ->get();
     }
 
+    /**
+     * Return sum for all children of the given schoolyear.
+     */
     public function getPublicSum($schoolyearId) {
-        return Points::
+        $schoolyear = Schoolyear::find($schoolyearId);
+        $result = Points::
         join("member", "points.member_id", "=", "member.id")
         ->join("member_schoolyear", "member_schoolyear.member_id", "=", "member.id")
         ->select(
             "points.member_id",
             "member.name",
             "member.surname",
-            DB::raw("SUM(points) as sum_points")
+            DB::raw("SUM(points) as sum_points"),
+            DB::raw("SUM(CASE WHEN `points`.`created_at` >= ".strtotime($schoolyear->startDate)." AND points.created_at <= ".strtotime($schoolyear->endDate)." THEN points END) as sum_points_schoolyear")
         )
         ->where("member.role", 'D')
         ->where("member_schoolyear.schoolyear_id", $schoolyearId)
         ->groupBy("member_id")
         ->orderBy("sum_points", "desc")
         ->get();
+
+        foreach ($result as $r) {
+            $member = Member::find($r->member_id);
+            $r["sum_attendance"] = intval($member->attendance()->count()/2);
+            $r["sum_attendance_schoolyear"] = intval($member->attendanceBySchoolyear($schoolyear->startDate, $schoolyear->endDate)->count()/2);
+        }
+
+        return $result;
     }
 
     public function delete(int $id) {

@@ -43,4 +43,8 @@ export class SchoolyearService {
         return this.http.post(this.apiUrl + `/${schoolyearId}/remove-member`, { memberId: memberId})
     }
 
+    getCurrent(): Observable<Schoolyear> {
+        return this.http.get<Schoolyear>(this.apiUrl + '/current');
+    }
+
 }

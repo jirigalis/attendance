@@ -22,4 +22,6 @@ interface SchoolyearRepository {
     public function addMember($schoolyearId, $memberId);
 
     public function removeMember($schoolyearId, $memberId);
+
+    public function getCurrent();
 }

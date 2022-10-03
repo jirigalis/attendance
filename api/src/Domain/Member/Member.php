@@ -6,6 +6,7 @@ namespace App\Domain\Member;
 use JsonSerializable;
 use App\Domain\Attendance\Attendance;
 use App\Domain\Badge\Badge;
+use App\Domain\Points\Points;
 use App\Domain\Schoolyear\Schoolyear;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
@@ -24,12 +25,20 @@ class Member extends Eloquent
         return $this->hasMany(Attendance::class, 'member_id', 'id');
     }
 
+    public function attendanceBySchoolyear($startDate, $endDate) {
+        return $this->attendance()->whereBetween('date', [$startDate, $endDate]);
+    }
+
     public function badge() {
         return $this->belongsToMany(Badge::class, "member_badge")->withPivot('created_at');
     }
 
     public function schoolyear() {
         return $this->belongsToMany(Schoolyear::class, "member_schoolyear")->withPivot('application', 'paid');
+    }
+
+    public function points() {
+        return $this->hasMany(Points::class, 'member_id', 'id');
     }
 
 }

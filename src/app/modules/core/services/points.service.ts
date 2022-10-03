@@ -23,8 +23,8 @@ export class PointsService {
         return this.http.get(this.apiUrl + '/sum/' + id);
     }
 
-    getSumForAllMembers() {
-        return this.http.get<any>(this.apiUrl + '/sum');
+    getSumForAllMembers(params = {}) {
+        return this.http.get<any>(this.apiUrl + '/sum', {params: params});
     }
 
     getSumForAllMembersByRole(role) {

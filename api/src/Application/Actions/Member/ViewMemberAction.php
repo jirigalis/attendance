@@ -12,12 +12,9 @@ class ViewMemberAction extends MemberAction
      */
     protected function action(): Response
     {
-        $memberId = (int) $this->resolveArg('id');
-        
-        $this->logger->info("Member of id `${memberId}` was viewed.");
-        
+        $memberId = (int) $this->resolveArg('id');        
+        $this->logger->info("Member of id `${memberId}` was viewed.");        
         $member = $this->memberRepository->getById($memberId);
-
         return $this->respondWithData($member);
     }
 }

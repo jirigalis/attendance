@@ -21,6 +21,7 @@ use App\Application\Actions\Attendance\ListAttendanceForDayAction;
 use App\Application\Actions\Attendance\AddAttendanceForDayAction;
 use App\Application\Actions\Attendance\DeleteAttendanceAction;
 use App\Application\Actions\Attendance\GetMembersByAttendanceOrderAction;
+use App\Application\Actions\Attendance\GetAttendancePointsAction;
 
 use App\Application\Actions\Badge\ListBadgesAction;
 use App\Application\Actions\Badge\CreateBadgeAction;
@@ -56,6 +57,7 @@ use App\Application\Actions\Schoolyear\UpdateSchoolyearAction;
 use App\Application\Actions\Schoolyear\GetMembersAction;
 use App\Application\Actions\Schoolyear\AddMemberAction;
 use App\Application\Actions\Schoolyear\RemoveMemberAction;
+use App\Application\Actions\Schoolyear\GetCurrentSchoolyearAction;
 
 use App\Application\Actions\User\AuthenticateUserAction;
 use App\Application\Actions\User\SelectSchoolyearAction;
@@ -96,6 +98,7 @@ return function (App $app) {
 
     $app->group($prefix.'/attendance', function (Group $group) use ($container) {
         $group->get('/best-members', GetMembersByAttendanceOrderAction::class);
+        $group->get('/points/{memberId}[/{schoolyearId}]', GetAttendancePointsAction::class);
         $group->get('[/{date}]', ListAttendanceForDayAction::class);
         $group->post('/{date}', AddAttendanceForDayAction::class);
         $group->delete('', DeleteAttendanceAction::class);
@@ -144,6 +147,7 @@ return function (App $app) {
     $app->group($prefix . '/schoolyear', function (Group $group) use ($container) {
         $group->get('', ListSchoolyearAction::class);
         $group->post('/create', CreateSchoolyearAction::class);
+        $group->get('/current', GetCurrentSchoolyearAction::class);
         $group->get('/{id}', ViewSchoolyearAction::class);
         $group->put('/{id}', UpdateSchoolyearAction::class);
         $group->delete('/{id}', DeleteSchoolyearAction::class);

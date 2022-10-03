@@ -22,6 +22,10 @@ export class AttendanceService {
         return this.http.get<any>(this.apiUrl + '/attendance/best-members');
     }
 
+    getMembersAttendancePoints(memberId: number) {
+        return this.http.get(this.apiUrl + '/attendance/points/' + memberId);
+    }
+
     getAllDates() {
         return this.http.get<any>(this.apiUrl + `/meetingdates`);
     }

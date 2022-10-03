@@ -25,7 +25,7 @@ class Attendance extends Eloquent
     }
 
     public function member() {
-        return $this->belongsTo('App\Domain\Member\Member');
+        return $this->belongsTo(Member::class);
     }
 
 }

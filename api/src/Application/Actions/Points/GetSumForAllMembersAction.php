@@ -13,6 +13,7 @@ class GetSumForAllMembersAction extends PointsAction
 
 		$role = null;
 		$schoolyearId = null;
+		$params = $this->request->getQueryParams();
 		if (isset($this->args["role"])) {
 			$role = $this->args["role"];
 		}
@@ -26,8 +27,17 @@ class GetSumForAllMembersAction extends PointsAction
 			$this->logger->info("Get Sum Points for all members by schoolyearId $schoolyearId.");
 			$data = $this->pointsRepository->getSumForAllMembersBySchoolyear($schoolyearId);
 		} else {
-			$this->logger->info("Get Sum Points for all members without filters.");
-			$data = $this->pointsRepository->getSumForAllMembers();
+			$this->logger->info("Get Sum Points for all members with query params: ". var_export($params, true));
+			if ($params["currentSchoolyear"] == 'false' && $params["schoolyearSum"] == 'false') {
+				$this->logger->info("No filters");
+				$data = $this->pointsRepository->getSumForAllMembers();
+			} else if($params["currentSchoolyear"] == 'true' && $params["schoolyearSum"] == 'false') {
+				$this->logger->info("Overall sum, schoolyear members filtered");
+				$data = $this->pointsRepository->getOverallSumForAllMembersBySchoolyear($params["schoolyearId"]);
+			} else {
+				$this->logger->info("Schoolyear and points filtered");
+				$data = $this->pointsRepository->getSumForAllMembersBySchoolyear($params["schoolyearId"]);
+			}
 		}
 
 		return $this->respondWithData($data);

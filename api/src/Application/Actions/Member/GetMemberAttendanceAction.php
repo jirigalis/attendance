@@ -11,11 +11,8 @@ class GetMemberAttendanceAction extends MemberAction
 	protected function action(): Response
 	{
 		$memberId = (int) $this->resolveArg('id');
-
 		$this->logger->info("Get Attendance for member of id `${memberId}`");
-
 		$data = $this->memberRepository->getAttendance($memberId);
-
 		return $this->respondWithData($data);
 	}
 }

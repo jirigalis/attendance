@@ -143,4 +143,18 @@ class InMemorySchoolyearRepository implements SchoolyearRepository
 
         return $schoolyear->member()->detach($member);
     }
+
+    /**
+     * Get Current schoolyear or return the last available in case of summer holiday.
+     */
+    public function getCurrent() {
+        $today = new \DateTimeImmutable();
+        $currentYear = date('Y');
+        $holidayStart = new \DateTime("$currentYear-07-01");
+        $holidayEnd = new \DateTime("$currentYear-08-31");
+        if ($today >= $holidayStart && $today <= $holidayEnd) {
+            $today = new \DateTimeImmutable("$currentYear-06-20");
+        }
+        return Schoolyear::where('startDate', '<=', $today)->where('endDate', '>=', $today)->first();
+    }
 }

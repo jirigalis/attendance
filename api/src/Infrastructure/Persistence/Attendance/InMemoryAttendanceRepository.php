@@ -6,6 +6,7 @@ namespace App\Infrastructure\Persistence\Attendance;
 use App\Domain\Attendance\Attendance;
 use App\Domain\MeetingDates\MeetingDates;
 use App\Domain\Member\Member;
+use App\Domain\Schoolyear\Schoolyear;
 use App\Domain\Attendance\AttendanceRepository;
 use App\Domain\Attendance\CannotDeleteAttendanceException;
 use App\Domain\Attendance\WrongParameterException;
@@ -90,6 +91,24 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 		}
 
 		return Attendance::whereDate('date', date($date))->where("member_id", $memberId)->delete();
+	}
+
+    /**
+     * Get attendance points for member of given member ID. 
+     * Two attendaces for one point, rounded down (3 attendances = 1 points, 4 att. = 2 points)
+     */
+    public function getAttendancePoints(int $memberId): int {
+        return intval(Attendance::where("member_id", $memberId)->get()->count()/2);
+    }
+
+	/**
+	 * Get attendance points for member in selected schoolyear. Points = count of attendance / 2 rounded down.
+	 */
+	public function getAttendancePointsBySchoolyear(int $memberId, int $schoolyearId): int {
+		$schoolyear = Schoolyear::find($schoolyearId);
+
+		return intval(Attendance::where("member_id", $memberId)
+			->whereBetween("date", [$schoolyear->startDate, $schoolyear->endDate])->get()->count());
 	}
 
     public function getMembersByAttendanceOrder(): object {

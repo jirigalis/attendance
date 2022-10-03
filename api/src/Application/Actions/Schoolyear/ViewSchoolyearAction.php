@@ -12,12 +12,9 @@ class ViewSchoolyearAction extends SchoolyearAction
      */
     protected function action(): Response
     {
-        $schoolyearId = (int) $this->resolveArg('id');
-        
-        $this->logger->info("Schoolyear of id `${schoolyearId}` was viewed.");
-        
+        $schoolyearId = (int) $this->resolveArg('id');        
+        $this->logger->info("Schoolyear of id `${schoolyearId}` was viewed.");        
         $schoolyear = $this->schoolyearRepository->getById($schoolyearId);
-
         return $this->respondWithData($schoolyear);
     }
 }

@@ -1,4 +1,14 @@
-<h1>Bodování oddílu Zálesák Ždánice</h1>
+<div fxLayout="row" fxLayoutAlign="space-between center">
+        <h1>Bodování oddílu Zálesák Ždánice</h1>
+    <div>        
+        <mat-form-field appearance="fill" class="schoolyear-select">
+            <mat-label>Vybraný školní rok</mat-label>
+            <mat-select [(value)]="selectedSchoolyear" (selectionChange)="updateSchoolyear($event.value)">
+                <mat-option *ngFor="let sy of schoolyears" [value]="sy.id">{{sy.label}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
 <div class="table-container mat-elevation-z4">
     <mat-tab-group>
         <mat-tab label="Bodování">
@@ -14,10 +24,16 @@
                 </ng-container>
 
                 <ng-container matColumnDef="sum_points">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Body</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Body celkem</th>
                     <td mat-cell *matCellDef="let element">{{ element.sum_points }} b.</td>
                 </ng-container>
 
+                <ng-container matColumnDef="sum_points_schoolyear">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Body za školní rok</th>
+                    <td mat-cell *matCellDef="let element">{{ element.sum_points_schoolyear ? element.sum_points_schoolyear : 0 }} b.</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns"
                     [ngClass]="{'gray': !even}"></tr>
             </table>

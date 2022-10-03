@@ -25,6 +25,8 @@ return function (ContainerBuilder $containerBuilder) {
                     getenv("API_PREFIX") . '/points/sum/role/D',
                     getenv("API_PREFIX") . '/points/sum/public',
                     getenv("API_PREFIX") . '/badges/members',
+                    getenv("API_PREFIX") . '/schoolyear',
+                    getenv("API_PREFIX") . '/schoolyear/current',
                     getenv("API_PREFIX") . '/aaa'
                 ],
                 'passthrough' => ['/user/authenticate', '/points/sum/role/D'],

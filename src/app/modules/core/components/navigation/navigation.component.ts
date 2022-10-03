@@ -61,7 +61,6 @@ export class NavigationComponent implements OnInit {
     }
 
     public updateSchoolyear(schoolyearId: number) {
-        console.log(schoolyearId, this.authService.getSchoolyear())
         if (schoolyearId !== this.authService.getSchoolyear()) {
             this.authService.selectSchoolyear(schoolyearId);
         }

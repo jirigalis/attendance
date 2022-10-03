@@ -16,4 +16,8 @@ interface AttendanceRepository {
 	public function addAttendanceForMembers(string $date, array $members);
 
     public function getMembersByAttendanceOrder(): object;
+
+	public function getAttendancePoints(int $memberId): int;
+
+	public function getAttendancePointsBySchoolyear(int $memberId, int $schoolyearId): int;
 }

@@ -18,6 +18,8 @@ interface PointsRepository {
     public function getSumForAllMembers();
 
     public function getSumForAllMembersBySchoolyear($schoolyearId);
+
+    public function getOverallSumForAllMembersBySchoolyear($schoolyearId);
     
     public function getSumForAllMembersByRole($role);
 
