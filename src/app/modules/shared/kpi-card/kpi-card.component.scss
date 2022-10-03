@@ -1,0 +1,47 @@
+.icon-wrapper {
+    border-radius: 50px;
+    padding: 15px;
+    .mat-icon {
+        font-size: 32px;
+        height: 32px;
+        width: 32px;
+        vertical-align: middle;
+    }
+}
+
+.mat-card-title {
+    font-size: 32px;
+}
+
+.mat-card-subtitle {
+    margin-bottom: 0;
+}
+
+.icon-wrapper {
+    color: white;
+    &.red { background-color: rgb(244, 67, 54); }
+    &.pink { background-color: rgb(233, 30, 99); }
+    &.purple { background-color: rgb(156, 39, 176); }
+    &.deeppurple { background-color: rgb(103, 58, 183); }
+    &.indigo { background-color: rgb(63, 81, 181); }
+    &.blue { background-color: rgb(33, 150, 243); }
+    &.lightblue { background-color: rgb(3, 169, 244); }
+    &.cyan { background-color: rgb(0, 188, 212); }
+    &.teal { background-color: rgb(0, 150, 136); }
+    &.green { background-color: rgb(76, 175, 80); }
+    &.lightgreen { background-color: rgb(139, 195, 74); }
+    &.lime {
+        background-color: rgb(205, 220, 57);
+        color: black;
+    }
+    &.yellow {
+        background-color: rgb(255, 235, 59);
+        color: black;
+    }
+    &.amber { background-color: rgb(255, 193, 7); }
+    &.orange { background-color: rgb(255, 152, 0); }
+    &.deeporange { background-color: rgb(255, 87, 34); }
+    &.brown { background-color: rgb(121, 85, 72); }
+    &.gray { background-color: rgb(158, 158, 158); }
+    &.bluegray { background-color: rgb(96, 125, 139); }
+}
