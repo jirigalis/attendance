@@ -71,6 +71,7 @@ export class MemberService {
     }
 
     update(member: Member) {
+        member.paid = moment(member.paid).utc(true);
         return this.http.put(this.apiUrl + '/' + member.id, member);
     }
 

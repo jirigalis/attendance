@@ -9,7 +9,7 @@ export class Member implements Deserializable {
     rc: string;
     attendance?: object;
     application: boolean;
-    paid: boolean;
+    paid: moment.Moment;
     gdpr: boolean;
     role: string;
 

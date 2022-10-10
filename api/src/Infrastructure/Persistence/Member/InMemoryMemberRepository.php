@@ -198,7 +198,8 @@ class InMemoryMemberRepository implements MemberRepository
         }
 
         if (isset($data->paid) && $data->schoolyearId) {
-            $member->schoolyear()->syncWithoutDetaching([$data->schoolyearId => ['paid' => $data->paid]]);
+            $dateParsed = date('Y-m-d', strtotime($data->paid));
+            $member->schoolyear()->syncWithoutDetaching([$data->schoolyearId => ['paid' => $dateParsed]]);
             $update = true;
         }
 
