@@ -3,8 +3,8 @@ import { Component, Input, OnInit } from '@angular/core';
 export interface KpiCardSettings {
     label: string;
     value: any;
-    icon: string;
-    color: KpiCardColor;
+    icon?: string;
+    color?: KpiCardColor;
 }
 
 export enum KpiCardColor {
@@ -40,6 +40,14 @@ export class KpiCardComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
+        if (!this.settings.icon) {
+            this.settings.icon = 'bar_chart';
+        }
+
+        if (!this.settings.color) {
+            const enumValues = Object.values(KpiCardColor);
+            this.settings.color = enumValues[Math.floor(Math.random() * (Object.keys(KpiCardColor).length))];
+        }
     }
 
 }

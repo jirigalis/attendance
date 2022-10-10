@@ -41,4 +41,8 @@ export class AttendanceService {
     deleteMeetingDate(id: number) {
         return this.http.delete(this.apiUrl + '/meetingdates/' + id);
     }
+
+    getAverageAttendanceForSchoolyear(schoolyearId: number) {
+        return this.http.get(this.apiUrl + '/attendance/average/' + schoolyearId);
+    }
 }

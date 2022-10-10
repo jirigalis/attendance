@@ -1,8 +1,11 @@
-import { MemberService } from './../../core/services/member.service';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { AttendanceService } from '../../core/services/attendance.service';
+import { forkJoin } from 'rxjs';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
+import { AttendanceService } from '../../core/services/attendance.service';
+import { KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
+import { MemberService } from './../../core/services/member.service';
 
 @Component({
     selector: 'dashboard',
@@ -12,19 +15,45 @@ import { Member } from '../../core/models';
 export class DashboardComponent implements OnInit {
     constructor(
         private memberService: MemberService,
-        private attendanceService: AttendanceService
-    ) {}
+        private attendanceService: AttendanceService,
+        private authService: AuthenticationService,
+    ) { }
     membersLoading = false;
     bestAttendanceLoading = false;
+    averageAttendanceLoading = false;
     membersCountOptions: any;
     membersAgeOptions: any;
+    averageAttendanceOptions: any;
     soonestBirthday: any;
     membersByAttendance;
+    attendanceKpi: KpiCardSettings;
+    registeredMembersKpi: KpiCardSettings;
+    averageAttendanceKpi: KpiCardSettings;
+    attendanceStats;
 
     ngOnInit() {
         moment.locale('cs');
         this.membersLoading = true;
         this.bestAttendanceLoading = true;
+        this.averageAttendanceLoading = true;
+        const schoolyearId = this.authService.getSchoolyear();
+
+        this.attendanceKpi = {
+            label: 'Počet schůzek v tomto roce',
+            value: '',
+            icon: 'event'
+        }
+
+        this.registeredMembersKpi = {
+            label: 'Počet členů v tomto roce',
+            value: '',
+            icon: 'supervisor_account'
+        }
+
+        this.averageAttendanceKpi = {
+            label: 'Průměrná docházka',
+            value: '',
+        }
 
         this.memberService.getAll().subscribe((data: Member[]) => {
             this.membersCountOptions = {
@@ -74,7 +103,7 @@ export class DashboardComponent implements OnInit {
             this.membersAgeOptions = {
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c} osoby',
+                    formatter: '{a} <br/>{b} : {c} osob',
                 },
                 calculable: true,
                 series: [
@@ -98,6 +127,24 @@ export class DashboardComponent implements OnInit {
                 this.membersByAttendance = members;
                 this.bestAttendanceLoading = false;
             });
+
+        const meetingCount$ = this.attendanceService.getAllDatesBySchoolyear(schoolyearId);
+        const averageAttendance$ = this.attendanceService.getAverageAttendanceForSchoolyear(schoolyearId);
+        const membersBySchoolyear$ = this.memberService.getAllBySchoolyear(schoolyearId);
+
+        forkJoin([meetingCount$, averageAttendance$, membersBySchoolyear$]).subscribe(results => {
+            this.attendanceKpi.value = results[0].length;
+            this.attendanceStats = results[1];
+            this.registeredMembersKpi.value = results[2].length;
+
+            const attendanceCount = this.attendanceStats.reduce((prev, current) => {
+                return prev + current.dateCount;
+            }, 0)
+
+            this.averageAttendanceKpi.value = Math.floor((attendanceCount / (this.registeredMembersKpi.value * this.attendanceKpi.value)) * 100) + ' %';
+            this.averageAttendanceOptions = this._getAverageAttendanceData(this.attendanceStats, this.registeredMembersKpi.value);
+            this.averageAttendanceLoading = false;
+        })
     }
 
     private _getSoonestBirthday(members: Member[]) {
@@ -175,5 +222,68 @@ export class DashboardComponent implements OnInit {
         ];
 
         return membersCountData;
+    }
+
+    private _getAverageAttendanceData(data, membersCount) {
+        const xAxisData = data.map(item => moment(item.date).format('D. M. YYYY'));
+        const data1 = data.map(item => item.dateCount);
+        const dataPercentage = data.map(item => Math.floor((item.dateCount / membersCount) * 100));
+
+        const options = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999',
+                    },
+                }
+            },
+            xAxis: {
+                data: xAxisData,
+                silent: false,
+                splitLine: {
+                    show: false,
+                },
+            },
+            yAxis: [
+                {
+                    min: 0,
+                    max: membersCount
+                },
+                {
+                    min: 0,
+                    max: 100,
+                    interval: 20,
+                    axisLabel: {
+                        formatter: '{value} %'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: 'Počet lidí na schůzce',
+                    type: 'bar',
+                    data: data1,
+                    tooltip: {
+                        valueFomratter: val => val + ' lidí'
+                    },
+                    animationDelay: (idx) => idx * 10,
+                },
+                {
+                    name: 'Procenta',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: dataPercentage,
+                    tooltip: {
+                        valueFomratter: val => val + ' %'
+                    }
+                }
+            ],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: (idx) => idx * 5,
+        };
+
+        return options
     }
 }

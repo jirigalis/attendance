@@ -20,4 +20,6 @@ interface AttendanceRepository {
 	public function getAttendancePoints(int $memberId): int;
 
 	public function getAttendancePointsBySchoolyear(int $memberId, int $schoolyearId): int;
+
+	public function getAverageAttendanceForSchoolyear(int $schoolyearId);
 }

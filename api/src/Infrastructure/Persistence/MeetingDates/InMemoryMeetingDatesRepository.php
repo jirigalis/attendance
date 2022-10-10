@@ -61,4 +61,12 @@ class InMemoryMeetingDatesRepository implements MeetingDatesRepository
         }
         return MeetingDates::destroy($id);
     }
+
+    public function getMeetingDatesCountBySchoolyear($schoolyearId) {
+        $schoolyear = Schoolyear::find($schoolyearId);
+        return MeetingDates::
+            where('date', '>=', $schoolyear->startDate)
+            ->where('date', '<=', $schoolyear->endDate)
+            ->orderBy('date')->count();
+    }
 }

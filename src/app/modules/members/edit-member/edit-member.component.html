@@ -41,7 +41,12 @@
                                 <mat-radio-button value="V">Vedoucí</mat-radio-button>
                             </mat-radio-group>
                             <mat-checkbox formControlName="application">Přihláška</mat-checkbox>
-                            <mat-checkbox formControlName="paid">Zaplaceno</mat-checkbox>
+                            <mat-form-field>
+                                <mat-label>Zaplaceno</mat-label>
+                                <input matInput [matDatepicker]="paidPicker" formControlName="paid">
+                                <mat-datepicker-toggle matSuffix [for]="paidPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #paidPicker></mat-datepicker>
+                            </mat-form-field>
                         </div>
                     </div>
                 </mat-card-content>

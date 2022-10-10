@@ -21,6 +21,7 @@ use App\Application\Actions\Attendance\ListAttendanceForDayAction;
 use App\Application\Actions\Attendance\AddAttendanceForDayAction;
 use App\Application\Actions\Attendance\DeleteAttendanceAction;
 use App\Application\Actions\Attendance\GetMembersByAttendanceOrderAction;
+use App\Application\Actions\Attendance\GetAverageAttendanceForSchoolyearAction;
 use App\Application\Actions\Attendance\GetAttendancePointsAction;
 
 use App\Application\Actions\Badge\ListBadgesAction;
@@ -98,6 +99,7 @@ return function (App $app) {
 
     $app->group($prefix.'/attendance', function (Group $group) use ($container) {
         $group->get('/best-members', GetMembersByAttendanceOrderAction::class);
+        $group->get('/average/{schoolyearId}', GetAverageAttendanceForSchoolyearAction::class);
         $group->get('/points/{memberId}[/{schoolyearId}]', GetAttendancePointsAction::class);
         $group->get('[/{date}]', ListAttendanceForDayAction::class);
         $group->post('/{date}', AddAttendanceForDayAction::class);
