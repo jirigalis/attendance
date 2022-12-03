@@ -1,0 +1,26 @@
+<h1 *ngIf="event">Detail akce {{ event.name }}</h1>
+<div class="page-actions" fxLayout="row" fxLayoutGap="16px">
+    <button (click)="goBack()" mat-raised-button color="primary">
+        <mat-icon>arrow_back</mat-icon>
+        Zpět
+    </button>
+    <button (click)="addMembersToEvent()" mat-raised-button color="primary">
+        <mat-icon>person_add</mat-icon>
+        Přidat členy
+    </button>
+</div>
+<div fxLayout="column" fxLayoutGap="24px">
+    <div>
+        <mat-card fxFlex.lt-md="100" fxFlex.gt-sm="60" fxFill>
+            <mat-card-header>
+                <mat-card-title *ngIf="event">Účastníci akce</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-progress-bar mode="indeterminate" *ngIf="participantsLoading"></mat-progress-bar>
+                <table mat-table>
+                    
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

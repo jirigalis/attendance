@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Přidat členy k akci</h2>
+
+<div mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Členové</mat-label>
+        <mat-select [formControl]="selectedMembers" multiple>
+            <mat-option *ngFor="let m of allMembers" [value]="m.id">{{ m.name }} {{ m.surname }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="cancel()">Zrušit</button>
+    <button mat-raised-button (click)="submit()" color="primary">
+        <mat-icon>save</mat-icon>
+        Uložit
+    </button>
+</div>
