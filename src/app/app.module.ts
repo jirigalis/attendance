@@ -25,6 +25,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { MomentModule } from 'ngx-moment';
 import { CoreModule } from './modules/core/core.module';
 import { CUSTOM_DATE_FORMATS } from './modules/core/custom-date-formats';
+import { EventModule } from './modules/event/event.module';
 import { MaterialModule } from './modules/material/material.module';
 import { PointsModule } from './modules/points/points.module';
 import { SchoolyearModule } from './modules/schoolyear/schoolyear.module';
@@ -38,6 +39,7 @@ import { SharedModule } from './modules/shared/shared.module';
         BrowserModule,
         BrowserAnimationsModule,
         CommonModule,
+        EventModule,
         FormsModule,
         ReactiveFormsModule,
         CoreModule,

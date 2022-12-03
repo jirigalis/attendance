@@ -60,6 +60,13 @@ use App\Application\Actions\Schoolyear\AddMemberAction;
 use App\Application\Actions\Schoolyear\RemoveMemberAction;
 use App\Application\Actions\Schoolyear\GetCurrentSchoolyearAction;
 
+use App\Application\Actions\Event\ListEventsAction;
+use App\Application\Actions\Event\CreateEventAction;
+use App\Application\Actions\Event\DeleteEventAction;
+use App\Application\Actions\Event\UpdateEventAction;
+use App\Application\Actions\Event\ViewEventAction;
+use App\Application\Actions\Event\AddMembersToEventAction;
+
 use App\Application\Actions\User\AuthenticateUserAction;
 use App\Application\Actions\User\SelectSchoolyearAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -98,7 +105,7 @@ return function (App $app) {
     });
 
     $app->group($prefix.'/attendance', function (Group $group) use ($container) {
-        $group->get('/best-members', GetMembersByAttendanceOrderAction::class);
+        $group->get('/best-members/{schoolyearId}', GetMembersByAttendanceOrderAction::class);
         $group->get('/average/{schoolyearId}', GetAverageAttendanceForSchoolyearAction::class);
         $group->get('/points/{memberId}[/{schoolyearId}]', GetAttendancePointsAction::class);
         $group->get('[/{date}]', ListAttendanceForDayAction::class);
@@ -156,6 +163,15 @@ return function (App $app) {
         $group->get('/{id}/members', GetMembersAction::class);
         $group->post('/{id}/add-member', AddMemberAction::class);
         $group->post('/{id}/remove-member', RemoveMemberAction::class);
+    });
+
+    $app->group($prefix . '/event', function (Group $group) use ($container) {
+        $group->get('', ListEventsAction::class);
+        $group->post('/create', CreateEventAction::class);
+        $group->get('/{id}', ViewEventAction::class);
+        $group->delete('/{id}', DeleteEventAction::class);
+        $group->put('/{id}', UpdateEventAction::class);
+        $group->post('/{id}/add-members', AddMembersToEventAction::class);
     });
 
     $app->get($prefix.'/{test}', function (Request $request, Response $response, $args) {

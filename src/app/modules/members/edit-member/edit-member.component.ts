@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
 import { MemberService } from '../../core/services';
@@ -20,7 +21,6 @@ import { KpiCardColor, KpiCardSettings } from '../../shared/kpi-card/kpi-card.co
 export class EditMemberComponent implements OnInit {
     memberForm: FormGroup;
     member: Member;
-    attendancePoints;
     displayedColumns: string[] = ['reason', 'points', 'created_at'];
     dataSource: MatTableDataSource<any>;
     badgesColumns: string[] = ['badge_name', 'logo', 'created_at'];
@@ -88,20 +88,23 @@ export class EditMemberComponent implements OnInit {
             this.badgeDataSource = new MatTableDataSource(badges);
         });
 
-        this.pointsService.getByMember(memberId).subscribe((data) => {
-            this.dataSource = new MatTableDataSource(data);
+        const points$ = this.pointsService.getByMember(memberId);
+        const attendancePoints$ = this.attendanceService.getMembersAttendancePoints(memberId);
+
+        forkJoin([points$, attendancePoints$]).subscribe(result => {
+            // prepare datasource for mat-table
+            this.dataSource = new MatTableDataSource(result[0]);
             this.dataSource.sort = this.sort;
             this.loading = false;
+            
+            // calculate sum
             let sum = 0;
-            data.forEach((obj) => sum  += parseInt(obj.points));
-            this.kpiPoints.value = sum;            
-            this.kpiSumPoints.value = sum;            
-        });
-
-        this.attendanceService.getMembersAttendancePoints(memberId).subscribe(points => {
-            this.attendancePoints = points;
-            this.kpiAttendancePoints.value = points;
-            this.kpiSumPoints.value +=points;
+            result[0].forEach((obj) => sum  += parseInt(obj.points));
+            this.kpiPoints.value = sum;
+            
+            //calculate overall sum (attendance points and points)  
+            this.kpiAttendancePoints.value = Number(result[1]);
+            this.kpiSumPoints.value = sum + Number(result[1]);      
         })
     }
 

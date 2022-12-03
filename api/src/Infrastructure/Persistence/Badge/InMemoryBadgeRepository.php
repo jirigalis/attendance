@@ -6,7 +6,7 @@ namespace App\Infrastructure\Persistence\Badge;
 use App\Domain\Badge\Badge;
 use App\Domain\Member\Member;
 use App\Domain\Badge\BadgeRepository;
-use App\Domain\DomainException\DomainRecordNotFound;
+use App\Domain\DomainException\DomainRecordNotFoundException;
 use App\Domain\DomainException\InputNotValidException;
 use App\Domain\DomainException\CannotCreateDomainRecordException;
 use Respect\Validation\Validator as V;
@@ -47,7 +47,7 @@ class InMemoryBadgeRepository implements BadgeRepository
             $badge->save();
             return $badge->id;
         }
-        throw new InvalidInputException();
+        throw new InputNotValidException();
     }
 
     public function update(int $id, object $data)

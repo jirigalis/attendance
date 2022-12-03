@@ -33,6 +33,8 @@ interface MemberRepository
 
     public function getAttendance(int $memberId, int $schoolyearId);
 
+    public function addAttendance(int $id, string $timestamp);
+
     public function delete(int $id);
     
     public function getMembersAddresses();

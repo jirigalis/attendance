@@ -10,7 +10,6 @@ export class Member implements Deserializable {
     attendance?: object;
     application: boolean;
     paid: moment.Moment;
-    gdpr: boolean;
     role: string;
 
     deserialize(input: any) {

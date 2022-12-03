@@ -8,6 +8,7 @@
 
 .sidenav {
     width: 240px;
+    box-shadow: 0 4px 24px 0 rgba(34,41,47,.1);
 }
 
 .mat-toolbar-row,
@@ -36,7 +37,7 @@
 }
 
 .mat-icon {
-    margin: 0 12px;
+    margin: 0 16px 0 2px;
 }
 
 .mat-drawer-side {

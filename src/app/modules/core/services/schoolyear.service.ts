@@ -18,6 +18,8 @@ export class SchoolyearService {
     }
 
     addSchoolyear(schoolyear: Schoolyear) {
+        schoolyear.startDate = moment(schoolyear.startDate).utc(true)
+        schoolyear.endDate = moment(schoolyear.endDate).utc(true)
         return this.http.post(this.apiUrl + '/create', schoolyear);
     }
 

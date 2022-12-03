@@ -9,6 +9,7 @@ use App\Domain\Points\PointsRepository;
 use App\Domain\Reason\ReasonRepository;
 use App\Domain\MeetingDates\MeetingDatesRepository;
 use App\Domain\Schoolyear\SchoolyearRepository;
+use App\Domain\Event\EventRepository;
 use App\Infrastructure\Persistence\Member\InMemoryMemberRepository;
 use App\Infrastructure\Persistence\Attendance\InMemoryAttendanceRepository;
 use App\Infrastructure\Persistence\User\InMemoryUserRepository;
@@ -17,6 +18,7 @@ use App\Infrastructure\Persistence\Points\InMemoryPointsRepository;
 use App\Infrastructure\Persistence\Reason\InMemoryReasonRepository;
 use App\Infrastructure\Persistence\MeetingDates\InMemoryMeetingDatesRepository;
 use App\Infrastructure\Persistence\Schoolyear\InMemorySchoolyearRepository;
+use App\Infrastructure\Persistence\Event\InMemoryEventRepository;
 use DI\ContainerBuilder;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -28,6 +30,7 @@ return function (ContainerBuilder $containerBuilder) {
         PointsRepository::class => \DI\autowire(InMemoryPointsRepository::class),
         ReasonRepository::class => \DI\autowire(InMemoryReasonRepository::class),
         MeetingDatesRepository::class => \DI\autowire(InMemoryMeetingDatesRepository::class),
+        EventRepository::class => \DI\autowire(InMemoryEventRepository::class),
         SchoolyearRepository::class => \DI\autowire(InMemorySchoolyearRepository::class),
     ]);
 };

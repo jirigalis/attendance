@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 html,
@@ -7,10 +8,11 @@ body {
 body {
     margin: 0;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
-    background-color: #f7f7f7;
+    background-color: #f1f2f6;
 }
 
-mat-card {
+mat-card.mat-card {
+    border-radius: 10px;
     &.small {
         max-width: 440px;
     }
@@ -22,6 +24,11 @@ mat-card {
     &.large {
         max-width: 1248px;
     }
+}
+
+mat-card.mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: 0 4px 24px 0 rgba(34,41,47,.1);
+    transition: all .3s ease-in-out,background 0s,color 0s,border-color 0s;
 }
 
 table.mat-table {
@@ -54,7 +61,7 @@ th.mat-sort-header-sorted {
 }
 
 .content-container {
-    padding: 1px 20px;
+    padding: 1px 24px;
     margin-top: 64px;
 
     &.fix-height {

@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -18,7 +18,7 @@ export class NavigationComponent implements OnInit {
     schoolyear: number;
     schoolyears: Schoolyear[];
 
-    isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+    isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.Tablet, Breakpoints.Handset]).pipe(
         map(result => {
             return result.matches;
         }),
@@ -29,7 +29,8 @@ export class NavigationComponent implements OnInit {
         private breakpointObserver: BreakpointObserver,
         private authService: AuthenticationService,
         private schoolyearService: SchoolyearService,
-        private router: Router
+        private router: Router,
+        private cd: ChangeDetectorRef,
     ) {
         router.events
             .pipe(
@@ -39,16 +40,16 @@ export class NavigationComponent implements OnInit {
             .subscribe(_ => this.drawer.close());
     }
 
-    public ngOnInit(): void {
+    public ngOnInit(): void {  
         this.authService.currentUser.subscribe(val => {
             if (this.isLoggedIn()) {
                 this.schoolyearService.getAllSchoolyears().subscribe(schoolyears => {
                     this.schoolyears = schoolyears;
                 });
                 this.schoolyear = this.authService.getSchoolyear();
+                this.cd.detectChanges();
             }
-        })
-        
+        })      
     }
 
     logout() {

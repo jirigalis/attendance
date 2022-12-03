@@ -12,8 +12,9 @@ class GetMembersByAttendanceOrderAction extends AttendanceAction
      */
     protected function action(): Response
     {
+        $schoolyearId = (int) $this->resolveArg('schoolyearId');
         $this->logger->info("Get bets members by attendance.");        
-        $members = $this->attendanceRepository->getMembersByAttendanceOrder();
+        $members = $this->attendanceRepository->getMembersByAttendanceOrder($schoolyearId);
 
         return $this->respondWithData($members);
     }

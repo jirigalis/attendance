@@ -9,7 +9,8 @@ use App\Domain\Member\Member;
 use App\Domain\Schoolyear\Schoolyear;
 use App\Domain\Attendance\AttendanceRepository;
 use App\Domain\Attendance\CannotDeleteAttendanceException;
-use App\Domain\Attendance\WrongParameterException;
+use App\Domain\Member\MemberNotFoundException;
+use App\Domain\Member\WrongParameterException;
 use Illuminate\Database\Capsule\Manager as DB;
 use Respect\Validation\Validator as V;
 
@@ -82,7 +83,7 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 	}
 
 	public function deleteAttendance(int $memberId, string $date) {
-        if (!V::intVal()->validate($id)) {
+        if (!V::intVal()->validate($memberId)) {
             throw new MemberNotFoundException();
 		}
 
@@ -111,14 +112,14 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 			->whereBetween("date", [$schoolyear->startDate, $schoolyear->endDate])->get()->count());
 	}
 
-    public function getMembersByAttendanceOrder(): object {
-		$schoolyear = Schoolyear::find(2);
+    public function getMembersByAttendanceOrder(int $schoolyearId): object {
+		$schoolyear = Schoolyear::find($schoolyearId);
         $members = Member::select("id", "name", "surname")
             ->withCount(['attendance' => function ($query) use ($schoolyear) {
 				$query->whereBetween('attendance.date', [$schoolyear->startDate, $schoolyear->endDate]);
 			}])
 			->orderby("attendance_count", "desc")
-            ->take(10);
+            ->take(15);
         
         return $members->get();
     }

@@ -6,7 +6,7 @@ namespace App\Infrastructure\Persistence\Schoolyear;
 use App\Domain\Schoolyear\Schoolyear;
 use App\Domain\Member\Member;
 use App\Domain\Schoolyear\SchoolyearRepository;
-use App\Domain\DomainException\DomainRecordNotFound;
+use App\Domain\DomainException\DomainRecordNotFoundException;
 use App\Domain\Member\MemberNotFoundException;
 use App\Domain\DomainException\InputNotValidException;
 use App\Domain\Schoolyear\CannotAuthenticateSchoolyearException;

@@ -4,12 +4,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\User;
 
 use App\Domain\User\User;
-use App\Domain\Schoolyear\Schoolyear;
 use App\Domain\User\UserRepository;
-use App\Domain\DomainException\DomainRecordNotFound;
 use App\Domain\DomainException\InputNotValidException;
 use App\Domain\User\CannotAuthenticateUserException;
-use Illuminate\Database\Capsule\Manager as DB;
 use Respect\Validation\Validator as V;
 use Firebase\JWT\JWT;
 

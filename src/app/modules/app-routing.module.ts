@@ -10,6 +10,8 @@ import { AddAttendanceComponent } from './add-attendance/add-attendance.componen
 import { MeetingDatesComponent } from './attendance/meeting-dates/meeting-dates.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+import { EventDetailComponent } from './event/event-detail/event-detail.component';
+import { EventsComponent } from './event/events/events.component';
 import { BadgesComponent } from './points/badges/badges.component';
 import { BodovaniComponent } from './points/bodovani/bodovani.component';
 import { MemberDetailComponent } from './points/member-detail/member-detail.component';
@@ -94,6 +96,16 @@ const routes: Routes = [
             {
                 path: 'settings',
                 component: SettingsComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'events',
+                component: EventsComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'events/:eventId',
+                component: EventDetailComponent,
                 canActivate: [AuthGuard],
             },
         ],

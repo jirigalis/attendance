@@ -8,6 +8,7 @@ use App\Domain\Attendance\Attendance;
 use App\Domain\Badge\Badge;
 use App\Domain\Points\Points;
 use App\Domain\Schoolyear\Schoolyear;
+use App\Domain\Event\Event;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Member extends Eloquent
@@ -39,6 +40,10 @@ class Member extends Eloquent
 
     public function points() {
         return $this->hasMany(Points::class, 'member_id', 'id');
+    }
+
+    public function event() {
+        return $this->belongsToMany(Event::class, 'event_attendance')->withPivot('application', 'paid', 'participated');
     }
 
 }

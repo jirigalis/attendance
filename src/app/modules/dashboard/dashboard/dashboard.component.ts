@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
         const schoolyearId = this.authService.getSchoolyear();
 
         this.attendanceKpi = {
-            label: 'Počet schůzek v tomto roce',
+            label: 'Schůzek v tomto roce',
             value: '',
             icon: 'event'
         }
@@ -122,7 +122,7 @@ export class DashboardComponent implements OnInit {
         });
 
         this.attendanceService
-            .getMembersByAttendanceCount()
+            .getMembersByAttendanceCount(schoolyearId)
             .subscribe((members) => {
                 this.membersByAttendance = members;
                 this.bestAttendanceLoading = false;

@@ -4,7 +4,7 @@
         [opened]="(isHandset$ | async) === false">
         <mat-toolbar class="sidepanel-part" color="primary">
             <button mat-icon-button color="accent" (click)="drawer.toggle()">
-            <mat-icon color="accent">person_outline</mat-icon></button>
+            <mat-icon color="accent">menu</mat-icon></button>
             <span>Attendance</span>
         </mat-toolbar>
         <mat-nav-list>
@@ -18,15 +18,15 @@
                 Členové
             </a>
             <a mat-list-item [routerLink]="['/attendance']" routerLinkActive="list-item-active">
-                <mat-icon>calendar_today</mat-icon>
+                <mat-icon>event_available</mat-icon>
                 Docházka
             </a>
             <a mat-list-item [routerLink]="['/add-attendance']" routerLinkActive="list-item-active">
-                <mat-icon>add_circle_outline</mat-icon>
+                <mat-icon>add_task</mat-icon>
                 Zapsat docházku
             </a>
             <a mat-list-item [routerLink]="['/meeting-dates']" routerLinkActive="list-item-active">
-                <mat-icon>add_calendar</mat-icon>
+                <mat-icon>edit_calendar</mat-icon>
                 Data schůzek
             </a>
             <mat-divider></mat-divider>
@@ -35,8 +35,12 @@
                 Bodování
             </a>
             <a mat-list-item [routerLink]="['/bodovani']" routerLinkActive="list-item-active">
-                <mat-icon>assessment</mat-icon>
+                <mat-icon>public</mat-icon>
                 Veřejné bodování
+            </a>
+            <a mat-list-item [routerLink]="['/events']" routerLinkActive="list-item-active">
+                <mat-icon>event</mat-icon>
+                Akce
             </a>
             <divider-with-text>Obecné</divider-with-text>
             <a mat-list-item [routerLink]="['/badges']" routerLinkActive="list-item-active">

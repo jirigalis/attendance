@@ -5,13 +5,13 @@
         Zpět
     </button>
 </div>
-<div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="16px">
-    <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
-    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="16px" fxLayoutAlign="start start" fxFill>
-            <mat-card fxFlex.lt-sm="100" fxFlex.md="60" fxFlex.gt-md="50" fxFlexOrder.gt-md="1" fxFlexOrder="2">
+<div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="24px">
+    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="24px" fxLayoutAlign="start start">
+        <mat-card fxFlex.lt-md="100" fxFlex.md="60" fxFlex.gt-md="50" fxFlexOrder.gt-md="1" fxFlexOrder="2" fxFill>
+            <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
                 <mat-card-content>
-                    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="50px">
-                        <div fxLayout="column" fxFlex="50" fxLayoutAlign="start start">
+                    <div fxLayout="row wrap" fxLayoutGap="40px">
+                        <div fxLayout="column" fxFlex="50" fxFlex.lt-sm="100" fxFill>
                             <mat-form-field class="full-width">
                                 <input matInput placeholder="Jméno" formControlName="name" required />
                             </mat-form-field>
@@ -34,7 +34,8 @@
                                 <textarea matInput placeholder="requirements" formControlName="requirements"></textarea>
                             </mat-form-field>
                         </div>
-                        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="15px">
+                        <div fxLayout="column" fxLayoutAlign="start start" fxFlex.lt-sm="100" fxLayoutGap="24px grid"
+                            fxLayoutGap="24px">
                             <label>Role:</label>
                             <mat-radio-group formControlName="role">
                                 <mat-radio-button value="D">Dítě</mat-radio-button>
@@ -56,14 +57,14 @@
                         Uložit změny
                     </button>
                 </mat-card-actions>
-            </mat-card>
-            <div fxLayout="column" fxFlexOrder.lt-md="1" fxFlexOrder="2" fxLayoutGap="16px">
-                <kpi-card [settings]="kpiSumPoints"></kpi-card>
-                <kpi-card [settings]="kpiPoints"></kpi-card>
-                <kpi-card [settings]="kpiAttendancePoints"></kpi-card>
-            </div>
+            </form>
+        </mat-card>
+        <div fxLayout="column" fxFlexOrder.lt-md="1" fxFlexOrder="2" fxLayoutGap="24px">
+            <kpi-card [settings]="kpiSumPoints"></kpi-card>
+            <kpi-card [settings]="kpiPoints"></kpi-card>
+            <kpi-card [settings]="kpiAttendancePoints"></kpi-card>
         </div>
-    </form>
+    </div>
     <div fxFill>
         <mat-card>
             <mat-card-header>
