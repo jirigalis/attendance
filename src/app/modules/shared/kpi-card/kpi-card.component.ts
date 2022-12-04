@@ -9,7 +9,7 @@ export interface KpiCardSettings {
 
 export enum KpiCardColor {
     RED = 'red',
-    PINK = '',
+    PINK = 'pink',
     PURPLE = 'purple',
     DEEPPURPLE = 'deeppurple',
     INDIGO = 'indigo',

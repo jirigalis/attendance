@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { EventService } from '../../core/services/event.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { EventDialogComponent } from '../event-dialog/event-dialog.component';
@@ -20,6 +21,7 @@ export class EventsComponent implements OnInit {
         private eventService: EventService,
         private snack: MatSnackBar,
         private cd: ChangeDetectorRef,
+        private r: Router,
         private dialog: MatDialog,
     ) { }
 
@@ -35,7 +37,6 @@ export class EventsComponent implements OnInit {
         const dialogRef = this.dialog.open(EventDialogComponent);
 
         dialogRef.afterClosed().subscribe((event) => {
-            console.log(event);
             if (event) {
                 this.loading = true;
                 this.eventService.add(event).subscribe((res) => {
@@ -79,6 +80,10 @@ export class EventsComponent implements OnInit {
                 });
             }
         });
+    }
+
+    openDetail(eventId) {
+        this.r.navigate(['/events/' + eventId]);
     }
 
     private refresh() {

@@ -48,6 +48,12 @@ export class EditMemberComponent implements OnInit {
         color: KpiCardColor.INDIGO
     }
 
+    kpiAttendancePercentage: KpiCardSettings = {
+        label: 'Docházka',
+        value: '',
+        icon: 'percent',
+    }
+
     constructor(
         private fb: FormBuilder,
         private snack: MatSnackBar,
@@ -90,8 +96,10 @@ export class EditMemberComponent implements OnInit {
 
         const points$ = this.pointsService.getByMember(memberId);
         const attendancePoints$ = this.attendanceService.getMembersAttendancePoints(memberId);
-
-        forkJoin([points$, attendancePoints$]).subscribe(result => {
+        const attendancePercentage$ = this.memberService.getAttendanceById(memberId, this.authService.getSchoolyear());
+        const meetingCount$ = this.attendanceService.getAllDatesBySchoolyear(this.authService.getSchoolyear());
+        
+        forkJoin([points$, attendancePoints$, attendancePercentage$, meetingCount$]).subscribe(result => {
             // prepare datasource for mat-table
             this.dataSource = new MatTableDataSource(result[0]);
             this.dataSource.sort = this.sort;
@@ -104,7 +112,10 @@ export class EditMemberComponent implements OnInit {
             
             //calculate overall sum (attendance points and points)  
             this.kpiAttendancePoints.value = Number(result[1]);
-            this.kpiSumPoints.value = sum + Number(result[1]);      
+            this.kpiSumPoints.value = sum + Number(result[1]);
+
+            //attendance percentage
+            this.kpiAttendancePercentage.value = Math.floor(((<Array<any>>result[2]).length / result[3].length) * 100) + ' %'
         })
     }
 

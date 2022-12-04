@@ -3,11 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
 import { Event } from '../../core/models/event';
 import { MemberService } from '../../core/services';
 import { EventService } from '../../core/services/event.service';
+import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
+import { KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
 import { AddMembersToEventDialogComponent } from '../add-members-to-event-dialog/add-members-to-event-dialog.component';
 
 @Component({
@@ -16,10 +19,14 @@ import { AddMembersToEventDialogComponent } from '../add-members-to-event-dialog
     styleUrls: ['./event-detail.component.scss']
 })
 export class EventDetailComponent implements OnInit {
+    displayedColumns: string[] = ['id', 'name', 'actions'];
     event: Event;
     members: Member[];
+    filteredMembers
     eventMembersDataSource: MatTableDataSource<any>;
-    participantsLoading = false;
+    participantsLoading = true;
+    eventKpi: KpiCardSettings;
+    eventPercentageKpi: KpiCardSettings;
 
     constructor(
         private route: ActivatedRoute,
@@ -32,8 +39,24 @@ export class EventDetailComponent implements OnInit {
 
     ngOnInit() {
         const eventId = this.route.snapshot.paramMap.get('eventId');
-        this.eventService.getById(eventId).subscribe((event: Event) => {
-            this.event = event;
+        const event$ = this.eventService.getById(eventId);
+        const members$ = this.memberService.listNames(this.authService.getSchoolyear());
+
+        forkJoin([event$, members$]).subscribe(results => {
+            this.eventMembersDataSource = new MatTableDataSource(results[0].members);
+            this.event = results[0];
+            this.participantsLoading = false;
+            this.members = results[1];
+            this.eventKpi = {
+                label: 'Počet účastníků',
+                value: this.event.members.length,
+                icon: 'group'
+            };
+            this.eventPercentageKpi = {
+                label: 'Účast v procentech',
+                value: Math.floor((this.event.members.length / this.members.length) * 100) + ' %',
+                icon: 'percent'
+            }
         })
 
         this.memberService.listNames(this.authService.getSchoolyear()).subscribe((members) => {
@@ -46,11 +69,12 @@ export class EventDetailComponent implements OnInit {
     }
 
     public addMembersToEvent() {
-        const dialogRef = this.dialog.open(AddMembersToEventDialogComponent);
+        const dialogRef = this.dialog.open(AddMembersToEventDialogComponent, { data: this.event.members.map(m => m.id) });
         dialogRef.afterClosed().subscribe(res => {
-            console.log(this.event)
+            // this.members = this.members.filter(m => this.event.members.includ)
+
             if (res) {
-                this.eventService.addMembersToSchoolyear({ eventId: this.event.id, members: res})
+                this.eventService.addMembersToEvent({ eventId: this.event.id, members: res})
                     .subscribe(() => {
                         this.refreshMembers();
                     })
@@ -58,10 +82,22 @@ export class EventDetailComponent implements OnInit {
         });
     }
 
+    public removeMember(memberId) {
+        const dialogRef = this.dialog.open(BasicDialogComponent);
+        dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                this.eventService.removeMember(this.event.id, memberId)
+                    .subscribe(() => {
+                        this.refreshMembers();
+                    })
+            }
+        })
+    }
+
     private refreshMembers() {
         this.eventService.getById(this.event.id).subscribe((event: any) => {
             this.event = event;
-            this.eventMembersDataSource.data = event;
+            this.eventMembersDataSource.data = event.members;
         })
     }
 

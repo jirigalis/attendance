@@ -66,6 +66,7 @@ use App\Application\Actions\Event\DeleteEventAction;
 use App\Application\Actions\Event\UpdateEventAction;
 use App\Application\Actions\Event\ViewEventAction;
 use App\Application\Actions\Event\AddMembersToEventAction;
+use App\Application\Actions\Event\RemoveMemberFromEventAction;
 
 use App\Application\Actions\User\AuthenticateUserAction;
 use App\Application\Actions\User\SelectSchoolyearAction;
@@ -92,7 +93,7 @@ return function (App $app) {
         $group->get('/addresses', ListMembersAddressesAction::class);
         $group->get('/role/{role}', GetByRoleAction::class);
         $group->get('/{id}', ViewMemberAction::class);
-        $group->get('/{id}/attendance', GetMemberAttendanceAction::class);
+        $group->get('/{id}/attendance/{schoolyearId}', GetMemberAttendanceAction::class);
         $group->post('/{id}/attendance', AddMemberAttendanceAction::class);
         $group->put('/{id}', UpdateMemberAction::class);
         $group->post('/create', CreateMemberAction::class);
@@ -172,6 +173,7 @@ return function (App $app) {
         $group->delete('/{id}', DeleteEventAction::class);
         $group->put('/{id}', UpdateEventAction::class);
         $group->post('/{id}/add-members', AddMembersToEventAction::class);
+        $group->post('/{id}/remove-member', RemoveMemberFromEventAction::class);
     });
 
     $app->get($prefix.'/{test}', function (Request $request, Response $response, $args) {

@@ -35,7 +35,6 @@ export class BadgesComponent implements OnInit {
         const dialogRef = this.dialog.open(BadgeDialogComponent);
 
         dialogRef.afterClosed().subscribe((badge) => {
-            console.log(badge);
             if (badge) {
                 this.loading = true;
                 this.badgeService.add(badge).subscribe((res) => {

@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
         }
 
         this.registeredMembersKpi = {
-            label: 'Počet členů v tomto roce',
+            label: 'Dětí v tomto roce',
             value: '',
             icon: 'supervisor_account'
         }
@@ -135,7 +135,7 @@ export class DashboardComponent implements OnInit {
         forkJoin([meetingCount$, averageAttendance$, membersBySchoolyear$]).subscribe(results => {
             this.attendanceKpi.value = results[0].length;
             this.attendanceStats = results[1];
-            this.registeredMembersKpi.value = results[2].length;
+            this.registeredMembersKpi.value = results[2].filter(m => m.role === 'D').length;
 
             const attendanceCount = this.attendanceStats.reduce((prev, current) => {
                 return prev + current.dateCount;

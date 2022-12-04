@@ -85,7 +85,6 @@ export class AuthenticationService {
     }
 
     private saveSchoolyearToLS() {
-        console.log(this.currentUserValue)
         localStorage.setItem('schoolyear', this.currentUserValue.schoolyear.toString());
     }
 

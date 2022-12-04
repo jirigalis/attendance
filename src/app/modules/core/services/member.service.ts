@@ -62,8 +62,8 @@ export class MemberService {
         return this.http.get<Member[]>(this.apiUrl + `/schoolyear/${schoolyearId}/attendance`);
     }
 
-    getAttendanceById(id: Number) {
-        return this.http.get(this.apiUrl + `/${id}/attendance`);
+    getAttendanceById(id: Number, schoolyearId: Number) {
+        return this.http.get(this.apiUrl + `/${id}/attendance/${schoolyearId}`);
     }
 
     create(member: Member) {

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 import { Event } from '../models/event';
 import { environment } from './../../../../environments/environment';
 
@@ -22,8 +23,8 @@ export class EventService {
         return this.http.post(this.apiUrl + '/create', event);
     }
 
-    getById(eventId) {
-        return this.http.get(this.apiUrl + `/${eventId}`);
+    getById(eventId): Observable<Event> {
+        return this.http.get<Event>(this.apiUrl + `/${eventId}`);
     }
 
     update(event: Event) {
@@ -36,9 +37,12 @@ export class EventService {
         return this.http.delete(this.apiUrl + '/' + eventId);
     }
 
-    addMembersToSchoolyear(data) {
-        console.log(data);
+    addMembersToEvent(data) {
         return this.http.post(this.apiUrl + `/${data.eventId}/add-members`, { members: data.members });
+    }
+
+    removeMember(eventId, memberId) {
+        return this.http.post(this.apiUrl + `/${eventId}/remove-member`, { id: memberId})
     }
 
 }

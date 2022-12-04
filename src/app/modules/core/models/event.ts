@@ -7,6 +7,7 @@ export class Event implements Deserializable {
     startDate: Moment;
     endDate: Moment;
     description: string;
+    members?: any;
 
     deserialize(input: any) {
         return Object.assign(this, input);

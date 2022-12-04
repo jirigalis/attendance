@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { MemberService } from '../../core/services';
 
@@ -16,12 +16,13 @@ export class AddMembersToEventDialogComponent implements OnInit {
     constructor(
         private memberService: MemberService,
         private a: AuthenticationService,
-        private dialogRef: MatDialogRef<AddMembersToEventDialogComponent>
+        private dialogRef: MatDialogRef<AddMembersToEventDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) public data,
     ) { }
 
     ngOnInit() {
         this.memberService.listNames(this.a.getSchoolyear()).subscribe(members => {
-            this.allMembers = members;
+            this.allMembers = members.filter(m => !this.data.includes(m.id))
         })
     }
 

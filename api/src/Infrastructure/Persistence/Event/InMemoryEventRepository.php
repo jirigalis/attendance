@@ -121,4 +121,13 @@ class InMemoryEventRepository implements EventRepository
 
         return true;
     }
+
+    public function removeMember(int $eventId, int $memberId) {
+        if (!V::intVal()->validate($eventId)) {
+            throw new InputNotValidException('Wrong Event ID');
+        }
+
+        $event = Event::find($eventId);
+        $event->members()->detach($memberId);
+    }
 }
