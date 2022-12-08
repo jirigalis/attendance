@@ -37,7 +37,7 @@ export class NavigationComponent implements OnInit {
                 withLatestFrom(this.isHandset$),
                 filter(([a, b]) => b && a instanceof NavigationEnd)
             )
-            .subscribe(_ => this.drawer.close());
+            .subscribe(_ => this.drawer?.close());
     }
 
     public ngOnInit(): void {  
