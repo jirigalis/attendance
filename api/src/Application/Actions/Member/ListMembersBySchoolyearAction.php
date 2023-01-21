@@ -13,7 +13,7 @@ class ListMembersBySchoolyearAction extends MemberAction
     protected function action(): Response
     {
         $schoolyearId = (int) $this->resolveArg('schoolyearId');
-        $this->logger->info("Members list of schoolyear `${schoolyearId}` was viewed.");        
+        $this->logger->info("Members list of schoolyear `{$schoolyearId}` was viewed.");        
         $members = $this->memberRepository->getBySchoolyear($schoolyearId);
 
         return $this->respondWithData($members);

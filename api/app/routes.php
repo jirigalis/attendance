@@ -16,6 +16,7 @@ use App\Application\Actions\Member\GetMemberAttendanceAction;
 use App\Application\Actions\Member\AddMemberAttendanceAction;
 use App\Application\Actions\Member\GetBadgesAction;
 use App\Application\Actions\Member\AddBadgeAction;
+use App\Application\Actions\Member\ExportAttendanceAction;
 
 use App\Application\Actions\Attendance\ListAttendanceForDayAction;
 use App\Application\Actions\Attendance\AddAttendanceForDayAction;
@@ -103,6 +104,7 @@ return function (App $app) {
         $group->get('/{memberId}/schoolyear/{schoolyearId}', GetByIdAndSchoolyearAction::class);
         $group->get('/schoolyear/{schoolyearId}', ListMembersBySchoolyearAction::class);
         $group->get('/schoolyear/{schoolyearId}/attendance', ListMembersWithAttendanceAction::class);
+        $group->post('/schoolyear/{schoolyearId}/export-attendance', ExportAttendanceAction::class);
     });
 
     $app->group($prefix.'/attendance', function (Group $group) use ($container) {

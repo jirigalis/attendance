@@ -1,0 +1,65 @@
+<h1>Export docházky</h1>
+
+<mat-form-field appearance="fill">
+    <mat-label>Datum od:</mat-label>
+    <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="minDate">
+    <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+    <mat-datepicker #pickerFrom></mat-datepicker>
+</mat-form-field>
+<mat-form-field appearance="fill">
+    <mat-label>Datum do:</mat-label>
+    <input matInput [matDatepicker]="pickerTo" [(ngModel)]="maxDate">
+    <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+    <mat-datepicker #pickerTo></mat-datepicker>
+</mat-form-field>
+<div fxLayout="column" fxLayoutGap="24px">
+    <mat-card class="medium">
+        <mat-card-header>
+            <mat-card-title>Výběr členů pro export</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <transfer-list [allOptions]="members" [(selectedOptions)]="selectedMembers"
+                [config]="listConfig"></transfer-list>
+                
+        </mat-card-content>
+        <mat-card-actions align="start">
+            <div fxLayout="row" fxLayoutGap="24px">
+                <button mat-raised-button (click)="getDataForExport()">Get DATA</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+    <mat-card *ngIf="dataLoaded">
+        <mat-card-header>
+            <button mat-raised-button (click)="printData()">
+                <mat-icon>print</mat-icon>
+                Tisk
+            </button>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="table-container">
+                <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+                <table mat-table [dataSource]="dataSource" *ngIf="!loading" [ngClass]="{'printMe': printMe}">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>Jméno</th>
+                        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                    </ng-container>
+
+                    <ng-container *ngFor="let column of meetingDates" matColumnDef="{{ column }}">
+                        <th mat-header-cell *matHeaderCellDef class="date-header">
+                            <div>{{ column.substr(0,7).replace(' ', '') }}</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="check-column">
+                            <mat-icon *ngIf="element[column]; else notPresent" color="primary">check</mat-icon>
+                            <ng-template #notPresent>
+                                <mat-icon class="dash">-</mat-icon>
+                            </ng-template>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef> {{ getTotalAttendance(dataSource.data, column) }} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: allColumns"></tr>
+                </table>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

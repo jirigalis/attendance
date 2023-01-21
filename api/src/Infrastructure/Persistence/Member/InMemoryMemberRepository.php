@@ -283,4 +283,31 @@ class InMemoryMemberRepository implements MemberRepository
 
         return true;
     }
+
+    public function exportAttendance(int $schoolyearId, array $members) {
+        if (!V::intVal()->validate($schoolyearId)) {
+            throw new InputNotValidException();
+        }
+
+        $result = [];
+        $sy = Schoolyear::find($schoolyearId);
+
+        foreach ($members as $memberId) {
+            $m = Member::find($memberId);
+
+            // filter schoolyears
+            $memberSchoolyear = null;
+            foreach ($m->schoolyear as $y) {
+                if ($y->id === $sy->id) {
+                    $memberSchoolyear = $y->pivot->paid;
+                    break;
+                }
+            }
+            $m->paid = $memberSchoolyear;
+            $m->attendance = $m->attendanceBySchoolyear($m->paid, $sy->endDate)->get();
+            $result[] = $m;
+        };
+
+        return $result;
+    }
 }

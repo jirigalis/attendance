@@ -3,9 +3,19 @@
     display: block;
 }
 
+.login-logo {
+    background-image: url('/assets/logo.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    border-radius: 0%;
+}
+
+.mat-card-subtitle {
+    text-align: left;
+}
+
 .header {
     position: relative;
-    text-align: center;
     background: linear-gradient(60deg, rgba(84, 58, 183, 1) 0%, rgba(0, 172, 193, 1) 100%);
     color: white;
 }

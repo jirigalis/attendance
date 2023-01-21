@@ -1,0 +1,27 @@
+.date-header div {
+    color: #333;
+    transform: rotate(270deg);
+    text-align: center;
+}
+
+@media print {
+    .printMe {
+        td, th {
+            border: 1px solid #333;
+        }
+
+        .mat-column-name {
+            text-align: right;
+            padding-right: 16px;
+        }
+    }
+
+    .check-column {
+        text-align: center;
+        vertical-align: bottom;
+
+        .mat-icon {
+            font-size: 18px;
+        }
+    }
+}

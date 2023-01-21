@@ -6,6 +6,7 @@ import { BasicDialogComponent } from './dialog/basic-dialog/basic-dialog.compone
 import { DividerWithTextComponent } from './divider-with-text/divider-with-text.component';
 import { KpiCardComponent } from './kpi-card/kpi-card.component';
 import { CustomDatePipe } from './pipes/custom-date.pipe';
+import { TransferListComponent } from './transfer-list/transfer-list.component';
 
 @NgModule({
     declarations: [
@@ -13,6 +14,7 @@ import { CustomDatePipe } from './pipes/custom-date.pipe';
         CustomDatePipe,
         DividerWithTextComponent,
         KpiCardComponent,
+        TransferListComponent,
     ],
     imports: [CommonModule, FlexLayoutModule, MaterialModule],
     exports: [
@@ -20,7 +22,8 @@ import { CustomDatePipe } from './pipes/custom-date.pipe';
         CustomDatePipe,
         DividerWithTextComponent,
         KpiCardComponent,
+        TransferListComponent,
     ],
-    entryComponents: [BasicDialogComponent, DividerWithTextComponent],
+    entryComponents: [BasicDialogComponent, DividerWithTextComponent, TransferListComponent],
 })
 export class SharedModule { }

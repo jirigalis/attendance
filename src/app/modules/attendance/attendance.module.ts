@@ -1,12 +1,13 @@
-import { MaterialModule } from './../material/material.module';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { CommonModule } from '@angular/common';
-import { AttendanceComponent } from './attendance.component';
-import { AddAttendanceComponent } from '../add-attendance/add-attendance.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddAttendanceComponent } from '../add-attendance/add-attendance.component';
+import { ExportAttendanceComponent } from '../export-attendance/export-attendance.component';
+import { SharedModule } from '../shared/shared.module';
+import { MaterialModule } from './../material/material.module';
+import { AttendanceComponent } from './attendance.component';
 import { MeetingDatesComponent } from './meeting-dates/meeting-dates.component';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 @NgModule({
     imports: [
@@ -15,11 +16,13 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
         FormsModule,
         ReactiveFormsModule,
         MaterialModule,
+        SharedModule
     ],
     declarations: [
         AttendanceComponent,
         AddAttendanceComponent,
         MeetingDatesComponent,
+        ExportAttendanceComponent,
     ],
 })
 export class AttendanceModule {}

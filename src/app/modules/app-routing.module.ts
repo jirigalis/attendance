@@ -20,6 +20,7 @@ import { ReasonComponent } from './points/reason/reason.component';
 import { SchoolyearMembersComponent } from './schoolyear/schoolyear-members/schoolyear-members.component';
 import { SchoolyearComponent } from './schoolyear/schoolyear/schoolyear.component';
 import { SettingsComponent } from './settings/settings/settings.component';
+import { ExportAttendanceComponent } from './export-attendance/export-attendance.component';
 
 const routes: Routes = [
     {
@@ -54,6 +55,11 @@ const routes: Routes = [
             {
                 path: 'add-attendance',
                 component: AddAttendanceComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'export-attendance',
+                component: ExportAttendanceComponent,
                 canActivate: [AuthGuard],
             },
             {

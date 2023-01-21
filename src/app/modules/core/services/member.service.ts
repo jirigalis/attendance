@@ -62,6 +62,10 @@ export class MemberService {
         return this.http.get<Member[]>(this.apiUrl + `/schoolyear/${schoolyearId}/attendance`);
     }
 
+    getAllForExport(schoolyearId: number, memberIds: number[]): Observable<Member[]> {
+        return this.http.post<Member[]>(this.apiUrl + `/schoolyear/${schoolyearId}/export-attendance`, { memberIds: memberIds});
+    }
+
     getAttendanceById(id: Number, schoolyearId: Number) {
         return this.http.get(this.apiUrl + `/${id}/attendance/${schoolyearId}`);
     }

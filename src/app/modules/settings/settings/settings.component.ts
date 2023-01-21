@@ -8,6 +8,11 @@ import { SettingsService } from '../../core/services';
     templateUrl: './settings.component.html',
 })
 export class SettingsComponent implements OnInit {
+    /*
+    POSSIBLE SETTINGS:
+        week_count - počet týdnů, které se zobrazují na docházce
+        Výběr modulů - bodování, odznaky, pomocník pro hry
+    */
 
     constructor(
         private snack: MatSnackBar,

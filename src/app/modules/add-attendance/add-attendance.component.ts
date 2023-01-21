@@ -15,6 +15,7 @@ export class AddAttendanceComponent implements OnInit {
 
     date = new FormControl(new Date());
     members;
+    selectedMembers = [];
     attendanceForm: FormGroup;
     loading = false;
     submitted = false;

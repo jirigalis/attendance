@@ -97,3 +97,28 @@ img.badge-table {
         width: 100vw;
     }
 }
+
+@media only print {
+    :not(.printMe), :not(.printMe) * {
+        visibility: hidden !important;
+    }
+    .printMe {
+        visibility: visible !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+
+        tr.mat-row {
+            height: 32px;
+        }
+    }
+
+    table.printMe .mat-cell {
+        font-size: 12px;
+    }
+
+    .printMe * {
+        visibility: visible !important;
+    }
+}

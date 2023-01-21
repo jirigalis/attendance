@@ -1,0 +1,17 @@
+.inner-container {
+    height: 250px;
+}
+
+.list-wrapper {
+    overflow: auto;
+
+    h3 {
+        margin-bottom: 0px;
+    }
+}
+
+.mat-action-list {
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 10px;
+    overflow: auto;
+}

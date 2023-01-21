@@ -18,7 +18,7 @@ class UpdateMemberAction extends MemberAction
         $member = $this->memberRepository->update($memberId, json_decode($data));
 
 
-        $this->logger->info("Member of id `${memberId}` was updated to ".var_export($data, true).".");
+        $this->logger->info("Member of id `{$memberId}` was updated to ".var_export($data, true).".");
 
         return $this->respondWithData($member);
     }

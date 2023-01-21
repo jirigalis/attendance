@@ -1,0 +1,23 @@
+<div fxLayout="row" class="inner-container" fxLayoutAlign="space-between start" [style.height]="config.height ? config.height : '350px'">
+    <div fxLayout="column" fxFlex="40" class="list-wrapper" fxFill>
+        <h3 fxFlex="10">{{config.allOptionsLabel ? config.allOptionsLabel : 'Všechny položky:'}}</h3>
+        <mat-action-list #allOptionsList fxFlex="90">
+            <button mat-list-item *ngFor="let item of allOptions" [value]="item" (click)="itemClicked(item)">
+                <ng-container *ngIf="config.getLabel">{{config.getLabel(item)}}</ng-container>
+                <ng-container *ngIf="!config.getLabel">{{item.label}}</ng-container>
+            </button>
+        </mat-action-list>
+    </div>
+    <div fxFlex="20" fxFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <button mat-raised-button color="primary" (click)="selectAll()">Vybrat vše</button>
+        <button mat-raised-button (click)="clear()">Zrušit výběr</button>
+    </div>
+    <div fxLayout="column" fxFlex="40" fxFill class="list-wrapper">
+        <h3 fxFlex="10">{{config.selectedOptionsLabel ? config.selectedOptionsLabel : 'Vybrané položky:'}}</h3>
+        <mat-action-list #selectedOptionsList fxFlex="90">
+            <button mat-list-item *ngFor="let item of selectedOptions" selected (click)="itemClicked(item)">
+                <ng-container *ngIf="config.getLabel">{{config.getLabel(item)}}</ng-container>
+            </button>
+        </mat-action-list>
+    </div>
+</div>

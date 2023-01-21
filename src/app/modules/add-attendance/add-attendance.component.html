@@ -1,4 +1,4 @@
-<h1>Add attendance</h1>
+<h1>Zapsat docházku</h1>
 <mat-card class="small">
     <mat-form-field>
         <input matInput [matDatepicker]="attendanceDate" placeholder="Select date" [formControl]="date" />
@@ -18,7 +18,7 @@
     <mat-divider></mat-divider>
     <mat-card-actions fxLayout="row" fxLayoutAlign="space-between center">
         <div>
-            Members selected: <strong>{{ membersList.selectedOptions.selected.length }}</strong>
+            Vybraní členové: <strong>{{ membersList.selectedOptions.selected.length }}</strong>
         </div>
         <button mat-raised-button color="primary" (click)="onSubmit()">Confirm</button>
     </mat-card-actions>

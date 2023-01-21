@@ -1,13 +1,13 @@
 <div class="header">
-
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <!--Content before waves-->
     <div class="inner-header flex">
-        <div class="login-container" fxLayout="row" fxLayoutAlign="center center">
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <mat-card class="medium">
+        <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100">
+                <mat-card class="medium" fxFlex.gt-md="20" fxFlex.gt-sm="33" fxFlex.gt-xs="60" fxFlex="90">
                     <mat-card-header>
+                        <div mat-card-avatar class="login-logo"></div>
                         <mat-card-title>Attendance</mat-card-title>
-                        <mat-card-subtitle>Sign in</mat-card-subtitle>
+                        <mat-card-subtitle>Přihlásit se</mat-card-subtitle>
                     </mat-card-header>
                     <mat-card-content>
                         <p>
@@ -27,13 +27,16 @@
                         </p>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-raised-button color="accent" [disabled]="loading">Sign in</button>
+                        <button mat-raised-button color="accent" [disabled]="loading">
+                            Přihlásit se
+                            <mat-icon>login</mat-icon>
+                        </button>
                     </mat-card-actions>
                 </mat-card>
-            </form>
+            </div>
         </div>
-    </div>
-
+    </form>
+        
     <!--Waves Container-->
     <div>
         <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
