@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Points } from '../../core/models/points';
 import { MemberService } from '../../core/services';
