@@ -1,8 +1,8 @@
-import { AuthenticationService } from './../../core/authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { AuthenticationService } from './../../core/authentication/authentication.service';
 
 @Component({
     selector: 'app-login-form',

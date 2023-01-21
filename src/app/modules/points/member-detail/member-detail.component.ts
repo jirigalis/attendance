@@ -1,7 +1,6 @@
-import { formatDate } from '@angular/common';
-import { Component, OnInit, ViewChild, LOCALE_ID, Inject } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Member } from '../../core/models';
 import { MemberService } from '../../core/services';

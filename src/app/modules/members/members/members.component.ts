@@ -1,10 +1,10 @@
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MemberService } from '../../core/services';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { MemberService } from '../../core/services';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 
 @Component({
