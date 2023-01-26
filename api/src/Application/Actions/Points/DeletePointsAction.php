@@ -12,7 +12,7 @@ class DeletePointsAction extends PointsAction
 	{
         $pointsId = $this->resolveArg("id");
 
-		$this->logger->info("Delete points of id `${pointsId}`.");
+		$this->logger->info("Delete points of id `$pointsId`.");
 		
 		$data = $this->pointsRepository->delete((int) $pointsId);
 		

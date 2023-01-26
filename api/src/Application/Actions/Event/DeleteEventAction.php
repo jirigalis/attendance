@@ -11,7 +11,7 @@ class DeleteEventAction extends EventAction
 	protected function action(): Response
 	{
         $eventId = $this->resolveArg("id");
-		$this->logger->info("Delete event of id `${eventId}`.");		
+		$this->logger->info("Delete event of id `$eventId`.");		
 		$data = $this->eventRepository->delete((int) $eventId);		
 		return $this->respondWithData($data);
 	}

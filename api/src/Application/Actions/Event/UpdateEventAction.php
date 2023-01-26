@@ -15,7 +15,7 @@ class UpdateEventAction extends EventAction
     {
         $eventId = (int) $this->resolveArg('id');
         $data = $this->request->getBody()->getContents();
-        $this->logger->info("Event of id `${eventId}` update to ".var_export($data, true).".");
+        $this->logger->info("Event of id `eventId` update to ".var_export($data, true).".");
         $event = $this->eventRepository->update($eventId, json_decode($data));
         return $this->respondWithData($event);
     }

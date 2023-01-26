@@ -12,7 +12,7 @@ class DeleteMemberAction extends MemberAction
 	{
         $memberId = $this->resolveArg("id");
 
-		$this->logger->info("Delete member of id `${memberId}`.");
+		$this->logger->info("Delete member of id `$memberId`.");
 		
 		$data = $this->memberRepository->delete((int) $memberId);
 		

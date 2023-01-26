@@ -17,7 +17,7 @@ class AddAttendanceForDayAction extends AttendanceAction
 
         $data = json_decode($this->request->getBody()->getContents());
 
-		$this->logger->info("Add attendance for date `${date}`, add members: ".var_export($data, true));
+		$this->logger->info("Add attendance for date `$date`, add members: ".var_export($data, true));
 
 		$data = $this->attendanceRepository->addAttendanceForMembers($date, $data);
 

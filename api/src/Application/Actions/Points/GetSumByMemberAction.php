@@ -12,7 +12,7 @@ class GetSumByMemberAction extends PointsAction
 	{
 		$memberId = (int) $this->resolveArg('id');
 
-		$this->logger->info("Get Sum Points for member of id `${memberId}`");
+		$this->logger->info("Get Sum Points for member of id `$memberId`");
 
 		$data = $this->pointsRepository->getSumByMember($memberId);
 

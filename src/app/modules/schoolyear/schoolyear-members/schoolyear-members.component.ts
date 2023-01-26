@@ -11,7 +11,7 @@ import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dia
 @Component({
     selector: 'schoolyear-members',
     templateUrl: './schoolyear-members.component.html',
-    styleUrls: ['./schoolyear-members.component.css']
+    styleUrls: ['./schoolyear-members.component.scss']
 })
 export class SchoolyearMembersComponent implements OnInit {
     @ViewChild(MatSort) public sort: MatSort;

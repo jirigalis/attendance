@@ -12,7 +12,7 @@ class DeleteSchoolyearAction extends SchoolyearAction
 	{
         $schoolyearId = $this->resolveArg("id");
 
-		$this->logger->info("Delete schoolyear of id `${schoolyearId}`.");
+		$this->logger->info("Delete schoolyear of id `$schoolyearId`.");
 		
 		$data = $this->schoolyearRepository->delete((int) $schoolyearId);
 		

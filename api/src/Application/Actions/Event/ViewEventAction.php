@@ -13,7 +13,7 @@ class ViewEventAction extends EventAction
     protected function action(): Response
     {
         $eventId = (int) $this->resolveArg('id');        
-        $this->logger->info("Event of id `${eventId}` was viewed.");        
+        $this->logger->info("Event of id `$eventId` was viewed.");        
         $event = $this->eventRepository->getById($eventId);
         return $this->respondWithData($event);
     }

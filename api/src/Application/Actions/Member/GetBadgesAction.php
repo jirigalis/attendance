@@ -13,7 +13,7 @@ class GetBadgesAction extends MemberAction
     protected function action(): Response
     {
         $memberId = $this->resolveArg('id');        
-        $this->logger->info("Get badges of member `${memberId}`.");        
+        $this->logger->info("Get badges of member `$memberId`.");        
         $badges = $this->memberRepository->getBadges($memberId);
 
         return $this->respondWithData($badges);

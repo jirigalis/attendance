@@ -12,7 +12,7 @@ class GetPointsByMemberIdAction extends PointsAction
 	{
 		$memberId = (int) $this->resolveArg('id');
 
-		$this->logger->info("Get Points for member of id `${memberId}`");
+		$this->logger->info("Get Points for member of id `memberId`");
 
 		$data = $this->pointsRepository->getByMember($memberId);
 

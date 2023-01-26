@@ -12,7 +12,7 @@ class DeleteMeetingDatesAction extends MeetingDatesAction
 	{
         $meetingDatesId = $this->resolveArg("id");
 
-		$this->logger->info("Delete meetingDates of id `${meetingDatesId}`.");
+		$this->logger->info("Delete meetingDates of id `$meetingDatesId`.");
 		
 		$data = $this->meetingDatesRepository->delete((int) $meetingDatesId);
 		

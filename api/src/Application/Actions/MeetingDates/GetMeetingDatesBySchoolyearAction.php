@@ -12,7 +12,7 @@ class GetMeetingDatesBySchoolyearAction extends MeetingDatesAction
 	{
 		$schoolyearId = (int) $this->resolveArg('schoolyearId');
 
-		$this->logger->info("Get MeetingDates by schoolyear ID `${schoolyearId}`");
+		$this->logger->info("Get MeetingDates by schoolyear ID `$schoolyearId`");
 
 		$data = $this->meetingDatesRepository->getBySchoolyear($schoolyearId);
 

@@ -18,7 +18,7 @@ class UpdateBadgeAction extends BadgeAction
         $badge = $this->badgeRepository->update($badgeId, json_decode($data));
 
 
-        $this->logger->info("Badge of id `${badgeId}` was updated to ".var_export($data, true).".");
+        $this->logger->info("Badge of id `$badgeId` was updated to ".var_export($data, true).".");
 
         return $this->respondWithData($badge);
     }

@@ -1,17 +1,4 @@
 <h1>Export docházky</h1>
-
-<mat-form-field appearance="fill">
-    <mat-label>Datum od:</mat-label>
-    <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="minDate">
-    <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-    <mat-datepicker #pickerFrom></mat-datepicker>
-</mat-form-field>
-<mat-form-field appearance="fill">
-    <mat-label>Datum do:</mat-label>
-    <input matInput [matDatepicker]="pickerTo" [(ngModel)]="maxDate">
-    <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
-    <mat-datepicker #pickerTo></mat-datepicker>
-</mat-form-field>
 <div fxLayout="column" fxLayoutGap="24px">
     <mat-card class="medium">
         <mat-card-header>
@@ -24,6 +11,18 @@
         </mat-card-content>
         <mat-card-actions align="start">
             <div fxLayout="row" fxLayoutGap="24px">
+                <mat-form-field appearance="fill">
+                    <mat-label>Datum od:</mat-label>
+                    <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="minDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFrom></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Datum do:</mat-label>
+                    <input matInput [matDatepicker]="pickerTo" [(ngModel)]="maxDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerTo></mat-datepicker>
+                </mat-form-field>
                 <button mat-raised-button (click)="getDataForExport()">Get DATA</button>
             </div>
         </mat-card-actions>

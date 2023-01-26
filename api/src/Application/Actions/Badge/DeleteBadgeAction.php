@@ -12,7 +12,7 @@ class DeleteBadgeAction extends BadgeAction
 	{
         $badgeId = $this->resolveArg("id");
 
-		$this->logger->info("Delete badge of id `${badgeId}`.");
+		$this->logger->info("Delete badge of id `$badgeId`.");
 		
 		$data = $this->badgeRepository->delete((int) $badgeId);
 		

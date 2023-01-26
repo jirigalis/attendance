@@ -14,7 +14,7 @@ class UpdateSchoolyearAction extends SchoolyearAction
     {
         $schoolyearId = (int) $this->resolveArg('id');
         $data = $this->request->getBody()->getContents();
-        $this->logger->info("Schoolyear of id `${schoolyearId}` update to ".var_export($data, true).".");
+        $this->logger->info("Schoolyear of id `$schoolyearId` update to ".var_export($data, true).".");
         $parsedData = json_decode($data);
         $schoolyear = $this->schoolyearRepository->update($schoolyearId, $parsedData);
 

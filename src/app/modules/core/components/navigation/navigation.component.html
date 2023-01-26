@@ -78,7 +78,7 @@
                 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
             <div fxFlex fxLayout fxLayoutAlign="flex-end center">
-                <mat-form-field appearance="fill" class="schoolyear-select">
+                <mat-form-field class="schoolyear-select dark-background">
                     <mat-label>Vybraný školní rok</mat-label>
                     <mat-select [(value)]="schoolyear" (selectionChange)="updateSchoolyear($event.value)">
                         <mat-option *ngFor="let sy of schoolyears" [value]="sy.id">{{sy.label}}</mat-option>

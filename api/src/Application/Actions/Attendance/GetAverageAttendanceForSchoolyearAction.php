@@ -13,7 +13,7 @@ class GetAverageAttendanceForSchoolyearAction extends AttendanceAction
     protected function action(): Response
     {
         $schoolyearId = (int) $this->resolveArg('schoolyearId');
-        $this->logger->info("Average Attendance for schoolyear `${schoolyearId}` was viewed.");        
+        $this->logger->info("Average Attendance for schoolyear `$schoolyearId` was viewed.");        
         $result = $this->attendanceRepository->getAverageAttendanceForSchoolyear($schoolyearId);        
         return $this->respondWithData($result);
     }

@@ -10,7 +10,7 @@ class WrongParameterException extends DomainException
     public $message = 'The parameter is not valid';
 
     public function __constructor(string $param) {
-        $this->message = $this->message . ": `${param}`"; 
+        $this->message = $this->message . ": `$param`"; 
     }
 
 }

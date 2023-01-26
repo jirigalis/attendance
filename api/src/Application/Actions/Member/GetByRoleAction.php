@@ -13,7 +13,7 @@ class GetByRoleAction extends MemberAction
     protected function action(): Response
     {
         $role = $this->resolveArg('role');        
-        $this->logger->info("Members of role `${role}` were viewed.");        
+        $this->logger->info("Members of role `$role` were viewed.");
         $members = $this->memberRepository->getByRole($role);
 
         return $this->respondWithData($members);

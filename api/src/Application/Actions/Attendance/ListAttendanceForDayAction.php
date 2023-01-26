@@ -15,7 +15,7 @@ class ListAttendanceForDayAction extends AttendanceAction
 			$date = $this->resolveArg("date");
 		}
 
-		$this->logger->info("Get all attendance for date `${date}`.");
+		$this->logger->info("Get all attendance for date `$date`.");
 		
 		$data = $this->attendanceRepository->getMembersByDate($date);
 		

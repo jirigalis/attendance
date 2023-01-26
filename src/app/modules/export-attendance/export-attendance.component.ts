@@ -56,7 +56,7 @@ export class ExportAttendanceComponent implements OnInit {
                     .filter((d: any) => {
                         return moment(d.date).isBefore(moment(this.maxDate))
                     });
-                console.log(test);
+
                 this.meetingDates = result[0]
                     .map((d: any) => moment(d.date).format('DD. MM. YYYY'));
 

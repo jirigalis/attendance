@@ -12,7 +12,7 @@ class DeleteReasonAction extends ReasonAction
 	{
         $reasonId = $this->resolveArg("id");
 
-		$this->logger->info("Delete reason of id `${reasonId}`.");
+		$this->logger->info("Delete reason of id `$reasonId`.");
 		
 		$data = $this->reasonRepository->delete((int) $reasonId);
 		

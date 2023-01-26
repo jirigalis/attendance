@@ -18,7 +18,7 @@ class SelectSchoolyearAction extends UserAction
         $data = json_decode($this->request->getBody()->getContents());
         $userId = (int) $this->resolveArg('id');
         
-        $this->logger->info("Select schoolyear for user `${userId}`: ".var_export($data, true));
+        $this->logger->info("Select schoolyear for user `$userId`: ".var_export($data, true));
         
         $user = $this->userRepository->selectSchoolyear($userId, $data->schoolyear);
         return $this->respondWithData($user);

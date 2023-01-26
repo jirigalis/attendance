@@ -8,7 +8,6 @@ use App\Domain\Schoolyear\Schoolyear;
 use App\Domain\MeetingDates\MeetingDatesRepository;
 use App\Domain\DomainException\DomainRecordNotFoundException;
 use App\Domain\DomainException\InputNotValidException;
-use App\Domain\DomainException\WrongParameterException;
 use Respect\Validation\Validator as V;
 
 class InMemoryMeetingDatesRepository implements MeetingDatesRepository
@@ -16,7 +15,7 @@ class InMemoryMeetingDatesRepository implements MeetingDatesRepository
     private $meetingDates;
 
     public function __construct(array $meetingDates = null) {
-        $this->reason = MeetingDates::all();
+        $this->meetingDates = MeetingDates::all();
     }
 
     public function findAll() : object {

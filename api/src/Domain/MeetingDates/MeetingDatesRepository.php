@@ -16,4 +16,6 @@ interface MeetingDatesRepository {
     public function delete(int $id);
 
     public function getMeetingDatesCountBySchoolyear($schoolyearId);
+
+    public function getBySchoolyear($schoolyearId);
 }

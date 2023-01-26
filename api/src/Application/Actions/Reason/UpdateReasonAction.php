@@ -15,7 +15,7 @@ class UpdateReasonAction extends ReasonAction
     {
         $reasonId = (int) $this->resolveArg('id');
         $data = $this->request->getBody()->getContents();
-        $this->logger->info("Reason of id `${reasonId}` update to ".var_export($data, true).".");
+        $this->logger->info("Reason of id `$reasonId` update to ".var_export($data, true).".");
         $reason = $this->reasonRepository->update($reasonId, json_decode($data));
         return $this->respondWithData($reason);
     }

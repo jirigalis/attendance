@@ -13,7 +13,7 @@ class GetMembersAction extends SchoolyearAction
     protected function action(): Response
     {
         $schoolyearId = (int) $this->resolveArg('id');        
-        $this->logger->info("Get members of schoolyear `${schoolyearId}`.");        
+        $this->logger->info("Get members of schoolyear `$schoolyearId`.");        
         $badges = $this->schoolyearRepository->getMembers($schoolyearId);
 
         return $this->respondWithData($badges);

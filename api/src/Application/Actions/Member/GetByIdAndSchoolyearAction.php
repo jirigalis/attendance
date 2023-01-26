@@ -14,7 +14,7 @@ class GetByIdAndSchoolyearAction extends MemberAction
     {
         $memberId = (int) $this->resolveArg('memberId');
         $schoolyearId = (int) $this->resolveArg('schoolyearId');        
-        $this->logger->info("Member of id `${memberId}` and `${schoolyearId}` was viewed.");        
+        $this->logger->info("Member of id `$memberId` and schoolyear `$schoolyearId` was viewed.");        
         $member = $this->memberRepository->getByIdAndSchoolyear($memberId, $schoolyearId);
         return $this->respondWithData($member);
     }

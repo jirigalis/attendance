@@ -15,7 +15,7 @@ class UpdatePointsAction extends PointsAction
     {
         $pointsId = (int) $this->resolveArg('id');
         $data = $this->request->getBody()->getContents();
-        $this->logger->info("Points of id `${pointsId}` update to ".var_export($data, true).".");
+        $this->logger->info("Points of id `$pointsId` update to ".var_export($data, true).".");
         $points = $this->pointsRepository->update($pointsId, json_decode($data));
         return $this->respondWithData($points);
     }
