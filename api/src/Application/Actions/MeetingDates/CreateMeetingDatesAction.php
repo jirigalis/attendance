@@ -10,7 +10,7 @@ class CreateMeetingDatesAction extends MeetingDatesAction {
         $data = $this->request->getBody()->getContents();
 
 		$this->logger->info("Creating a new meetingDates: ".var_export($data, true));
-		$meetingDatesId = $this->meetingDatesRepository->create($data);
+		$meetingDatesId = $this->meetingDatesRepository->create(json_decode($data));
 
 		return $this->respondWithData($meetingDatesId);
 	}

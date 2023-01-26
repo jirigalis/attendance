@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Badge;
@@ -15,15 +16,17 @@ class InMemoryBadgeRepository implements BadgeRepository
 {
     private $badges;
 
-    public function __construct(array $badges = null) {
+    public function __construct(array $badges = null)
+    {
         $this->badges = Badge::all();
     }
 
-    public function findAll() : object {
+    public function findAll(): object
+    {
         return $this->badges;
     }
 
-    public function getById(int $id) : Badge
+    public function getById(int $id): Badge
     {
         $badge = Badge::find($id);
 
@@ -52,12 +55,11 @@ class InMemoryBadgeRepository implements BadgeRepository
 
     public function update(int $id, object $data)
     {
-        $badge = $this->getById($id);
-        $update = false;
-
         if (!V::intVal()->validate($id)) {
             throw new DomainRecordNotFoundException();
         }
+        $badge = $this->getById($id);
+        $update = false;
 
         if ($badge->name != $data->name) {
             if (!V::alnumCZ()->validate($data->name)) {
@@ -84,7 +86,8 @@ class InMemoryBadgeRepository implements BadgeRepository
         return $badge;
     }
 
-    public function delete(int $id) {
+    public function delete(int $id)
+    {
         if (!V::intVal()->validate($id)) {
             throw new DomainRecordNotFoundException();
         }
@@ -93,7 +96,8 @@ class InMemoryBadgeRepository implements BadgeRepository
         return $res;
     }
 
-    public function getForAllMembers() {
+    public function getForAllMembers()
+    {
         return Member::has('badge')->with('badge')->get();
     }
 }

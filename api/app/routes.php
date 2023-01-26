@@ -49,6 +49,7 @@ use App\Application\Actions\Reason\UpdateReasonAction;
 use App\Application\Actions\MeetingDates\ListMeetingDatesAction;
 use App\Application\Actions\MeetingDates\GetMeetingDatesBySchoolyearAction;
 use App\Application\Actions\MeetingDates\CreateMeetingDatesAction;
+use App\Application\Actions\MeetingDates\UpdateMeetingDateAction;
 use App\Application\Actions\MeetingDates\DeleteMeetingDatesAction;
 
 use App\Application\Actions\Schoolyear\ListSchoolyearAction;
@@ -68,7 +69,6 @@ use App\Application\Actions\Event\UpdateEventAction;
 use App\Application\Actions\Event\ViewEventAction;
 use App\Application\Actions\Event\AddMembersToEventAction;
 use App\Application\Actions\Event\RemoveMemberFromEventAction;
-
 use App\Application\Actions\User\AuthenticateUserAction;
 use App\Application\Actions\User\SelectSchoolyearAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -152,6 +152,7 @@ return function (App $app) {
     $app->group($prefix . '/meetingdates', function (Group $group) use ($container) {
         $group->get('', ListMeetingDatesAction::class);
         $group->post('/create', CreateMeetingDatesAction::class);
+        $group->put('/{id}', UpdateMeetingDateAction::class);
         $group->get('/{schoolyearId}', GetMeetingDatesBySchoolyearAction::class);
         $group->delete('/{id}', DeleteMeetingDatesAction::class);
     });

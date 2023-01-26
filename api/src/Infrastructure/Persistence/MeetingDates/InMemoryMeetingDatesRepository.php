@@ -43,15 +43,46 @@ class InMemoryMeetingDatesRepository implements MeetingDatesRepository
 
     public function create($data): int
     {
-        $valid = V::date("Y-m-d")->validate($data);
+        $valid = V::date("Y-m-d")->validate($data->date);
 
         if ($valid) {
             $meetingDates = new MeetingDates();
-            $meetingDates->date = $data;
+            $meetingDates->date = $data->date;
+            if (is_null($data->description)) {
+                $meetingDates->description = htmlspecialchars($data->description);
+            }
             $meetingDates->save();
             return $meetingDates->id;
         }
         throw new InputNotValidException();
+    }
+
+    public function update(int $id, $data) {
+        if (!V::intVal()->validate($id)) {
+            throw new DomainRecordNotFoundException();
+        }
+
+        if (!V::date("Y-m-d")->validate($data->date)) {
+            throw new InputNotValidException('date');
+        }
+
+        $meetingDate = $this->getById(($id));
+        $update = false;
+
+        if ($meetingDate->date != $data->date) {
+            $meetingDate->date = $data->date;
+            $update = true;
+        }
+
+        if ($meetingDate->description != $data->description) {
+            $meetingDate->description = htmlspecialchars($data->description);
+            $update = true;
+        }
+
+        if ($update) {
+            $meetingDate->save();
+        }
+        return $meetingDate->id;
     }
 
     public function delete(int $id) {

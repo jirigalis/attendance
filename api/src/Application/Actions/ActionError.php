@@ -103,7 +103,7 @@ class ActionError implements JsonSerializable
     /**
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $payload = [
             'type' => $this->type,

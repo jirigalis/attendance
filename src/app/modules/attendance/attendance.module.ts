@@ -7,6 +7,7 @@ import { ExportAttendanceComponent } from '../export-attendance/export-attendanc
 import { SharedModule } from '../shared/shared.module';
 import { MaterialModule } from './../material/material.module';
 import { AttendanceComponent } from './attendance.component';
+import { MeetingDateDialogComponent } from './meeting-date-dialog/meeting-date-dialog.component';
 import { MeetingDatesComponent } from './meeting-dates/meeting-dates.component';
 
 @NgModule({
@@ -22,6 +23,7 @@ import { MeetingDatesComponent } from './meeting-dates/meeting-dates.component';
         AttendanceComponent,
         AddAttendanceComponent,
         MeetingDatesComponent,
+        MeetingDateDialogComponent,
         ExportAttendanceComponent,
     ],
 })

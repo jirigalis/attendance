@@ -13,6 +13,8 @@ interface MeetingDatesRepository {
 
     public function create($data): int;
 
+    public function update(int $id, $data);
+
     public function delete(int $id);
 
     public function getMeetingDatesCountBySchoolyear($schoolyearId);

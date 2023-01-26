@@ -51,13 +51,10 @@ export class ExportAttendanceComponent implements OnInit {
             const meetingDates$ = this.attendanceService.getAllDatesBySchoolyear(this.auth.getSchoolyear())
             const membersData$ = this.membersService.getAllForExport(this.auth.getSchoolyear(), memberIds);
 
-            forkJoin([meetingDates$, membersData$]).subscribe(result => {   
-                const test = result[0]
-                    .filter((d: any) => {
-                        return moment(d.date).isBefore(moment(this.maxDate))
-                    });
-
+            forkJoin([meetingDates$, membersData$]).subscribe(result => {
+                // filter dates
                 this.meetingDates = result[0]
+                    .filter((d: any) =>  (this.minDate ? moment(d.date).isSameOrAfter(moment(this.minDate)) : true) && moment(d.date).isSameOrBefore(moment(this.maxDate)))
                     .map((d: any) => moment(d.date).format('DD. MM. YYYY'));
 
                 this.allColumns = ['name', ...this.meetingDates];

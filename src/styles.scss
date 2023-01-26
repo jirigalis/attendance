@@ -116,6 +116,9 @@ img.badge-table {
 
     table.printMe .mat-mdc-cell {
         font-size: 12px;
+        .mat-icon {
+            display: inline;
+        }
     }
 
     .printMe * {

@@ -34,8 +34,12 @@ export class AttendanceService {
         return this.http.get<any>(this.apiUrl + `/meetingdates/` + schoolyearId);
     }
 
-    addMeetingDate(date) {
-        return this.http.post(this.apiUrl + `/meetingdates/create`, date);
+    addMeetingDate(date, description) {
+        return this.http.post(this.apiUrl + `/meetingdates/create`, {date, description});
+    }
+    
+    editMeetingDate(meetingDate) {
+        return this.http.put(this.apiUrl + `/meetingdates/${meetingDate.id}`, meetingDate);
     }
 
     deleteMeetingDate(id: number) {
