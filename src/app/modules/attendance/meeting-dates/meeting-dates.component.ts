@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { MeetingDate } from '../../core/models/meeting-date';
 import { AttendanceService } from '../../core/services/attendance.service';
+import { SchoolyearService } from '../../core/services/schoolyear.service';
 import { SnackService } from '../../core/services/snack.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { MeetingDateDialogComponent } from '../meeting-date-dialog/meeting-date-dialog.component';
@@ -15,21 +16,26 @@ import { MeetingDateDialogComponent } from '../meeting-date-dialog/meeting-date-
     styleUrls: ['./meeting-dates.component.scss'],
 })
 export class MeetingDatesComponent implements OnInit {
-    displayedColumns: string[] = ['id', 'date', 'description', 'actions'];
+    displayedColumns: string[] = ['id', 'date', 'length', 'description', 'actions', 'sign'];
     loading = false;
     dataSource;
+    public printMe = false;
+
+    public minDate;
+    public maxDate;
 
     constructor(
         private attendanceService: AttendanceService,
         private authService: AuthenticationService,
+        private schoolyearService: SchoolyearService,
         private snack: SnackService,
         private changeDetectorRefs: ChangeDetectorRef,
         private dialog: MatDialog
     ) { }
 
     ngOnInit(): void {
-        this.loading = true;
         this.getDates();
+        this.loadSchoolyear();
     }
 
     addMeeting() {
@@ -79,13 +85,36 @@ export class MeetingDatesComponent implements OnInit {
         });
     }
 
+    public printMeetings() {
+        this.printMe = true;
+        setTimeout(() => {
+            window.print();
+            this.printMe = false;
+        }, 1000)
+    }
+
     private refresh() {
         this.getDates();
         this.changeDetectorRefs.detectChanges();
     }
 
-    private getDates() {
+    private loadSchoolyear() {
+        this.schoolyearService.getById(this.authService.getSchoolyear()).subscribe(sy => {
+            this.minDate = sy.startDate;
+            this.maxDate = sy.endDate;
+        })
+    }
+
+    public getDates() {
+        this.loading = true;
         this.attendanceService.getAllDatesBySchoolyear(this.authService.getSchoolyear()).subscribe((dates: any) => {
+            if (this.minDate) {
+                dates = dates.filter((d: any) => moment(d.date).isSameOrAfter(this.minDate));
+            }
+            if (this.maxDate) {
+                dates = dates.filter((d: any) => moment(d.date).isSameOrBefore(this.maxDate));
+            }
+
             dates.map(
                 (d) =>
                 (d.date = moment(d.date, 'YYYY-MM-DD hh:mm:ss').format(
