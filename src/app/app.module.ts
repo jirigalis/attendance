@@ -31,6 +31,7 @@ import { PointsModule } from './modules/points/points.module';
 import { SchoolyearModule } from './modules/schoolyear/schoolyear.module';
 import { SettingsModule } from './modules/settings/settings.module';
 import { SharedModule } from './modules/shared/shared.module';
+import { ToolsModule } from './modules/tools/tools.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -59,6 +60,7 @@ import { SharedModule } from './modules/shared/shared.module';
         SettingsModule,
         SharedModule,
         SchoolyearModule,
+        ToolsModule,
         NgxEchartsModule.forRoot({ echarts }),
     ],
     providers: [

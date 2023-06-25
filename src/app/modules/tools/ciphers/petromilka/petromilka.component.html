@@ -1,0 +1,14 @@
+<div fxLayout="column" fxLayoutGap="8px">
+    <cipher-heading [cipherName]="'Petromilka'" [desc]="desc"></cipher-heading>
+    <cipher-encode-part [input]="input" (encodeEvent)="encode($event)">
+        <mat-form-field>
+            <mat-label>Kódové slovo</mat-label>
+            <input matInput [(ngModel)]="codeWord" maxlength="10">
+        </mat-form-field>
+        <mat-slide-toggle [(ngModel)]="startWithZero">
+            Začínat od nuly
+        </mat-slide-toggle>
+    </cipher-encode-part>
+
+    <cipher-decode-part [result]="this.result"></cipher-decode-part>
+</div>

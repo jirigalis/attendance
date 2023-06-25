@@ -168,3 +168,47 @@ img.badge-table {
     }
 }
 
+.full-tab-height .mat-mdc-tab-body-wrapper {
+    height: 100%;
+}
+
+.fullscreen {
+    width: 100vw;
+    height: 100vh;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    z-index: 1000; 
+    background-color: #f3f3f3;
+}
+
+.mat-mdc-cell {
+    .mdc-linear-progress {
+        height: 8px;
+        border-radius: 10px;
+        .mdc-linear-progress__bar-inner {
+            height: 8px;
+            border-top-width: 8px;
+        }
+    }
+
+    mat-progress-bar.red .mdc-linear-progress__bar-inner{
+        border-color: red;
+    }
+    
+    mat-progress-bar.orange .mdc-linear-progress__bar-inner{
+        border-color: orange;
+    }
+
+    mat-progress-bar.yellow .mdc-linear-progress__bar-inner{
+        border-color: rgb(255, 244, 0);
+    }
+
+    mat-progress-bar.lime .mdc-linear-progress__bar-inner{
+        border-color: rgb(153, 241, 0);
+    }
+    
+    mat-progress-bar.green .mdc-linear-progress__bar-inner{
+        border-color: rgb(44, 186, 0);
+    }
+}

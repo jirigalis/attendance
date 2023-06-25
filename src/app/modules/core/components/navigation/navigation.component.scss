@@ -25,7 +25,7 @@
         position: fixed;
         top: 0;
         right: 0;
-        z-index: 998;
+        z-index: 1;
     }
 }
 
@@ -38,6 +38,10 @@
 
 .mat-icon {
     margin: 0 16px 0 2px;
+}
+
+.mdc-list-item mat-icon{
+    vertical-align: bottom;
 }
 
 .mat-drawer-side {

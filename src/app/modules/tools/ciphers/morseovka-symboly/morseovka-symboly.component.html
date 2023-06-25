@@ -1,0 +1,15 @@
+<div fxLayout="column" fxLayoutGap="8px">
+    <cipher-heading [cipherName]="'Morseova abeceda'" [desc]="desc"></cipher-heading>
+    <cipher-encode-part [input]="input" (encodeEvent)="encode($event)">
+        <mat-form-field>
+            <mat-label>Znak pro tečku</mat-label>
+            <input matInput [(ngModel)]="dotChar" maxlength="1">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Znak pro čárku</mat-label>
+            <input matInput [(ngModel)]="dashChar" maxlength="1">
+        </mat-form-field>
+    </cipher-encode-part>
+
+    <cipher-decode-part [result]="this.result"></cipher-decode-part>
+</div>

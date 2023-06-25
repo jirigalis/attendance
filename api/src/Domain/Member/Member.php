@@ -30,6 +30,10 @@ class Member extends Eloquent
         return $this->attendance()->whereBetween('date', [$startDate, $endDate]);
     }
 
+    public function eventAttendanceBySchoolyear($startDate, $endDate) {
+        return $this->event()->where('participated', 1);
+    }
+
     public function badge() {
         return $this->belongsToMany(Badge::class, "member_badge")->withPivot('created_at');
     }

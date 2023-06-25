@@ -1,0 +1,54 @@
+<mat-drawer-container>
+    <mat-drawer-content>
+        <div class="game-wrapper" fxLayout="column" fxLayoutAlign="space-between start" maximize #maximize="maximize">
+            <mat-card>
+                <mat-card-content fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="24px">
+                    <div>
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <label id="example-name-label" class="example-name-label">Veliskot písmena</label>
+                            <label class="example-value-label">{{fontSize}}</label>
+                        </div>
+                        <mat-slider min="1" max="5" step="1">
+                            <input matSliderThumb [(ngModel)]="fontSize" (ngModelChange)="updateLetterSize()">
+                        </mat-slider>
+                    </div>
+                    <mat-slide-toggle [(ngModel)]="useCh" (ngModelChange)="useChUpdate()">Používat CH</mat-slide-toggle>
+                    <mat-slide-toggle [(ngModel)]="useWordCategories" (ngModelChange)="drawer.toggle()">Zapnout
+                        kategorie slov</mat-slide-toggle>
+                    <div>
+                        <p>Nové písmeno: <kbd>Mezerník</kbd></p>
+                        <p>Nové slovo: <kbd>Enter</kbd></p>
+                    </div>
+                    <button mat-raised-button (click)="maximize.maximize()">
+                        <mat-icon class="mat-18">fullscreen</mat-icon>
+                        Fulscreen
+                    </button>
+                </mat-card-content>
+            </mat-card>
+
+            <div class="word-wrapper" *ngIf="useWordCategories" fxFill fxLayoutAlign="center center">
+                <p>{{selectedCategory}}</p>
+            </div>
+
+            <div class="letter-wrapper" fxFill fxLayoutAlign="center center">
+                <letter-generator [config]="letterConfig" #letter></letter-generator>
+            </div>
+        </div>
+    </mat-drawer-content>
+    <mat-drawer class="words-drawer" #drawer mode="side" position="end">
+        <h2>Kategorie slov</h2>
+        <div fxLayout="row">
+            <mat-form-field>
+                <mat-label>Přidat kategorii</mat-label>
+                <input matInput placeholder="Napište název kategorie" name="newWord" #newWord>
+            </mat-form-field>
+            <button mat-icon-button color="primary" (click)="wordList.unshift(newWord.value)">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <mat-selection-list [(ngModel)]="allCategories">
+            <mat-list-option *ngFor="let word of wordList" [value]="word" selected>{{word}}</mat-list-option>
+        </mat-selection-list>
+    </mat-drawer>
+
+</mat-drawer-container>

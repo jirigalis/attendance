@@ -1,0 +1,55 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+export enum ToolsEvents {
+    FULLSCREEN_ON = 'FULLSCREEN_ON',
+    FULLSCREEN_OFF = 'FULLSCREEN_OFF',
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ToolsService {
+    public static ABC = 'abcdefghijklmnopqrstuvwxyz';
+    public static ABC_CH = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'ch', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    public static ABC_CZ = ['a', 'b', 'c', 'č', 'd', 'ď', 'e', 'f', 'g', 'h', 'ch', 'i', 'j', 'k', 'l', 'm', 'n', 'ň', 'o', 'p', 'q', 'r', 'ř', 's', 'š', 't', 'ť', 'u', 'v', 'w', 'x', 'y', 'z', 'ž'];
+
+    public fullscreen: BehaviorSubject<ToolsEvents> = new BehaviorSubject<ToolsEvents>(ToolsEvents.FULLSCREEN_OFF);
+
+    constructor() { }
+
+    public fullscreenOn() {
+        this.fullscreen.next(ToolsEvents.FULLSCREEN_ON);
+    }
+
+    public fullscreenOff() {
+        this.fullscreen.next(ToolsEvents.FULLSCREEN_OFF)
+    }
+
+    public toggleFullscreen() {
+        if (this.fullscreen) {
+            this.fullscreenOff();
+        } else {
+            this.fullscreenOn();
+        }
+    }
+
+    public isFullscreen(): boolean {
+        return this.fullscreen.getValue() === ToolsEvents.FULLSCREEN_ON;
+    }
+
+    public static COMMON_WORDS = [
+        'být', 'a', 'se', 'v', 'na', 'ten', 'on', 'že', 's', 'z', 'který', 'mít', 'do', 'já', 'o', 'k', 'i', 'jeho', 'ale', 'svůj', 'jako', 'za', 'moci', 'rok', 'pro', 'tak', 'po', 'tento', 'co', 'když', 'všechen', 'už', 'jak', 'aby', 'od', 'nebo', 'říci', 'jeden', 'jen', 'můj', 'jenž', 'člověk', 'ty', 'stát', 'u', 'muset', 'velký', 'chtít', 'také', 'až', 'než', 'ještě', 'při', 'jít', 'pak', 'před', 'dva', 'však', 'ani', 'vědět', 'nový', 'hodně', 'podle', 'další', 'celý', 'jiný', 'první', 'mezi', 'dát', 'tady', 'den', 'tam', 'kde', 'doba', 'každý', 'druhý', 'místo', 'dobrý', 'takový', 'strana', 'protože', 'nic', 'začít', 'něco', 'život', 'vidět', 'říkat', 'země', 'dítě', 'malý', 'ne', 'sám', 'bez', 'ruka', 'či', 'svět', 'dostat', 'práce', 'nějaký', 'proto',
+        'pod', 'tři', 'kdy', 'město', 'přijít', 'dobře', 'žena', 'muž', 'teď', 'kdo', 'již', 'nad', 'asi', 'starý', 'například', 'případ', 'vysoký', 'žádný', 'společnost', 'několik', 'některý', 'tedy', 'cesta', 'pokud', 'dělat', 'hlava', 'čas', 'poslední', 'oko', 'právě', 'tvůj', 'Praha', 'věc', 'voda', 'český', 'proti', 'velmi', 'jaký', 'přes', 'dům', 'dnes', 'pan', 'část', 'třeba', 'kdyby', 'brzy', 'lze', 'firma', 'oba', 'slovo', 'tenhle', 'vlastní', 'nikdy', 'koruna', 'možný', 'chvíle', 'udělat', 'pouze', 'proč', 'systém', 'konec', 'kolem', 'málo', 'myslit', 'stejně', -'li', 'Český', 'moc', 'problém', 'milión', 'nikdo', 'stále', 'totiž', 'někdo', 'tisíc', 'vůbec', 'zákon', 'nechat', 'najít', 'což', 'cena', 'rád', 'škola', 'hlavní', 'skupina', 'mladý', 'způsob', 'často', 'řada', 'jediný', 'mluvit', 'vrátit', 'různý', 'hrát', 'snad', 'zůstat', 'vzít', 'dlouhý', 'čekat', 'patřit',
+        'oblast', 'vláda', 'dokonce', 'známý', 'dokázat', 'peníze', 'mnoho', 'otázka', 'vést', 'právo', 'spíše', 'pozdě', 'žít', 'zase', 'především', 'ovšem', 'takže', 'století', 'přece', 'možnost', 'ostatní', 'číslo', 'jenom', 'dále', 'uvést', 'znovu', 'možná', 'služba', 'jestli', 'situace', 'stejný', 'hodiny', 'měsíc', 'získat', 'čtyři', 'jméno', 'dveře', 'daleko', 'otec', 'znát', 'změna', 'evropský', 'většina', 'nakonec', 'nyní', 'noc', 'snažit', 'se', 'síla', 'zde', 'dojít', 'potom', 'znamenat', 'vypadat', 'pět', 'informace', 'americký', 'trochu', 'týden', 'důležitý', 'příliš', 'vztah', 'trh', 'tělo', 'válka', 'hned', 'slyšet', 'téměř', 'dlouho', 'rodina', 'zatím', 'rozhodnout', 'výsledek', 'ano', 'pracovat', 'státní', 'pohled', 'zájem', 'zeptat', 'se', 'ulice', 'potřebovat', 'tvář', 'zdát', 'se', 'kniha', 'důvod', 'hlas', 'film', 'pravda', 'někdy', 'objevit', 'dost', 'základní', 'zcela', 'přitom', 'paní', 'smrt', 'matka', 'sice', 'rychle', 'cítit', 'minuta',
+        'pár', 'procento', 'program', 'určitý', 'večer', 'během', 'existovat', 'kvůli', 'hodnota', 'bílý', 'noha', 'jistý', 'jednou', 'podívat', 'se', 'včera', 'plný', 'člen', 'vlastně', 'lidský', 'sedět', 'podmínka', 'vždy', 'navíc', 'osoba', 'hra', 'počet', 'tehdy', 'republika', 'přímo', 'stav', 'banka', 'politický', 'hodina', 'obraz', 'zejména', 'ať', 'činnost', 'podnik', 'jinak', 'druh', 'soud', 'opět', 'národní', 'úřad', 'podobný', 'deset', 'kromě', 'nejen', 'auto', 'ukázat', 'černý', 'zda', 'platit', 'špatný', 'otevřít', 'vždycky', 'dávat', 'cíl', 'psát', 'chodit', 'jednotlivý', 'sociální', 'považovat', 'současný', 'Evropa', 'neboť', 'Jan', 'zpráva', 'typ', 'policie', 'stačit', 'opravdu', 'skutečnost', 'věřit', 'pocit', 'dílo', 'silný', 'sto', 'spolu', 'německý', 'vedle', 'tvrdit', 'základ', 'pořád', 'bůh', 'prostředí', 'samozřejmě', 'jet', 'zřejmě', 'zjistit', 'světlo', 'smysl', 'směr', 'růst', 'ředitel', 'ráno', 'zatímco', 'myslet', 'láska', 'divadlo',
+        'proces', 'podařit', 'se', 'forma', 'stůl', 'prý', 'pokračovat', 'sem', 'názor', 'těžký', 'okno', 'pomoci', 'světový', 'napsat', 'smlouva', 'veřejný', 'skončit', 'začínat', 'rada', 'ležet', 'přítel', 'kraj', 'úplně', 'třetí', 'odpovědět', 'změnit', 'dodat', 'krásný', 'byt', 'nutný', 'jednat', 'pracovní', 'hledat', 'vývoj', 'prezident', 'role', 'představovat', 'pokoj', 'období', 'nízký', 'přesto', 'vyjít', 'bývalý', 'polovina', 'projekt', 'dívat', 'se', 'připravit', 'takzvaný', 'potřeba', 'používat', 'držet', 'ministr', 'vůz', 'zároveň', 'dosud', 'doktor', 'funkce', 'naopak', 'volba', 'zvláštní', 'jasný', 'syn', 'teprve', 'obec', 'akce', 'zdroj', 'pražský', 'úroveň', 'rozdíl', 'významný', 'trvat', 'hlavně', 'prostor', 'šest', 'řízení', 'stavba', 'životní', 'klub', 'miliarda', 'pomoc', 'prostě', 'organizace', 'vydat', 'bývat', 'tým', 'díky', 'skutečně', 'no', 'centrum', 'začátek', 'přesně', 'srdce', 'krok', 'dosáhnout', 'prostředek', 'postavit', 'obchodní', 'působit', 'materiál', 'odejít', 'společný',
+        'tolik', 'autor', 'domácí', 'náklad', 'návrh', 'kam', 'finanční', 'řešení', 'brát', 'vliv', 'Petr', 'míra', 'zařízení', 'jistě', 'konečně', 'onen', 'výroba', 'mezinárodní', 'zastavit', 'lékař', 'vhodný', 'jednání', 'smět', 'politika', 'půl', 'schopný', 'obchod', 'kolo', 'rovněž', 'zápas', 'umění', 'hranice', 'loď', 'umět', 'vytvořit', 'doma', 'určitě', 'ministerstvo', 'poté', 'postup', 'velice', 'místní', 'zkušenost', 'rodič', 'bod', 'pán', 'tvořit', 'osobní', 'dívka', 'ČR', 'jakýsi', 'výkon', 'mimo', 'svatý', 'Jiří', 'rámec', 'okamžik', 'vedení', 'pohyb', 'obyvatel', 'duch', 'jazyk', 'minulý', 'myšlenka', 'zaměstnanec', 'představit', 'poprvé', 'hudba', 'vzniknout', 'sledovat', 'rozhodnutí', 'věnovat', 'skoro', 'mnohem', 'příští', 'dopis', 'přinést', 'nemocnice', 'řeka', 'zákazník', 'pravý', 'střední', 'množství', 'poznat', 'alespoň', 'prohlásit', 'raději', 'včetně', 'plán', 'síť', 'spojený', 'obrázek', 'strom', 'podoba', 'najednou', 'barva', 'široký', 'stránka', 'krátký',
+        'mnohý', 'budova', 'nabízet', 'vlas', 'list', 'městský', 'součást', 'USA', 'celkový', 'víno', 'televize', 'věk', 'použít', 'úspěch', 'význam', 'podpora', 'šéf', 'moderní', 'příklad', 'článek', 'představa', 'číst', 'ztratit', 'unie', 'přijmout', 'letos', 'úkol', 'slunce', 'zapomenout', 'většinou', 'blízký', 'pes', 'chápat', 'metr', 'les', 'hora', 'bratr', 'de', 'prosit', 'vzduch', 'text', 'přidat', 'přijet', 'jenže', 'dolar', 'schopnost', 'soutěž', 'voják', 'strach', 'hráč', 'avšak', 'mrtvý', 'Německo', 'skutečný', 'dcera', 'zajímavý', 'výstava', 'francouzský', 'jakýkoliv', 'energie', 'zahraniční', 'policista', 'dvacet', 'mluvčí', 'docela', 'počátek', 'boj', 'připadat', 'poslat', 'doprava', 'vnitřní', 'papír', 'koupit', 'uvidět', 'občan', 'Pavel', 'Brno', 'rameno', 'předseda', 'zvíře', 'odpovídat', 'bát', 'se', 'napadnout', 'požadavek', 'metoda', 'moře', 'domů', 'ochrana', 'odpověď', 'přístup', 'zemřít', 'manžel', 'král', 'třída', 'sen', 'ptát', 'se', 'prst', 'vysvětlit', 'jednotka', 'technický',
+        'kultura', 'pole', 'zůstávat', 'Karel', 'právní', 'správný', 'červený', 'krev', 'zhruba', 'jmenovat', 'počítat', 'chlapec', 'silnice', 'stavební', 'pracovník', 'obvykle', 'kolik', 'líbit', 'se', 'hvězda', 'bezpečný', 'rozumět', 'původní', 'obličej', 'provoz', 'látka', 'volný', 'rozvoj', 'radost', 'předmět', 'sedm', 'britský', 'vedoucí', 'šťastný', 'území', 'útok', 'jednoduchý', 'chování', 'přestat', 'příběh', 'jestliže', 'ekonomický', 'událost', 'podobně', 'Josef', 'pomalu', 'řeč', 'název', 'obrovský', 'téma', 'spát', 'stroj', 'milovat', 'pochopit', 'postava', 'průběh', 'zelený', 'dnešní', 'vycházet', 'měnit', 'vojenský', 'závěr', 'postel', 'využít', 'zrovna', 'prodej', 'svoboda', 'běžný', 'stěna', 'vždyť', 'aspoň', 'výše', 'zástupce', 'telefon', 'vybrat', 'pozornost', 'osm', 'zajímat', 'přát', 'model', 'místnost', 'objekt', 'čistý', 'nabídka', 'm', 'ukazovat', 'přesvědčit', 'spousta', 'majitel', 'důsledek', 'nikoliv', 'muzeum', 'zahrada', 'rychlý', 'okolí', 'občas', 'kůň', 'vloni', 'otevřený', 'postupně', 'zmizet',
+        'ostrov', 'živý', 'armáda', 'sloužit', 'příležitost', 'následující', 'kvalita', 'orgán', 'ruský', 'zaplatit', 'kus', 'EU', 'očekávat', 'souvislost', 'pustit', 'komise', 'přicházet', 'vracet', 'fond', 'správa', 'jídlo', 'výrobek', 'příprava', 'l', 'samý', 'hovořit', 'ztráta', 'předtím', 'zpátky', 'samotný', 'fotografie', 'povinnost', 'příjemný', 'provést', 'obrátit', 'úspěšný', 'vůči', 'duše', 'letošní', 'kancelář', 'g', 'historie', 'buď', 'Václav', 'stávat', 'čelo', 'hledisko', 'škoda', 'maso', 'slavný', 'kontrola', 'zboží', 'hluboký', 'přímý', 'uvedený', 'kousek', 'nést', 'struktura', 'zlatý', 'zeď', 'obsahovat', 'řidič', 'příroda', 'někde', 'takhle', 'stanice', 'veškerý', 'sestra', 'ústa', 'uvědomit', 'pravidlo', 'technika', 'historický', 'proud', 'kdysi', 'stupeň', 'vstup', 'znít', 'majetek', 'závod', 'podíl', 'návštěva', 'podstata', 'potvrdit', 'spolupráce', 'předpokládat', 'týkat', 'se', 'snaha', 'manželka', 'způsobit', 'maminka', 'dokud', 'pokus', 'doufat', 'vzhledem', 'daný', 'zbytek', 'datum', 'daň', 'kostel',
+        'položit', 'září', 'šance', 'host', 'technologie', 'dovolit', 'kulturní', 'opatření', 'blízko', 'nástroj', 'půda', 'vytvářet', 'okamžitě', 'vyhrát', 'příčina', 'trenér', 'pouhý', 'projít', 'využívat', 'soukromý', 'žák', 'podat', 'b', 'umožňovat', 'dít', 'zajistit', 'všimnout', 'si', 'rozhovor', 'záda', 'docházet', 'náměstí', 'minulost', 'vysoko', 'veřejnost', 'scéna', 'dovést', 'uvádět', 'štěstí', 'pokusit', 'se', 'hotel', 'konečný', 'odmítnout', 'rozhodně', 'vstoupit', 'zbraň', 'ačkoliv', 'bohatý', 'rychlost', 'most', 'společenský', 'založit', 'aktivita', 'opustit', 'přestože', 'student', 'vzpomínat', 'prvek', 'pohybovat', 'riziko', 'záležitost', 'chovat', 'dostávat', 'nějak', 'mistr', 'jezdit', 'hodit', 'divák', 'neděle', 'obsah', 'cizí', 'výraz', 'vrstva', 'konkrétní', 'připomínat', 'pomáhat', 'dopravní', 'údaj', 'řád', 'počítač', 'pořádek', 'Francie', 'špatně', 'plocha', 'hospodářský', 'ODS', 'naděje', 'tvar', 'příjem', 'západní', 'tlak', 'osud', 'naprosto', 'zabít', 'kámen', 'paragraf', 'policejní', 'kluk', 'chyba', 'bydlet', 'učit',
+    ]
+}
+
+

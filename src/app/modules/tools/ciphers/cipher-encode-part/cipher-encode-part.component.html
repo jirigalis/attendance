@@ -1,0 +1,27 @@
+<mat-card>
+    <mat-card-content fxLayout="row" fxLayoutGap="24px">
+        <div fxLayout="column" fxFlex="75" fxLayoutAlign="start stretch">
+            <mat-form-field>
+                <mat-label>Text k zašifrování</mat-label>
+                <textarea matInput placeholder="Zadejte text k zašifrování" rows="8" [(ngModel)]="input"
+                    (keyup)="keyUpEncode()"></textarea>
+            </mat-form-field>
+        </div>
+        <div fxLayout="column" fxLayoutGap="8px">
+            <!--label>Velikost písma: {{ fontSize }}</label>
+            <mat-slider min="1" max="10" step="1" discrete>
+                <input matSliderThumb [(ngModel)]="fontSize">
+            </mat-slider-->
+            <mat-slide-toggle [(ngModel)]="liveEncoding">
+                Šifrovat přímo
+            </mat-slide-toggle>
+            <button mat-raised-button (click)="encode()">
+                <mat-icon>key</mat-icon>
+                Zašifrovat
+            </button>
+        </div>
+        <div fxLayout="column" fxLayoutGap="8px">
+            <ng-content></ng-content>
+        </div>
+    </mat-card-content>
+</mat-card>

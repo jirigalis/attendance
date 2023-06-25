@@ -183,6 +183,7 @@ class InMemoryPointsRepository implements PointsRepository
         foreach ($result as $r) {
             $member = Member::find($r->member_id);
             $r["sum_attendance"] = intval($member->attendanceBySchoolyear($schoolyear->startDate, $schoolyear->endDate)->count()/2);
+            $r["sum_event_attendance"] = intval($member->eventAttendanceBySchoolyear($schoolyear->startDate, $schoolyear->endDate)->count() * 3);
         }
 
         return $result;

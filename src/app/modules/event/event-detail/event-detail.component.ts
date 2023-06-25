@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
@@ -19,13 +20,15 @@ import { AddMembersToEventDialogComponent } from '../add-members-to-event-dialog
     styleUrls: ['./event-detail.component.scss']
 })
 export class EventDetailComponent implements OnInit {
-    displayedColumns: string[] = ['id', 'name', 'actions'];
+    @ViewChild(MatSort) sort: MatSort;
+    displayedColumns: string[] = ['name', 'role', 'actions'];
     event: Event;
     members: Member[];
     filteredMembers
     eventMembersDataSource: MatTableDataSource<any>;
     participantsLoading = true;
-    eventKpi: KpiCardSettings;
+    eventChildKpi: KpiCardSettings;
+    eventAdultKpi: KpiCardSettings;
     eventPercentageKpi: KpiCardSettings;
 
     constructor(
@@ -44,12 +47,18 @@ export class EventDetailComponent implements OnInit {
 
         forkJoin([event$, members$]).subscribe(results => {
             this.eventMembersDataSource = new MatTableDataSource(results[0].members);
+            this.eventMembersDataSource.sort = this.sort;
             this.event = results[0];
             this.participantsLoading = false;
             this.members = results[1];
-            this.eventKpi = {
-                label: 'Počet účastníků',
-                value: this.event.members.length,
+            this.eventChildKpi = {
+                label: 'Počet dětí',
+                value: this.event.members.filter(m => m.role === 'D').length,
+                icon: 'group'
+            };
+            this.eventAdultKpi = {
+                label: 'Počet vedoucích',
+                value: this.event.members.filter(m => m.role === 'V').length,
                 icon: 'group'
             };
             this.eventPercentageKpi = {
@@ -71,8 +80,6 @@ export class EventDetailComponent implements OnInit {
     public addMembersToEvent() {
         const dialogRef = this.dialog.open(AddMembersToEventDialogComponent, { data: this.event.members.map(m => m.id) });
         dialogRef.afterClosed().subscribe(res => {
-            // this.members = this.members.filter(m => this.event.members.includ)
-
             if (res) {
                 this.eventService.addMembersToEvent({ eventId: this.event.id, members: res})
                     .subscribe(() => {
@@ -98,6 +105,7 @@ export class EventDetailComponent implements OnInit {
         this.eventService.getById(this.event.id).subscribe((event: any) => {
             this.event = event;
             this.eventMembersDataSource.data = event.members;
+            this.eventMembersDataSource.sort = this.sort;
         })
     }
 

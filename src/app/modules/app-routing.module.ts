@@ -12,6 +12,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { EventDetailComponent } from './event/event-detail/event-detail.component';
 import { EventsComponent } from './event/events/events.component';
+import { ExportAttendanceComponent } from './export-attendance/export-attendance.component';
 import { BadgesComponent } from './points/badges/badges.component';
 import { BodovaniComponent } from './points/bodovani/bodovani.component';
 import { MemberDetailComponent } from './points/member-detail/member-detail.component';
@@ -20,7 +21,8 @@ import { ReasonComponent } from './points/reason/reason.component';
 import { SchoolyearMembersComponent } from './schoolyear/schoolyear-members/schoolyear-members.component';
 import { SchoolyearComponent } from './schoolyear/schoolyear/schoolyear.component';
 import { SettingsComponent } from './settings/settings/settings.component';
-import { ExportAttendanceComponent } from './export-attendance/export-attendance.component';
+import { CiphersComponent } from './tools/ciphers/ciphers.component';
+import { GamesComponent } from './tools/games/games.component';
 
 const routes: Routes = [
     {
@@ -105,6 +107,11 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
             },
             {
+                path: 'games',
+                component: GamesComponent,
+                canActivate: [AuthGuard],
+            },
+            {
                 path: 'events',
                 component: EventsComponent,
                 canActivate: [AuthGuard],
@@ -112,6 +119,11 @@ const routes: Routes = [
             {
                 path: 'events/:eventId',
                 component: EventDetailComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'ciphers',
+                component: CiphersComponent,
                 canActivate: [AuthGuard],
             },
         ],

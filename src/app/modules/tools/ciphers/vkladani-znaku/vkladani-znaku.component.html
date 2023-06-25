@@ -1,0 +1,11 @@
+<div fxLayout="column" fxLayoutGap="8px">
+  <cipher-heading [cipherName]="'Vkládání znaků'" [desc]="desc"></cipher-heading>
+  <cipher-encode-part [input]="input" (encodeEvent)="encode($event)">
+      <mat-form-field>
+          <mat-label>Falešné znaky:</mat-label>
+          <input matInput [(ngModel)]="falseString" maxlength="10">
+      </mat-form-field>
+  </cipher-encode-part>
+
+  <cipher-decode-part [result]="this.result"></cipher-decode-part>
+</div>

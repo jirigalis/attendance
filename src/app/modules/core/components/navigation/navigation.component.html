@@ -46,6 +46,13 @@
                 <mat-icon>event</mat-icon>
                 Akce
             </a>
+            <divider-with-text>Nástroje</divider-with-text>
+            <a mat-list-item [routerLink]="['/games']" routerLinkActive="list-item-active">
+                <mat-icon>extension</mat-icon>Hry
+            </a>
+            <a mat-list-item [routerLink]="['/ciphers']" routerLinkActive="list-item-active">
+                <mat-icon>vpn_key</mat-icon>Šifry
+            </a>
             <divider-with-text>Obecné</divider-with-text>
             <a mat-list-item [routerLink]="['/badges']" routerLinkActive="list-item-active">
                 <mat-icon>local_police</mat-icon>

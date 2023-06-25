@@ -7,7 +7,7 @@ export class Member implements Deserializable {
     surname: string;
     contact: string;
     rc: string;
-    attendance?: object;
+    attendance?: any;
     application: boolean;
     paid: moment.Moment;
     role: string;
@@ -42,6 +42,16 @@ export class Member implements Deserializable {
         }
         
         return "" + dayStr + ". " + month + ". " + yearStr;
+    }
+
+    getNearestBirthday(): string {
+        const birthday = moment(this.getBirthday(), "DD. MM.");
+        const today = moment();
+        const nextBirthday = moment(birthday).year(today.year());
+        if (nextBirthday.isBefore(today)) {
+            nextBirthday.add(1, "year");
+        }
+        return nextBirthday.format("D. M. YYYY");
     }
 
     hadBirthdayThisYear(): boolean {

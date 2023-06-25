@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { MeetingDate } from '../../core/models/meeting-date';
 
@@ -17,7 +17,6 @@ export class MeetingDateDialogComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        console.log(this.data);
         if (this.data) {
             this.meetingDate.id = this.data.id;
             this.meetingDate.date = moment(this.data.date, 'DD. MM. YYYY')

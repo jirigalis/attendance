@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
@@ -20,6 +21,7 @@ import { AddPointsDialogComponent } from '../add-points-dialog/add-points-dialog
 export class PointsDashboardComponent implements OnInit {
     displayedColumns: string[] = ['name', 'sum_points', 'sum_attendance', 'sum_overall', 'actions'];
     displayedBadgesColumns: string[] = ['name', 'badges'];
+    @ViewChild(MatSort) sort: MatSort;
     loading = false;
     dataSource;
     badgeDataSource;
@@ -124,9 +126,11 @@ export class PointsDashboardComponent implements OnInit {
         this.sumParams.schoolyearId = this.authService.getSchoolyear();
         this.pointsService.getSumForAllMembers(this.sumParams).subscribe((points) => {
             points.map(p => {
-                p.sum_overall = parseInt(p.sum_points) + parseInt(p.sum_attendance);
+                p.sum_overall = parseInt(p.sum_points) + parseInt(p.sum_attendance) + parseInt(p.sum_event_attendance);
+                p.sum_overall_attendance = parseInt(p.sum_attendance) + parseInt(p.sum_event_attendance);
             })
             this.dataSource = new MatTableDataSource(points);
+            this.dataSource.sort = this.sort;
             this.loading = false;
         });
     }

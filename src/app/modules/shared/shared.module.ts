@@ -7,6 +7,7 @@ import { DividerWithTextComponent } from './divider-with-text/divider-with-text.
 import { KpiCardComponent } from './kpi-card/kpi-card.component';
 import { CustomDatePipe } from './pipes/custom-date.pipe';
 import { TransferListComponent } from './transfer-list/transfer-list.component';
+import { MaximizeDirective } from './maximize.directive';
 
 @NgModule({
     declarations: [
@@ -15,6 +16,7 @@ import { TransferListComponent } from './transfer-list/transfer-list.component';
         DividerWithTextComponent,
         KpiCardComponent,
         TransferListComponent,
+        MaximizeDirective
     ],
     imports: [CommonModule, FlexLayoutModule, MaterialModule],
     exports: [
@@ -22,6 +24,7 @@ import { TransferListComponent } from './transfer-list/transfer-list.component';
         CustomDatePipe,
         DividerWithTextComponent,
         KpiCardComponent,
+        MaximizeDirective,
         TransferListComponent,
     ],
     entryComponents: [BasicDialogComponent, DividerWithTextComponent, TransferListComponent],

@@ -1,0 +1,11 @@
+<div fxLayout="column" fxLayoutGap="8px">
+    <cipher-heading [cipherName]="'Každé x-té písmeno'" [desc]="desc"></cipher-heading>
+    <cipher-encode-part [input]="input" (encodeEvent)="encode($event)">
+        <mat-form-field>
+            <mat-label>Každé x-té písmeno:</mat-label>
+            <input matInput type="number" [(ngModel)]="count" min="1" max="10">
+        </mat-form-field>
+    </cipher-encode-part>
+
+    <cipher-decode-part [result]="this.result"></cipher-decode-part>
+</div>

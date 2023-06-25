@@ -1,0 +1,22 @@
+<mat-card>
+    <mat-card-content fxLayout="row" fxLayoutGap="24px">
+        <div fxLayout="columm" fxFlex="75">
+            <mat-form-field fxFill>
+                <mat-label>Zašifrovaný text:</mat-label>
+                <textarea matInput placeholder="Výsledek" rows="8" [(ngModel)]="result"></textarea>
+            </mat-form-field>
+        </div>
+        <div fxLayout="column" fxLayoutGap="8px">
+            <button mat-raised-button (click)="clearResult()">
+                <mat-icon>clear</mat-icon>
+                Vymazat
+            </button>
+            <button mat-raised-button (click)="copyToClipboard()">
+                <mat-icon>content_copy</mat-icon>Kopírovat
+            </button>
+        </div>        
+        <div fxLayout="column" fxLayoutGap="8px">
+            <ng-content></ng-content>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -119,7 +119,7 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 				$query->whereBetween('attendance.date', [$schoolyear->startDate, $schoolyear->endDate]);
 			}])
 			->orderby("attendance_count", "desc")
-            ->take(15);
+            ;
         
         return $members->get();
     }

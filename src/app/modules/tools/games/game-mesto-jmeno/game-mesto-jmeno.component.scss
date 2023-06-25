@@ -1,0 +1,30 @@
+.game-wrapper {
+    min-height: 700px;
+}
+
+mat-slider {
+    width: 250px;
+    margin-left: 20px;
+}
+
+.game-wrapper {
+    margin-top: 16px;
+}
+
+.words-drawer {
+    padding: 24px;
+}
+
+.word-wrapper {
+    font-size: 8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.mat-drawer-container {
+    height: 100%;
+}
+
+.mat-mdc-tab-body {
+    height: 100%;
+}

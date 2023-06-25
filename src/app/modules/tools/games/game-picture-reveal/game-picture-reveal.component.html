@@ -1,0 +1,43 @@
+<div class="game-wrapper" fxLayout="column" fxLayoutAlign="space-between stretch" maximize #maximize="maximize">
+    <mat-card fxFill>
+        <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
+            <mat-form-field fxFlex="30">
+                <div>
+                    <mat-toolbar>
+                        <input matInput [(ngModel)]="fileAttr" readonly name="name">
+                        <button mat-flat-button color="primary">Vybrat obrázek</button>
+                    </mat-toolbar>
+                    <input type="file" #fileInput id="uploadFile" (change)="uploadFileEvt($event)" name="uploadFile"
+                        multiple="multiple" accept="image/*" />
+                </div>
+            </mat-form-field>
+            <button mat-raised-button (click)="resetTiles()">
+                <mat-icon class="mat-18">restart_alt</mat-icon>
+                Resetovat
+            </button>
+            <button mat-raised-button (click)="revealPicture()">
+                <mat-icon class="mat-18">visibility</mat-icon>
+                Odhalit
+            </button>
+            <div fxFlex="20">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <label>Počet dlaždic</label>
+                    <label>{{tilesCount}}</label>
+                </div>
+                <mat-slider min="10" max="80" step="2" fxLayoutAlign="start stretch">
+                    <input matSliderThumb [(ngModel)]="tilesCount" (ngModelChange)="updateTiles()">
+                </mat-slider>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <div class="picture-wrapper" fxFlex="column" fxLayoutAlign="center center" maximize #maximize="maximize">
+        <div class="grid-container" *ngIf="uploadedImage" #gridRef [ngClass]="{ 'fullscreen' : fullscreen}">
+            <img [src]="uploadedImage" #imgRef (load)="onImageUpload($event)" />
+            <div class="tile-grid" #tileGrid>
+                <div *ngFor="let row of getRows(); let i = index;">
+                    <div class="tile" *ngFor="let col of getCols(); let j = index;" #tile (click)="dismiss($event)">{{getPosition(i,j)}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

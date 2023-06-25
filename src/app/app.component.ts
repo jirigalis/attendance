@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthenticationService } from './modules/core/authentication/authentication.service';
 import { User } from './modules/core/models/user';
+import { ToolsEvents, ToolsService } from './modules/core/services/tools.service';
 
 @Component({
     selector: 'app-root',
@@ -13,10 +14,12 @@ export class AppComponent implements OnInit{
     title = 'app';
     currentUser: User;
     showNavigation = true;
+    fulscreen = false;
 
     constructor(
         private authenticationService: AuthenticationService,
-        private router: Router
+        private router: Router,
+        private tools: ToolsService,
         ) {
         this.authenticationService.currentUser.subscribe(x => (this.currentUser = x));
     }
@@ -28,6 +31,23 @@ export class AppComponent implements OnInit{
             if (this.router.url !== '/bodovani') {
                 this.showNavigation = true;
             }
-        })        
+        }); 
+        
+        this.tools.fullscreen.subscribe(ev => {
+            if (ev === ToolsEvents.FULLSCREEN_ON) {
+                this.fulscreen = true;
+                this.showNavigation = false;
+            } else if (ev === ToolsEvents.FULLSCREEN_OFF) {
+                this.fulscreen = false;
+
+            }
+        })
+    }
+
+    @HostListener('document:keydown.escape', ['$event'])
+    public catchEscKey(ev) {
+        if (this.tools.isFullscreen()) {
+            this.tools.fullscreenOff();
+        }
     }
 }

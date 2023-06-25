@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
@@ -13,28 +15,35 @@ import { MemberService } from './../../core/services/member.service';
     styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+
     constructor(
         private memberService: MemberService,
         private attendanceService: AttendanceService,
         private authService: AuthenticationService,
     ) { }
+
+    @ViewChild(MatSort) sort: MatSort;
     membersLoading = false;
-    bestAttendanceLoading = false;
     averageAttendanceLoading = false;
     membersCountOptions: any;
     membersAgeOptions: any;
     averageAttendanceOptions: any;
-    soonestBirthday: any;
     membersByAttendance;
     attendanceKpi: KpiCardSettings;
     registeredMembersKpi: KpiCardSettings;
     averageAttendanceKpi: KpiCardSettings;
+    birthdayKpi: KpiCardSettings = {
+        label: 'Nejbližší narozeniny',
+        value: '',
+        icon: 'cake'
+    }
     attendanceStats;
+    membersDatasource: MatTableDataSource<Member>;
+    membersColumns = ['name', 'role', 'age', 'attendancePercentage'];
 
     ngOnInit() {
         moment.locale('cs');
         this.membersLoading = true;
-        this.bestAttendanceLoading = true;
         this.averageAttendanceLoading = true;
         const schoolyearId = this.authService.getSchoolyear();
 
@@ -55,10 +64,25 @@ export class DashboardComponent implements OnInit {
             value: '',
         }
 
-        this.memberService.getAll().subscribe((data: Member[]) => {
+        const meetingCount$ = this.attendanceService.getAllDatesBySchoolyear(schoolyearId);
+        const averageAttendance$ = this.attendanceService.getAverageAttendanceForSchoolyear(schoolyearId);
+        const membersBySchoolyear$ = this.memberService.getAllBySchoolyear(schoolyearId);
+        const membersByAttendance$ = this.attendanceService.getMembersByAttendanceCount(schoolyearId);
+
+        forkJoin([meetingCount$, averageAttendance$, membersBySchoolyear$, membersByAttendance$]).subscribe(results => {
+            this.attendanceKpi.value = results[0].length;
+            this.attendanceStats = results[1];
+            this.registeredMembersKpi.value = results[2].filter(m => m.role === 'D').length;
+
+            this.membersByAttendance = results[3];
+
+            const attendanceCount = this.attendanceStats.reduce((prev, current) => {
+                return prev + current.dateCount;
+            }, 0)
+
             this.membersCountOptions = {
                 title: {
-                    text: 'Celkový počet: ' + data.length,
+                    text: 'Celkový počet: ' + results[2].length,
                     left: 'center',
                 },
                 tooltip: {
@@ -91,60 +115,79 @@ export class DashboardComponent implements OnInit {
                                 fontWeight: 'bold',
                             },
                         },
-                        data: this._getMembersCountData(data),
+                        data: this._getMembersCountData(results[2]),
                     },
                 ],
                 animationEasing: 'elasticOut',
                 animationDelayUpdate: (idx) => idx * 5,
             };
 
-            //////////
-
             this.membersAgeOptions = {
                 tooltip: {
                     trigger: 'item',
                     formatter: '{a} <br/>{b} : {c} osob',
                 },
-                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: this._getMembersAgeData(results[2]).map((val) => val.name).sort((a, b) => a - b).map((val) => val + ' let'),
+                        axisTick: {
+                            alignWithLabel: true
+                        }
+                    }
+                ],
+                yAxis: [{
+                    type: 'value'
+                }],
                 series: [
                     {
                         name: 'Věk',
-                        type: 'pie',
-                        radius: [30, 110],
-                        roseType: 'area',
-                        data: this._getMembersAgeData(data),
+                        type: 'bar',
+                        data: this._getMembersAgeData(results[2]),
                     },
                 ],
-            };
+            }
 
-            this.soonestBirthday = this._getSoonestBirthday(data);
-            this.membersLoading = false;
-        });
-
-        this.attendanceService
-            .getMembersByAttendanceCount(schoolyearId)
-            .subscribe((members) => {
-                this.membersByAttendance = members;
-                this.bestAttendanceLoading = false;
+            //// Members table
+            results[2].forEach((m: Member) => {
+                m.attendance = {};
+                m.attendance.count = this.membersByAttendance.find((mba) => mba.id === m.id)?.attendance_count || 0;
+                m.attendance.percentage = Math.floor((m.attendance.count / this.attendanceKpi.value) * 100);
             });
+            this.membersDatasource = new MatTableDataSource(results[2]);
+            this.membersDatasource.sortingDataAccessor = (item, property) => {
+                switch (property) {
+                    case 'attendancePercentage': return item.attendance.percentage;
+                    case 'age': return item.getAge();
+                    default: return item[property];
+                }
+            };
+            this.membersDatasource.sort = this.sort;
 
-        const meetingCount$ = this.attendanceService.getAllDatesBySchoolyear(schoolyearId);
-        const averageAttendance$ = this.attendanceService.getAverageAttendanceForSchoolyear(schoolyearId);
-        const membersBySchoolyear$ = this.memberService.getAllBySchoolyear(schoolyearId);
-
-        forkJoin([meetingCount$, averageAttendance$, membersBySchoolyear$]).subscribe(results => {
-            this.attendanceKpi.value = results[0].length;
-            this.attendanceStats = results[1];
-            this.registeredMembersKpi.value = results[2].filter(m => m.role === 'D').length;
-
-            const attendanceCount = this.attendanceStats.reduce((prev, current) => {
-                return prev + current.dateCount;
-            }, 0)
 
             this.averageAttendanceKpi.value = Math.floor((attendanceCount / (this.registeredMembersKpi.value * this.attendanceKpi.value)) * 100) + ' %';
             this.averageAttendanceOptions = this._getAverageAttendanceData(this.attendanceStats, this.registeredMembersKpi.value);
             this.averageAttendanceLoading = false;
+
+            const bd = this._getSoonestBirthday(results[2]);
+            this.birthdayKpi.value = bd.getFullName();
+            this.birthdayKpi.label = bd.getNearestBirthday();
+            this.membersLoading = false;
         })
+    }
+
+    public getColorClass(value: number) {
+        if (value < 20) {
+            return 'red';
+        } else if (value < 40) {
+            return 'orange';
+        } else if (value < 60) {
+            return 'yellow';
+        } else if (value < 80) {
+            return 'lime';
+        }else {
+            return 'green';
+        }
     }
 
     private _getSoonestBirthday(members: Member[]) {

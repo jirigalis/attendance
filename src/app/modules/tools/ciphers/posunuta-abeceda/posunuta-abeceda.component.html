@@ -1,0 +1,11 @@
+<div fxLayout="column" fxLayoutGap="8px">
+    <cipher-heading [cipherName]="'Posunutá abeceda'" [desc]="desc"></cipher-heading>
+    <cipher-encode-part [input]="input" (encodeEvent)="encode($event)">
+        <mat-form-field>
+            <mat-label>Posun o:</mat-label>
+            <input matInput type="number" [(ngModel)]="shift" min="0" max="26">
+        </mat-form-field>
+    </cipher-encode-part>
+
+    <cipher-decode-part [result]="this.result"></cipher-decode-part>
+</div>
