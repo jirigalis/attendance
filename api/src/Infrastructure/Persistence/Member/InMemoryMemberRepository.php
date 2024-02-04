@@ -216,7 +216,8 @@ class InMemoryMemberRepository implements MemberRepository
         }
 
         $schoolyear = Schoolyear::find($schoolyearId);
-        $attendance = Member::find($memberId)->attendance;
+        $member = Member::find($memberId);
+        $attendance = $member->attendance;
         $res = [];
 
         foreach ($attendance as $a ) {
@@ -309,5 +310,21 @@ class InMemoryMemberRepository implements MemberRepository
         };
 
         return $result;
+    }
+
+    public function getMeetingDates($memberId, $schoolyearId) {
+        if (!V::intVal()->validate($memberId)) {
+            throw new InputNotValidException();
+        }
+
+        if (!V::intVal()->validate($schoolyearId)) {
+            throw new InputNotValidException();
+        }
+
+        $member = $this->getById($memberId);
+        $memberSchoolyear = $member->schoolyear()->where('schoolyear_id', $schoolyearId);
+        $paid = $memberSchoolyear->get()->first()->pivot->paid;
+        $schoolyear = Schoolyear::find($schoolyearId);
+        return $member->attendance->whereBetween('date', [$paid, $schoolyear->endDate]);
     }
 }

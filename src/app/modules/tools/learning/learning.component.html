@@ -1,0 +1,26 @@
+<h1 class="main-heading">Poznávačky</h1>
+<div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center">
+    <div fxFlex="40">
+        <image-filter [selectedCategories]="categories"></image-filter>
+    </div>
+    <div fxFlex="50" fxFlex="row" fxLayoutGap="16px">
+        <button mat-raised-button color="primary" (click)="loadImages()">
+            <span fxShow.xs="false">Zobrazit obrázky</span>
+        </button>
+        <mat-checkbox [(ngModel)]="randomize" (ngModelChange)="shuffleImages()">Náhodně</mat-checkbox>
+        <div fxFlex="20">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <label>Velikost obrázků</label>
+                <label>{{imageSize}}</label>
+            </div>
+            <mat-slider min="1" max="5" step="1" fxLayoutAlign="start stretch">
+                <input matSliderThumb [(ngModel)]="imageSize">
+            </mat-slider>
+        </div>
+    </div>
+</div>
+<div fxLayout="row wrap" fxLayoutGap="8px grid" >
+    <ng-container *ngFor="let image of imagePaths; index as i;">
+        <img [src]="'/assets/images/' + image.path" alt="" [height]="this.imageSize * 100" (click)="openImageDetailDialog(i)"/>
+    </ng-container>
+</div>

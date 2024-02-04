@@ -44,4 +44,6 @@ interface MemberRepository
     public function addBadge($memberId, $badgeId);
 
     public function exportAttendance(int $schoolyearId, array $members);
+
+    public function getMeetingDates(int $memberId, int $schoolyearId);
 }

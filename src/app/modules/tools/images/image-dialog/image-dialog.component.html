@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Obrázek</h2>
+
+<div mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Název obrázku</mat-label>
+        <input matInput placeholder="Zadejte název obrázku" [(ngModel)]="image.name">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Kategorie</mat-label>
+        <mat-select [(ngModel)]="image.category" placeholder="">
+            <mat-option [value]=""></mat-option>
+        </mat-select>
+    </mat-form-field>
+    Category
+    tdFileSelect 
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="cancel()">Zrušit</button>
+    <button mat-raised-button (click)="submit()" color="primary">
+        <mat-icon>save</mat-icon>
+        Uložit
+    </button>
+</div>

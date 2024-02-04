@@ -38,6 +38,8 @@ export class DashboardComponent implements OnInit {
         icon: 'cake'
     }
     attendanceStats;
+    newAttendaceStats;
+    schoolyearMeetings;
     membersDatasource: MatTableDataSource<Member>;
     membersColumns = ['name', 'role', 'age', 'attendancePercentage'];
 
@@ -70,15 +72,12 @@ export class DashboardComponent implements OnInit {
         const membersByAttendance$ = this.attendanceService.getMembersByAttendanceCount(schoolyearId);
 
         forkJoin([meetingCount$, averageAttendance$, membersBySchoolyear$, membersByAttendance$]).subscribe(results => {
+            this.schoolyearMeetings = results[0];
             this.attendanceKpi.value = results[0].length;
             this.attendanceStats = results[1];
             this.registeredMembersKpi.value = results[2].filter(m => m.role === 'D').length;
 
             this.membersByAttendance = results[3];
-
-            const attendanceCount = this.attendanceStats.reduce((prev, current) => {
-                return prev + current.dateCount;
-            }, 0)
 
             this.membersCountOptions = {
                 title: {
@@ -150,11 +149,11 @@ export class DashboardComponent implements OnInit {
 
             //// Members table
             results[2].forEach((m: Member) => {
-                m.attendance = {};
-                m.attendance.count = this.membersByAttendance.find((mba) => mba.id === m.id)?.attendance_count || 0;
-                m.attendance.percentage = Math.floor((m.attendance.count / this.attendanceKpi.value) * 100);
+                m.attendance = this._getMemberAttendanceStats(m);
             });
-            this.membersDatasource = new MatTableDataSource(results[2]);
+            this.newAttendaceStats = results[2];
+            
+            this.membersDatasource = new MatTableDataSource(this.newAttendaceStats);
             this.membersDatasource.sortingDataAccessor = (item, property) => {
                 switch (property) {
                     case 'attendancePercentage': return item.attendance.percentage;
@@ -164,9 +163,8 @@ export class DashboardComponent implements OnInit {
             };
             this.membersDatasource.sort = this.sort;
 
-
-            this.averageAttendanceKpi.value = Math.floor((attendanceCount / (this.registeredMembersKpi.value * this.attendanceKpi.value)) * 100) + ' %';
-            this.averageAttendanceOptions = this._getAverageAttendanceData(this.attendanceStats, this.registeredMembersKpi.value);
+            this.averageAttendanceKpi.value = this._calculateAverageAttendance() + ' %';
+            this.averageAttendanceOptions = this._getAverageAttendanceData(this.attendanceStats, results[2].length);
             this.averageAttendanceLoading = false;
 
             const bd = this._getSoonestBirthday(results[2]);
@@ -232,7 +230,7 @@ export class DashboardComponent implements OnInit {
                 }
             }
         });
-        return memberAgeData;
+        return memberAgeData.sort((a, b) => a.name - b.name);
     }
 
     private _getMembersCountData(data) {
@@ -270,8 +268,13 @@ export class DashboardComponent implements OnInit {
     private _getAverageAttendanceData(data, membersCount) {
         const xAxisData = data.map(item => moment(item.date).format('D. M. YYYY'));
         const data1 = data.map(item => item.dateCount);
-        const dataPercentage = data.map(item => Math.floor((item.dateCount / membersCount) * 100));
-
+        
+        // get maximum members count for each day
+        const dataPercentage = data.map(item => {
+            const allMembersCount = this.newAttendaceStats.filter(m => m.paid <= item.date).length;
+            return Math.floor((item.dateCount / allMembersCount) * 100);
+        });
+        
         const options = {
             tooltip: {
                 trigger: 'axis',
@@ -328,5 +331,23 @@ export class DashboardComponent implements OnInit {
         };
 
         return options
+    }
+
+    private _getMemberAttendanceStats(member: Member) {
+        const meetingsCount = this.schoolyearMeetings.filter(m => m.date >= member.paid).length;
+        const meetingsAttended = this.membersByAttendance.find((mba) => mba.id === member.id)?.attendance_count || 0;
+        
+        return {
+            meetingsCount : meetingsCount || 0,
+            meetingsAttended: meetingsAttended || 0,
+            percentage : Math.floor((meetingsAttended / meetingsCount) * 100)
+        }
+    }
+
+    private _calculateAverageAttendance() {
+        const percentageSum = this.newAttendaceStats.reduce((prev: number, current) => {
+            return prev + Number(current.attendance.percentage);
+        }, 0)
+        return Math.floor(percentageSum / this.newAttendaceStats.length);
     }
 }

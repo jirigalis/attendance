@@ -19,6 +19,18 @@
                 <mat-icon class="mat-18">visibility</mat-icon>
                 Odhalit
             </button>
+            <button mat-raised-button (click)="dismissRandomTile()">
+                <mat-icon class="mat-18">highlight_off</mat-icon>
+                Odstranit náhodnou
+            </button>
+            <button mat-raised-button (click)="dismissInInterval()" *ngIf="!interval">
+                <mat-icon class="mat-18">timer</mat-icon>
+                Automaticky
+            </button>
+            <button mat-raised-button (click)="stopInterval()" *ngIf="interval">
+                <mat-icon class="mat-18">stop</mat-icon>
+                Zastavit
+            </button>
             <div fxFlex="20">
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                     <label>Počet dlaždic</label>

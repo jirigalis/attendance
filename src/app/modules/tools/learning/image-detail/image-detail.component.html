@@ -1,0 +1,9 @@
+<button mat-mini-fab class="close-button" (click)="closeDialog()" [attr.autofocus]="false">
+    <mat-icon>close</mat-icon>
+</button>
+<div mat-dialog-content class="image-container">
+    <img [src]="'/assets/images/' + selectedImage.path" />
+    <div class="image-name" *ngIf="showImageName">
+        {{selectedImage.name}}
+    </div>
+</div>

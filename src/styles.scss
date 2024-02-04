@@ -212,3 +212,13 @@ img.badge-table {
         border-color: rgb(44, 186, 0);
     }
 }
+
+/** SnackBar */
+.snach-error {
+    background-color: #ff0000;
+    color: #ffffff;
+
+    &::before {
+        content: '! ';
+    }
+}

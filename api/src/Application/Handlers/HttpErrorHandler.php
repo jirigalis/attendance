@@ -5,6 +5,8 @@ namespace App\Application\Handlers;
 
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
+use App\Domain\DomainException\WrongParameterException;
+use DomainException;
 use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Exception\HttpBadRequestException;
@@ -27,7 +29,7 @@ class HttpErrorHandler extends SlimErrorHandler
         $exception = $this->exception;
         $statusCode = 500;
         $error = new ActionError(
-            ActionError::SERVER_ERROR,
+            ActionError::getTypeByCode($statusCode),
             'An internal error has occurred while processing your request.'
         );
 
@@ -58,12 +60,12 @@ class HttpErrorHandler extends SlimErrorHandler
             $error->setDescription($exception->getMessage());
         }
 
-        $payload = new ActionPayload($statusCode, null, $error);
+        $payload = new ActionPayload(intval($statusCode, 10), null, $error);
         $encodedPayload = json_encode($payload, JSON_PRETTY_PRINT);
 
-        $response = $this->responseFactory->createResponse($statusCode);
+        $response = $this->responseFactory->createResponse(intval($statusCode, 10));
         $response->getBody()->write($encodedPayload);
-        // $response->getBody()->write(var_export($error, true));
+        // $response->getBody()->write(json_encode($exception->getCode(), JSON_PRETTY_PRINT));
 
         return $response->withHeader('Content-Type', 'application/json');
     }

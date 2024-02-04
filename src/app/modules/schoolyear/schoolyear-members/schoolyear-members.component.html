@@ -59,9 +59,8 @@
 
     <ng-container matColumnDef="paid">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="paid">Platba</th>
-        <td mat-cell *matCellDef="let element" class="check-column">
-            <mat-icon *ngIf="element.paid" color="accent">check</mat-icon>
-            <mat-icon *ngIf="!element.paid" class="dash">-</mat-icon>
+        <td mat-cell *matCellDef="let element">
+            {{ element.paid  | date:'d. M. YYYY'}}
         </td>
     </ng-container>
 

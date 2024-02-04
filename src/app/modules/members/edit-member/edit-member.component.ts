@@ -95,7 +95,7 @@ export class EditMemberComponent implements OnInit {
         });
 
         const points$ = this.pointsService.getByMember(memberId);
-        const attendancePoints$ = this.attendanceService.getMembersAttendancePoints(memberId);
+        const attendancePoints$ = this.attendanceService.getMembersAttendancePoints(memberId, this.authService.getSchoolyear());
         const attendancePercentage$ = this.memberService.getAttendanceById(memberId, this.authService.getSchoolyear());
         const meetingCount$ = this.attendanceService.getAllDatesBySchoolyear(this.authService.getSchoolyear());
         

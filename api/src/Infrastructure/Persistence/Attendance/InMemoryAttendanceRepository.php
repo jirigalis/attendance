@@ -114,7 +114,19 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 
     public function getMembersByAttendanceOrder(int $schoolyearId): object {
 		$schoolyear = Schoolyear::find($schoolyearId);
-        $members = Member::select("id", "name", "surname")
+		$schoolyearMembers = Member::
+			join('member_schoolyear', 'member.id', '=', 'member_schoolyear.member_id')
+			->select(
+				"member.id",
+				"member.name",
+				"member.surname",
+				"member_schoolyear.paid",
+			)
+			->where('member_schoolyear.schoolyear_id', $schoolyearId)
+			->orderby('role')
+			->orderby('name');
+
+        $members = $schoolyearMembers
             ->withCount(['attendance' => function ($query) use ($schoolyear) {
 				$query->whereBetween('attendance.date', [$schoolyear->startDate, $schoolyear->endDate]);
 			}])
@@ -124,6 +136,9 @@ class InMemoryAttendanceRepository implements AttendanceRepository
         return $members->get();
     }
 
+	/**
+	 * Return count of members present on each date in given schoolyear.
+	 */
 	public function getAverageAttendanceForSchoolyear(int $schoolyearId) {
 		$schoolyear = Schoolyear::find($schoolyearId);
 

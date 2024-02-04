@@ -5,9 +5,9 @@ import { MaterialModule } from '../material/material.module';
 import { BasicDialogComponent } from './dialog/basic-dialog/basic-dialog.component';
 import { DividerWithTextComponent } from './divider-with-text/divider-with-text.component';
 import { KpiCardComponent } from './kpi-card/kpi-card.component';
+import { MaximizeDirective } from './maximize.directive';
 import { CustomDatePipe } from './pipes/custom-date.pipe';
 import { TransferListComponent } from './transfer-list/transfer-list.component';
-import { MaximizeDirective } from './maximize.directive';
 
 @NgModule({
     declarations: [
@@ -27,6 +27,5 @@ import { MaximizeDirective } from './maximize.directive';
         MaximizeDirective,
         TransferListComponent,
     ],
-    entryComponents: [BasicDialogComponent, DividerWithTextComponent, TransferListComponent],
 })
 export class SharedModule { }

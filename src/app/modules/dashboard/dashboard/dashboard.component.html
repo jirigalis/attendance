@@ -71,9 +71,9 @@
                         </ng-container>
 
                         <ng-container matColumnDef="attendancePercentage">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Věk</th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Docházka</th>
                             <td mat-cell *matCellDef="let element">
-                                {{element.attendance.percentage}} % ({{element.attendance.count}}/{{attendanceKpi.value}})
+                                {{element.attendance.percentage}} % ({{element.attendance.meetingsAttended}}/{{element.attendance.meetingsCount}})
                                 <mat-progress-bar mode="determinate" [ngClass]="getColorClass(element.attendance.percentage)" value="{{ element.attendance.percentage }}"></mat-progress-bar>
                             </td>
                         </ng-container>

@@ -23,6 +23,8 @@ import { SchoolyearComponent } from './schoolyear/schoolyear/schoolyear.componen
 import { SettingsComponent } from './settings/settings/settings.component';
 import { CiphersComponent } from './tools/ciphers/ciphers.component';
 import { GamesComponent } from './tools/games/games.component';
+import { ImagesComponent } from './tools/images/images.component';
+import { LearningComponent } from './tools/learning/learning.component';
 
 const routes: Routes = [
     {
@@ -126,6 +128,15 @@ const routes: Routes = [
                 component: CiphersComponent,
                 canActivate: [AuthGuard],
             },
+            {
+                path: 'images',
+                component: ImagesComponent,
+                // canActivate: [AuthGuard],
+            },
+            {
+                path: 'learning',
+                component: LearningComponent,
+            }
         ],
     },
 ];

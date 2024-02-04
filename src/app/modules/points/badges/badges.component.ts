@@ -21,7 +21,7 @@ export class BadgesComponent implements OnInit {
         private snack: MatSnackBar,
         private changeDetectorRefs: ChangeDetectorRef,
         private dialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.loading = true;

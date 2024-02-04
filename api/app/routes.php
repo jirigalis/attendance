@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Application\Actions\Member\ListMembersAction;
@@ -71,6 +72,23 @@ use App\Application\Actions\Event\AddMembersToEventAction;
 use App\Application\Actions\Event\RemoveMemberFromEventAction;
 use App\Application\Actions\User\AuthenticateUserAction;
 use App\Application\Actions\User\SelectSchoolyearAction;
+
+use App\Application\Actions\Category\GetAllCategoriesAction;
+use App\Application\Actions\Category\CreateCategoryAction;
+use App\Application\Actions\Category\UpdateCategoryAction;
+use App\Application\Actions\Category\DeleteCategoryAction;
+use App\Application\Actions\Category\GetCategoryByIdAction;
+use App\Application\Actions\Image\AddPathToImageAction;
+use App\Application\Actions\Image\GetAllImagesAction;
+use App\Application\Actions\Image\GetImageByIdAction;
+use App\Application\Actions\Image\CreateImageAction;
+use App\Application\Actions\Image\UpdateImageAction;
+use App\Application\Actions\Image\DeleteImageAction;
+use App\Application\Actions\Image\GetByCategoriesAction;
+use App\Application\Actions\Image\GetByCategoryAction;
+use App\Application\Actions\Image\UpdateImagePathAction;
+use App\Application\Actions\Member\GetMemberMeetingDatesAction;
+use App\Application\Actions\Path\DeletePathAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -82,13 +100,13 @@ return function (App $app) {
 
     $prefix = getenv("API_PREFIX");
 
-    $app->get($prefix.'/aaa', function (Request $request, Response $response) {
+    $app->get($prefix . '/aaa', function (Request $request, Response $response) {
         $test = Member::find(1)->toJson();
         $response->getBody()->write($test);
         return $response;
     });
 
-    $app->group($prefix.'/members', function (Group $group) use ($container) {
+    $app->group($prefix . '/members', function (Group $group) use ($container) {
         $group->get('', ListMembersAction::class);
         $group->get('/names/schoolyear/{schoolyearId}', ListMemberNamesAction::class);
         $group->get('/addresses', ListMembersAddressesAction::class);
@@ -105,9 +123,10 @@ return function (App $app) {
         $group->get('/schoolyear/{schoolyearId}', ListMembersBySchoolyearAction::class);
         $group->get('/schoolyear/{schoolyearId}/attendance', ListMembersWithAttendanceAction::class);
         $group->post('/schoolyear/{schoolyearId}/export-attendance', ExportAttendanceAction::class);
+        $group->get('/{id}/meeting-dates/schoolyear/{schoolyearId}', GetMemberMeetingDatesAction::class);
     });
 
-    $app->group($prefix.'/attendance', function (Group $group) use ($container) {
+    $app->group($prefix . '/attendance', function (Group $group) use ($container) {
         $group->get('/best-members/{schoolyearId}', GetMembersByAttendanceOrderAction::class);
         $group->get('/average/{schoolyearId}', GetAverageAttendanceForSchoolyearAction::class);
         $group->get('/points/{memberId}[/{schoolyearId}]', GetAttendancePointsAction::class);
@@ -116,7 +135,7 @@ return function (App $app) {
         $group->delete('', DeleteAttendanceAction::class);
     });
 
-    $app->group($prefix.'/user', function (Group $group) use ($container) {
+    $app->group($prefix . '/user', function (Group $group) use ($container) {
         $group->post('/authenticate', AuthenticateUserAction::class);
         $group->post('/{id}/select-schoolyear', SelectSchoolyearAction::class);
     });
@@ -179,9 +198,34 @@ return function (App $app) {
         $group->post('/{id}/remove-member', RemoveMemberFromEventAction::class);
     });
 
-    $app->get($prefix.'/{test}', function (Request $request, Response $response, $args) {
+    $app->group($prefix . '/category', function (Group $group) use ($container) {
+        $group->get('', GetAllCategoriesAction::class);
+        $group->get('/{id}', GetCategoryByIdAction::class);
+        $group->post('/create', CreateCategoryAction::class);
+        $group->put('/{id}', UpdateCategoryAction::class);
+        $group->delete('/{id}', DeleteCategoryAction::class);
+    });
 
-        $response->getBody()->write('Hello '.$args["test"]);
+    // Images
+    $app->group($prefix . '/image', function (Group $group) use ($container) {
+        $group->get('', GetAllImagesAction::class);
+        $group->get('/category/{id}', GetByCategoryAction::class);
+        $group->get('/{id}', GetImageByIdAction::class);
+        $group->post('/create', CreateImageAction::class);
+        $group->put('/{id}', UpdateImageAction::class);
+        $group->delete('/{id}', DeleteImageAction::class);
+        $group->post('/{id}/add-path', AddPathToImageAction::class);
+        $group->put('/{id}/update-path', UpdateImagePathAction::class);
+        $group->post('/get-by-categories', GetByCategoriesAction::class);
+    });
+
+    // Paths
+    $app->group($prefix . '/path', function (Group $group) {
+        $group->delete('/{id}', DeletePathAction::class);
+    });
+
+    $app->get($prefix . '/{test}', function (Request $request, Response $response, $args) {
+        $response->getBody()->write('Hello ' . $args["test"]);
         return $response;
     });
 

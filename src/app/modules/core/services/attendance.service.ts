@@ -22,7 +22,10 @@ export class AttendanceService {
         return this.http.get<any>(this.apiUrl + '/attendance/best-members/' + schoolyearId);
     }
 
-    getMembersAttendancePoints(memberId: number) {
+    getMembersAttendancePoints(memberId: number, schoolyearId: number = null) {
+        if (schoolyearId) {
+            return this.http.get(this.apiUrl + '/attendance/points/' + memberId + '/' + schoolyearId);
+        }
         return this.http.get(this.apiUrl + '/attendance/points/' + memberId);
     }
 

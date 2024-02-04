@@ -25,6 +25,17 @@ export class SnackService {
         this.openCustom(config);
     }
 
+    public error(message: string) {
+        const config: SnackConfiguration = {
+            message: message,
+            options: {
+                duration: 3000,
+                panelClass: ['snack-error']
+            }
+        }
+        this.openCustom(config);
+    }
+
     public openCustom(config: SnackConfiguration) {
         this.snack.open(config.message, config.action ? config.action : this.DEFAULT_ACTION, config.options)
     }

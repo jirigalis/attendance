@@ -1,0 +1,93 @@
+<h1 class="main-heading">Obrázky</h1>
+<div fxLayout="column">
+    <image-filter [selectedCategories]="filterCategories" (filterChange)="refresh()"></image-filter>
+</div>
+<div fxLayout="row" fxLayoutGap="16px" class="page-actions">
+    <button mat-raised-button color="primary" (click)="addImage()">
+        <mat-icon fxShow.xs="true" fxShow.gt-xs="false">add_photo_alternate</mat-icon>
+        <span fxShow.xs="false">Přidat obrázek</span>
+    </button>
+    <button mat-raised-button (click)="manageCategories()">
+        <mat-icon fxShow.xs="true" fxShow.gt-xs="false">category</mat-icon>
+        <span fxShow.xs="false">Správa kategorií</span>
+    </button>
+</div>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1" multiTemplateDataRows>
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Název obrázku</th>
+        <td mat-cell *matCellDef="let element">
+            <a [routerLink]="['/images/' + element.id]" routerLinkActive="router-link-active" class="link-name">{{
+                element.name }}</a>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Kategorie</th>
+        <td mat-cell *matCellDef="let element" fxLayout="row">
+            
+            <mat-chip-set>
+                <mat-chip color="accent">{{ getCategoryName(element.category_id) }}</mat-chip>
+            </mat-chip-set>
+        </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumnsWithExpand.length">
+            <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <div class="element-description" fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="center center">
+                    <ng-container *ngFor="let item of element.path">
+                        <img [src]="'/assets/images/' + item.path" [class.review]="item.review" alt="" height="100px" (click)="openPathDialog(item, element)"/>
+                    </ng-container>
+                </div>
+            </div>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="checkout">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Kontrola</th>
+        <td mat-cell *matCellDef="let element">
+            <mat-icon class="mat-18" color="warn" *ngIf="shouldBeReviewed(element)">image_search</mat-icon>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Akce</th>
+        <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+            <button mat-icon-button matTooltip="Upravit" matTooltipPosition="right" aria-label="Upravit"
+                (click)="editImage(element)">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Odstranit" matTooltipPosition="right"
+                aria-label="Odstranit" (click)="deleteImage(element.id)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button aria-label="expand row"
+                (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsWithExpand"></tr>
+    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumnsWithExpand" (click)="openDetail(row.id)"></tr> -->
+    <tr mat-row *matRowDef="let element; columns: displayedColumnsWithExpand;" class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons>
+</mat-paginator>

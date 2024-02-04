@@ -54,7 +54,7 @@ class InMemoryEventRepository implements EventRepository
         throw new InputNotValidException();
     }
 
-    public function update(int $id, object $data)
+    public function update(int $id, object $data): int
     {
         $event = $this->getById($id);
         $update = false;
@@ -89,9 +89,10 @@ class InMemoryEventRepository implements EventRepository
 
         if ($update) {
             $event->save();
+            return 1;
         }
 
-        return $event;
+        return 0;
     }
 
     public function delete(int $id) {

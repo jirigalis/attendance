@@ -5,5 +5,6 @@ namespace App\Domain\DomainException;
 
 class DomainRecordNotFoundException extends DomainException
 {
-    protected $statusCode = 404;
+    public $statusCode = 404;
+    public $message = 'The record you requested does not exist.';
 }

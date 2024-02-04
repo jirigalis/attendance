@@ -32,6 +32,8 @@ export class GamePictureRevealComponent implements OnInit {
     public newImageDimensions: Dimensions;
     public gridContainerDimensions: Dimensions;
     public positionSum: number = 0;
+    public interval;
+    private dismissedTiles = [];
 
     constructor(public tools: ToolsService) { }
 
@@ -178,11 +180,45 @@ export class GamePictureRevealComponent implements OnInit {
         this.tiles.forEach(tile => {
             tile.nativeElement.classList.remove('dismissed')
         })
+        this.dismissedTiles = [];
     }
 
     public revealPicture() {
         this.tiles.forEach(tile => {
             tile.nativeElement.classList.add('dismissed');
         })
+    }
+
+    public dismissRandomTile() {
+        // return if all tiles are dismissed
+        if (this.dismissedTiles.length === this.tiles.length) {
+            return;
+        }
+
+        let randomNumber = Math.floor(Math.random() * this.tiles.length);
+
+        // check if tile is already dismissed
+        while (this.dismissedTiles.includes(this.tiles.toArray()[randomNumber])) {
+            randomNumber = Math.floor(Math.random() * this.tiles.length);
+        }
+
+        const randomTile = this.tiles.toArray()[randomNumber];
+        randomTile.nativeElement.classList.add('dismissed');
+        this.dismissedTiles.push(randomTile);
+    }
+
+    public dismissInInterval() {
+        this.interval = setInterval(() => {
+            this.dismissRandomTile();
+            // stop interval if all tiles are dismissed
+            if (this.dismissedTiles.length === this.tiles.length) {
+                clearInterval(this.interval);
+            }
+        }, 1000);
+    }
+
+    public stopInterval() {
+        clearInterval(this.interval);
+        this.interval = null;
     }
 }

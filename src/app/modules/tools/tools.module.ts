@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { CipherDecodePartComponent } from './ciphers/cipher-decode-part/cipher-decode-part.component';
@@ -30,12 +30,20 @@ import { GameMestoJmenoComponent } from './games/game-mesto-jmeno/game-mesto-jme
 import { GamePictureRevealComponent } from './games/game-picture-reveal/game-picture-reveal.component';
 import { GamesComponent } from './games/games.component';
 import { LetterGeneratorComponent } from './games/letter-generator/letter-generator.component';
+import { ImageDialogComponent } from './images/image-dialog/image-dialog.component';
+import { ImageFilterComponent } from './images/image-filter/image-filter.component';
+import { ImagesComponent } from './images/images.component';
+import { ManageCategoriesDialogComponent } from './images/manage-categories-dialog/manage-categories-dialog.component';
+import { SingleImageDialogComponent } from './images/single-image-dialog/single-image-dialog.component';
+import { ImageDetailComponent } from './learning/image-detail/image-detail.component';
+import { LearningComponent } from './learning/learning.component';
 
 @NgModule({
     imports: [
         CommonModule,
         FlexLayoutModule,
         FormsModule,
+        ReactiveFormsModule,
         MaterialModule,
         SharedModule,
     ],
@@ -67,6 +75,14 @@ import { LetterGeneratorComponent } from './games/letter-generator/letter-genera
         MorseCodeComponent,
         VkladaniZnakuComponent,
         ZlomkyComponent,
+        /*** Images ***/
+        ImagesComponent,
+        ImageDialogComponent,
+        ImageDetailComponent,
+        ManageCategoriesDialogComponent,
+        SingleImageDialogComponent,
+        ImageFilterComponent,
+        LearningComponent,
     ]
 })
 export class ToolsModule { }

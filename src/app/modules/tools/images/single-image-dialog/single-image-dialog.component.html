@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Obrázek</h2>
+
+<form #pathForm="ngForm" (ngSubmit)="submit()">
+<div mat-dialog-content>
+    <div fxLayout="row" fxLayoutGap="16px">
+        <div fxFlex="66" class="thumbnail">
+            <img src="/assets/images/{{ imagePath.path }}"/>
+        </div>
+        <div fxFlex="33" fxLayout="column" fxLayoutGap="16px">
+                <h3>Detaily</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Cesta k obrázku</mat-label>
+                    <input matInput placeholder="Zadejte název obrázku" [(ngModel)]="imagePath.path" name="path" #path="ngModel" required>
+                    <!-- Validation message -->
+                    <mat-error *ngIf="path.invalid && (path.dirty || path.touched)">
+                        Cesta k obrázku je povinná.
+                    </mat-error>
+                </mat-form-field>
+                <!-- Review checkbox -->
+                <mat-checkbox [(ngModel)]="imagePath.review" name="review" #review="ngModel">Kontrola</mat-checkbox>
+            </div>
+        </div>
+    </div>
+    
+    <div mat-dialog-actions [align]="'end'">
+        <button mat-raised-button (click)="cancel()">Zrušit</button>
+        <button mat-raised-button type="submit" [disabled]="!pathForm.valid" color="primary">
+            <mat-icon>save</mat-icon>
+            Uložit
+        </button>
+    </div>
+</form>
