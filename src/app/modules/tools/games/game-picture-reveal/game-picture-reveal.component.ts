@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { ImageService } from 'src/app/modules/core/services/image.service';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
 
 export interface GridDimensions {
@@ -34,8 +35,10 @@ export class GamePictureRevealComponent implements OnInit {
     public positionSum: number = 0;
     public interval;
     private dismissedTiles = [];
+    filterCategories: any[] = [];
+    loading: boolean = false;
 
-    constructor(public tools: ToolsService) { }
+    constructor(public tools: ToolsService, private imageService: ImageService) { }
 
     ngOnInit() {
         this.updateGridDimensions();
@@ -220,5 +223,18 @@ export class GamePictureRevealComponent implements OnInit {
     public stopInterval() {
         clearInterval(this.interval);
         this.interval = null;
+    }
+
+    public refresh() {
+        // convert filterCategories to array of ids
+        const ids = {
+            categories: this.filterCategories.map(category => category.id)
+        };
+        this.loading = true;
+        const api = this.filterCategories.length > 0 ? this.imageService.getByCategories(ids) : this.imageService.getAll();
+        api.subscribe(images => {
+            console.log(images);
+            this.loading = false;
+        });
     }
 }

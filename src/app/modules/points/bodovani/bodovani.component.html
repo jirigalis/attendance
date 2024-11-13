@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="space-between center">
-        <h1>Bodování oddílu Zálesák Ždánice</h1>
-    <div>        
+    <h1>Bodování oddílu Zálesák Ždánice</h1>
+    <div>
         <mat-form-field appearance="fill" class="schoolyear-select">
             <mat-label>Vybraný školní rok</mat-label>
             <mat-select [(value)]="selectedSchoolyear" (selectionChange)="updateSchoolyear($event.value)">
@@ -23,14 +23,15 @@
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="sum_points">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Body celkem</th>
-                    <td mat-cell *matCellDef="let element">{{ element.sum_points }} b.</td>
-                </ng-container>
-
                 <ng-container matColumnDef="sum_points_schoolyear">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Body za školní rok</th>
-                    <td mat-cell *matCellDef="let element">{{ element.sum_points_schoolyear ? element.sum_points_schoolyear : 0 }} b.</td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Body</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div fxLayout="row" class="colored-bar-wrapper">
+                            <div class="colored-bar" [style.width.px]="element.sum_points_schoolyear * 10"
+                                [style.backgroundColor]="element.color"></div>
+                            <div>{{ element.sum_points_schoolyear }} b.</div>
+                        </div>
+                    </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -14,8 +14,8 @@ export class AttendanceService {
         return this.http.get(this.apiUrl + `/attendance/${date}`);
     }
 
-    addAttendance(date: String, memberIds) {
-        return this.http.post(this.apiUrl + `/attendance/${date}`, memberIds);
+    addAttendance(date: String, data) {
+        return this.http.post(this.apiUrl + `/attendance/${date}`, data);
     }
 
     getMembersByAttendanceCount(schoolyearId: number) {

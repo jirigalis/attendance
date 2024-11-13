@@ -2,6 +2,7 @@ import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
 import { MemberService } from '../../core/services';
 import { PointsService } from '../../core/services/points.service';
@@ -22,6 +23,7 @@ export class MemberDetailComponent implements OnInit {
     constructor(
         private memberService: MemberService,
         private pointsService: PointsService,
+        private authService: AuthenticationService,
         private route: ActivatedRoute,
         @Inject(LOCALE_ID) public locale: string
     ) {}
@@ -37,7 +39,7 @@ export class MemberDetailComponent implements OnInit {
             this.badgesDataSource = new MatTableDataSource(badges);
         });
 
-        this.pointsService.getByMember(id).subscribe((data) => {
+        this.pointsService.getByMemberAndSchoolyear(id, this.authService.getSchoolyear()).subscribe((data) => {
             this.dataSource = new MatTableDataSource(data);
             this.dataSource.sort = this.sort;
             this.loading = false;

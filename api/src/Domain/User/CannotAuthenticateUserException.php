@@ -12,3 +12,4 @@ class CannotAuthenticateUserException extends DomainException
     protected $statusCode = 401;
 
 }
+  

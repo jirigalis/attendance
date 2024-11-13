@@ -63,7 +63,11 @@
             <kpi-card [settings]="kpiSumPoints"></kpi-card>
             <kpi-card [settings]="kpiPoints"></kpi-card>
             <kpi-card [settings]="kpiAttendancePoints"></kpi-card>
+        </div>
+        <div fxLayout="column" fxFlexOrder.lt-md="1" fxFlexOrder="2" fxLayoutGap="24px">
             <kpi-card [settings]="kpiAttendancePercentage"></kpi-card>
+            <kpi-card [settings]="kpiEvents"></kpi-card>
+            <kpi-card [settings]="kpiEventsPoints"></kpi-card>
         </div>
     </div>
     <div fxFill>
@@ -122,6 +126,37 @@
 
                             <tr mat-header-row *matHeaderRowDef="badgesColumns"></tr>
                             <tr mat-row *matRowDef="let row; let even = even; columns: badgesColumns"
+                                [ngClass]="{'gray': !even}"></tr>
+                        </table>
+                    </mat-tab>
+                    <mat-tab label="Akce">
+                        <table mat-table [dataSource]="eventsDataSource" matSort class="mat-elevation-z1">
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Název akce</th>
+                                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="startDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header="startDate">Začátek akce</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.startDate | date: 'dd. MM. yyyy' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="endDate">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header="endDate">Konec akce</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.endDate | date: 'dd. MM. yyyy' }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="description">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header="description">Body</th>
+                                <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="eventsColumns"></tr>
+                            <tr mat-row *matRowDef="let row; let even = even; columns: eventsColumns"
                                 [ngClass]="{'gray': !even}"></tr>
                         </table>
                     </mat-tab>

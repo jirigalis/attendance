@@ -1,24 +1,19 @@
 <h1>Zapsat docházku</h1>
-<mat-card class="small">
-    <mat-form-field>
-        <input matInput [matDatepicker]="attendanceDate" placeholder="Select date" [formControl]="date" />
-        <mat-datepicker-toggle matSuffix [for]="attendanceDate"></mat-datepicker-toggle>
-        <mat-datepicker #attendanceDate></mat-datepicker>
-    </mat-form-field>
-
-    <mat-selection-list #membersList>
-        <mat-list-option
-            *ngFor="let member of members"
-            (click)="selectMember(member)"
-            [ngClass]="{ 'member-selected': member.selected }"
-        >
-            {{ member.name }} {{ member.surname }}
-        </mat-list-option>
-    </mat-selection-list>
-    <mat-divider></mat-divider>
+<mat-card class="medium">
+    <mat-card-content>
+        <mat-form-field>
+            <input matInput [matDatepicker]="attendanceDate" placeholder="Vybrat datum" [formControl]="date" />
+            <mat-datepicker-toggle matSuffix [for]="attendanceDate"></mat-datepicker-toggle>
+            <mat-datepicker #attendanceDate></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <textarea matInput placeholder="Program schůzky" [(ngModel)]="meetingAgenda">{{ meetingAgenda }}</textarea>
+        </mat-form-field>
+        <transfer-list [allOptions]="members" [(selectedOptions)]="selectedMembers" [config]="listConfig"></transfer-list>
+    </mat-card-content>
     <mat-card-actions fxLayout="row" fxLayoutAlign="space-between center">
         <div>
-            Vybraní členové: <strong>{{ membersList.selectedOptions.selected.length }}</strong>
+            Vybraní členové: <strong>{{ selectedMembers.length }}</strong>
         </div>
         <button mat-raised-button color="primary" (click)="onSubmit()">Confirm</button>
     </mat-card-actions>

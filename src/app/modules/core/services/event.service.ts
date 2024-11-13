@@ -45,4 +45,8 @@ export class EventService {
         return this.http.post(this.apiUrl + `/${eventId}/remove-member`, { id: memberId})
     }
 
+    getByMemberAndSchoolyear(memberId, schoolyearId) {
+        return this.http.get<Event[]>(this.apiUrl + '/member/' + memberId + '/' + schoolyearId);
+    }
+
 }

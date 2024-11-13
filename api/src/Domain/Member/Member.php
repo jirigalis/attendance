@@ -31,7 +31,7 @@ class Member extends Eloquent
     }
 
     public function eventAttendanceBySchoolyear($startDate, $endDate) {
-        return $this->event()->where('participated', 1);
+        return $this->event()->where('participated', 1)->whereBetween('event.startDate', [$startDate, $endDate]);
     }
 
     public function badge() {

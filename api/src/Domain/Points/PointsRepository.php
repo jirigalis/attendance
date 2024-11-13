@@ -13,6 +13,8 @@ interface PointsRepository {
 
     public function getByMember(int $memberId);
 
+    public function getByMemberAndSchoolyear(int $memberId, int $schoolyearId);
+
     public function getSumByMember(int $memberId);
 
     public function getSumForAllMembers();

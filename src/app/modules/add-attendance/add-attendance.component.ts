@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { AuthenticationService } from '../core/authentication/authentication.service';
 import { MemberService } from '../core/services';
@@ -12,19 +13,21 @@ import { AttendanceService } from './../core/services/attendance.service';
     styleUrls: ['./add-attendance.component.scss']
 })
 export class AddAttendanceComponent implements OnInit {
-
     date = new FormControl(new Date());
     members;
     selectedMembers = [];
-    attendanceForm: FormGroup;
     loading = false;
-    submitted = false;
+    listConfig = {
+        getLabel: (s) => s.name + ' ' + s.surname,
+    }
+    meetingAgenda: string = '';
 
     constructor(
         private membersService: MemberService,
         private attendanceService: AttendanceService,
         private authService: AuthenticationService,
-        private snack: MatSnackBar
+        private snack: MatSnackBar,
+        private r: Router,
     ) { }
 
     ngOnInit() {
@@ -48,25 +51,20 @@ export class AddAttendanceComponent implements OnInit {
     }
 
     onSubmit() {
-        this.submitted = true;
         this.loading = true;
-
-        const memberIds = [];
-        this.members.map(m => {
-            if (m.selected) {
-                memberIds.push(m.id);
-            }
-        });
-
+        const memberIds = this.selectedMembers.map(m => m.id);
         const date = moment(this.date.value);
 
         this.attendanceService
-            .addAttendance(date.format('YYYY-MM-DD'), memberIds)
+            .addAttendance(date.format('YYYY-MM-DD'), { ids: memberIds, agenda: this.meetingAgenda })
             .subscribe(res => {
                 this.snack.open('Attendance successfully saved.', 'X', {
                     duration: 3000
                 });
                 this.loading = false;
+                // navigate to attendance list
+                this.r.navigate(['/attendance']);
+
             });
     }
 

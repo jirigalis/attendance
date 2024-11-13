@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Points } from '../../core/models/points';
@@ -13,7 +12,7 @@ import { ReasonService } from '../../core/services/reason.service';
 })
 export class AddBulkPointsDialogComponent implements OnInit {
     points;
-    selectedMembers = new FormControl();
+    selectedMembers = [];
     selectedReason;
     reasons;
     allMembers;
@@ -36,12 +35,16 @@ export class AddBulkPointsDialogComponent implements OnInit {
         });
     }
 
+    public onModelChange(event) {
+        this.selectedMembers = event;
+    }
+
     submit() {
-        this.selectedMembers.value.forEach((id) => {
+        this.selectedMembers.forEach((m) => {
             this.result.push(
                 new Points().deserialize({
                     points: this.points,
-                    member_id: id,
+                    member_id: m.id,
                     reason_id: this.selectedReason,
                 })
             );

@@ -11,7 +11,6 @@ import { PointsService } from '../../core/services/points.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { AddBadgeDialogComponent } from '../add-badge-dialog/add-badge-dialog.component';
 import { AddBulkPointsDialogComponent } from '../add-bulk-points-dialog/add-bulk-points-dialog.component';
-import { AddPointsDialogComponent } from '../add-points-dialog/add-points-dialog.component';
 
 @Component({
     selector: 'points-dashboard',
@@ -19,7 +18,7 @@ import { AddPointsDialogComponent } from '../add-points-dialog/add-points-dialog
     styleUrls: ['./points-dashboard.component.scss'],
 })
 export class PointsDashboardComponent implements OnInit {
-    displayedColumns: string[] = ['name', 'sum_points', 'sum_attendance', 'sum_overall', 'actions'];
+    displayedColumns: string[] = ['name', 'sum_points', 'sum_attendance', 'sum_events', 'sum_overall'];
     displayedBadgesColumns: string[] = ['name', 'badges'];
     @ViewChild(MatSort) sort: MatSort;
     loading = false;
@@ -48,27 +47,8 @@ export class PointsDashboardComponent implements OnInit {
         });
     }
 
-    addPoints(member: Member = null) {
-        const dialogRef = this.dialog.open(AddPointsDialogComponent, {
-            data: member,
-        });
-
-        dialogRef.afterClosed().subscribe((points) => {
-            if (points) {
-                this.loading = true;
-                this.pointsService.add(points).subscribe((res) => {
-                    this.snack.open('Body byly úspěšně přidány', 'X', {
-                        duration: 3000,
-                    });
-                    this.refresh();
-                    this.loading = false;
-                });
-            }
-        });
-    }
-
     addBulkPoints() {
-        const dialogRef = this.dialog.open(AddBulkPointsDialogComponent);
+        const dialogRef = this.dialog.open(AddBulkPointsDialogComponent, {width: '700px'});
 
         dialogRef.afterClosed().subscribe((points) => {
             if (points) {
@@ -77,7 +57,7 @@ export class PointsDashboardComponent implements OnInit {
                     this.snack.open('Body byly úspěšně přidány', 'X', {
                         duration: 3000,
                     });
-                    this.refresh();
+                    this.fetchDataFromServer();
                     this.loading = false;
                 });
             }
@@ -111,10 +91,10 @@ export class PointsDashboardComponent implements OnInit {
             if (res) {
                 this.loading = true;
                 this.pointsService.delete(pointsId).subscribe((res2) => {
-                    this.snack.open('Kategorie odstraněna', 'X', {
+                    this.snack.open('Body odstraněny', 'X', {
                         duration: 3000,
                     });
-                    this.refresh();
+                    this.fetchDataFromServer();
                     this.loading = false;
                 });
             }
@@ -127,19 +107,12 @@ export class PointsDashboardComponent implements OnInit {
         this.pointsService.getSumForAllMembers(this.sumParams).subscribe((points) => {
             points.map(p => {
                 p.sum_overall = parseInt(p.sum_points) + parseInt(p.sum_attendance) + parseInt(p.sum_event_attendance);
-                p.sum_overall_attendance = parseInt(p.sum_attendance) + parseInt(p.sum_event_attendance);
+                // p.sum_overall_attendance = parseInt(p.sum_attendance) + parseInt(p.sum_event_attendance);
             })
             this.dataSource = new MatTableDataSource(points);
             this.dataSource.sort = this.sort;
             this.loading = false;
         });
-    }
-
-    private refresh() {
-        this.pointsService.getSumForAllMembers().subscribe((res) => {
-            this.dataSource.data = res;
-        });
-        this.changeDetectorRefs.detectChanges();
     }
 
     private refreshBadges() {

@@ -78,6 +78,7 @@ use App\Application\Actions\Category\CreateCategoryAction;
 use App\Application\Actions\Category\UpdateCategoryAction;
 use App\Application\Actions\Category\DeleteCategoryAction;
 use App\Application\Actions\Category\GetCategoryByIdAction;
+use App\Application\Actions\Event\GetEventsByMemberAction;
 use App\Application\Actions\Image\AddPathToImageAction;
 use App\Application\Actions\Image\GetAllImagesAction;
 use App\Application\Actions\Image\GetImageByIdAction;
@@ -156,7 +157,7 @@ return function (App $app) {
         $group->get('/sum[/role/{role}]', GetSumForAllMembersAction::class);
         $group->get('/sum/public/{schoolyearId}', GetPublicSumAction::class);
         $group->get('/sum/schoolyear/{schoolyearId}', GetSumForAllMembersAction::class);
-        $group->get('/{id}', GetPointsByMemberIdAction::class);
+        $group->get('/{id}[/{schoolyearId}]', GetPointsByMemberIdAction::class);
         $group->get('/sum/{id}', GetSumByMemberAction::class);
         $group->delete('/{id}', DeletePointsAction::class);
     });
@@ -196,6 +197,7 @@ return function (App $app) {
         $group->put('/{id}', UpdateEventAction::class);
         $group->post('/{id}/add-members', AddMembersToEventAction::class);
         $group->post('/{id}/remove-member', RemoveMemberFromEventAction::class);
+        $group->get('/member/{memberId}/{schoolyearId}', GetEventsByMemberAction::class);
     });
 
     $app->group($prefix . '/category', function (Group $group) use ($container) {

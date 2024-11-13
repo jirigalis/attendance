@@ -20,4 +20,6 @@ interface EventRepository {
     public function addMembers(int $eventId, array $members);
 
     public function removeMember(int $eventId, int $member);
+
+    public function getByMemberAndSchoolyear(int $memberId, int $schoolyearId);
 }

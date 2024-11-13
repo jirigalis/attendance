@@ -9,8 +9,8 @@ use App\Domain\Member\Member;
 use App\Domain\Schoolyear\Schoolyear;
 use App\Domain\Attendance\AttendanceRepository;
 use App\Domain\Attendance\CannotDeleteAttendanceException;
+use App\Domain\DomainException\WrongParameterException;
 use App\Domain\Member\MemberNotFoundException;
-use App\Domain\Member\WrongParameterException;
 use Illuminate\Database\Capsule\Manager as DB;
 use Respect\Validation\Validator as V;
 
@@ -53,26 +53,26 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 		return $this->getAttendance($date);
 	}
 
-	public function addAttendanceForMembers(string $dateStr, array $members) {
+	public function addAttendanceForMembers(string $dateStr, object $data): int {
         if (!V::date("Y-m-d")->validate($dateStr)) {
             throw new WrongParameterException("date");
 		}
 
-		if (empty($members)) {
+		if (empty($data->ids)) {
 			throw new MemberNotFoundException();
 		}
 
-		$str = "";
         $date = date("Y-m-d", strtotime($dateStr));
 
         $meetingDateCount = MeetingDates::where("date", $date)->get()->count();
         if ($meetingDateCount == 0) {
             $md = new MeetingDates();
             $md->date = $date;
+			$md->description = $data->agenda;
             $md->save();
         }
 
-		foreach ($members as $m) {
+		foreach ($data->ids as $m) {
 			$member = Member::find($m);
 			$count = $member->attendance()->where("member_id", $member->id)->where("date", $date)->get()->count();
 			if ($count == 0) {
@@ -109,7 +109,7 @@ class InMemoryAttendanceRepository implements AttendanceRepository
 		$schoolyear = Schoolyear::find($schoolyearId);
 
 		return intval(Attendance::where("member_id", $memberId)
-			->whereBetween("date", [$schoolyear->startDate, $schoolyear->endDate])->get()->count());
+			->whereBetween("date", [$schoolyear->startDate, $schoolyear->endDate])->get()->count()/2);
 	}
 
     public function getMembersByAttendanceOrder(int $schoolyearId): object {

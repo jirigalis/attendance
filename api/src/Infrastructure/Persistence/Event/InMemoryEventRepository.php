@@ -9,6 +9,7 @@ use App\Domain\DomainException\DomainRecordNotFoundException;
 use App\Domain\DomainException\InputNotValidException;
 use App\Domain\DomainException\CannotCreateDomainRecordException;
 use App\Domain\Event\EventRepository;
+use App\Domain\Schoolyear\Schoolyear;
 use Respect\Validation\Validator as V;
 
 class InMemoryEventRepository implements EventRepository
@@ -130,5 +131,20 @@ class InMemoryEventRepository implements EventRepository
 
         $event = Event::find($eventId);
         $event->members()->detach($memberId);
+    }
+
+    public function getByMemberAndSchoolyear(int $memberId, int $schoolyearId)
+    {
+        if (!V::intVal()->validate($memberId) || !V::intVal()->validate($schoolyearId)) {
+            throw new InputNotValidException();
+        }
+
+        $schoolyear = Schoolyear::find($schoolyearId);
+
+        $events = Event::whereHas('members', function($q) use ($memberId) {
+            $q->where('member_id', $memberId);
+        })->where('startDate', '>=', $schoolyear->startDate)->where('endDate', '<=', $schoolyear->endDate)->get();
+
+        return $events;
     }
 }

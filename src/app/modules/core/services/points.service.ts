@@ -19,6 +19,10 @@ export class PointsService {
         return this.http.get<Points[]>(this.apiUrl + '/' + id);
     }
 
+    getByMemberAndSchoolyear(memberId, schoolyearId) {
+        return this.http.get<Points[]>(this.apiUrl + '/' + memberId + '/' + schoolyearId);
+    }
+
     getSumByMember(id) {
         return this.http.get(this.apiUrl + '/sum/' + id);
     }

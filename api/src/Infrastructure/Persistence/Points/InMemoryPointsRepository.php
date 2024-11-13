@@ -116,6 +116,22 @@ class InMemoryPointsRepository implements PointsRepository
             ->get();
     }
 
+    public function getByMemberAndSchoolyear(int $memberId, int $schoolyearId){
+        if (!V::intVal()->validate($memberId) || !V::intVal()->validate($schoolyearId)) {
+            throw new WrongParameterException();
+        }
+
+        $schoolyear = Schoolyear::find($schoolyearId);
+
+        return Points::
+            join("reason", "points.reason_id", "=", "reason.id")
+            ->select("points.points", "points.created_at", "reason.name")
+            ->where("points.member_id", $memberId)
+            ->where("points.created_at", ">=", strtotime($schoolyear->startDate))
+            ->where("points.created_at", "<=", strtotime($schoolyear->endDate))
+            ->get();
+    }
+
     public function getSumByMember($memberId) {
         if (!V::intVal()->validate($memberId)) {
             throw new WrongParameterException();
@@ -245,18 +261,16 @@ class InMemoryPointsRepository implements PointsRepository
             "points.member_id",
             "member.name",
             "member.surname",
-            DB::raw("SUM(points) as sum_points"),
             DB::raw("SUM(CASE WHEN `points`.`created_at` >= ".strtotime($schoolyear->startDate)." AND points.created_at <= ".strtotime($schoolyear->endDate)." THEN points END) as sum_points_schoolyear")
         )
         ->where("member.role", 'D')
         ->where("member_schoolyear.schoolyear_id", $schoolyearId)
         ->groupBy("member_id")
-        ->orderBy("sum_points", "desc")
         ->get();
 
         foreach ($result as $r) {
             $member = Member::find($r->member_id);
-            $r["sum_attendance"] = intval($member->attendance()->count()/2);
+            $r["sum_event_attendance"] = intval($member->eventAttendanceBySchoolyear($schoolyear->startDate, $schoolyear->endDate)->count() * 3);
             $r["sum_attendance_schoolyear"] = intval($member->attendanceBySchoolyear($schoolyear->startDate, $schoolyear->endDate)->count()/2);
         }
 
