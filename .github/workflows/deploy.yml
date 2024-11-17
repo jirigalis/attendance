@@ -26,8 +26,8 @@ jobs:
       - name: Deploy Angular app via SFTP
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: your.server.com
-          username: your_username
+          host: fenek.endora.cz:21
+          username: jirigalis
           password: Bavu92Iluj! # ${{ secrets.SFTP_PASSWORD }}  # Store SFTP password as a GitHub secret
           source: ./dist/*  # Path to Angular build output
           target: /zalesakzdanice.g6.cz/web/test  # Destination directory on server
