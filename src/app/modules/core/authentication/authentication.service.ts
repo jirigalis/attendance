@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from './../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 import { User } from '../models';
 
@@ -49,10 +49,6 @@ export class AuthenticationService {
         location.reload();
     }
 
-    public jwtDecode(token) {
-        return jwt_decode(token);
-    }
-
     private getCurrentUserObjectFromToken(token = ''): any {
         if (!token) {
             token = localStorage.getItem('apiToken');
@@ -60,7 +56,7 @@ export class AuthenticationService {
         if (!token) {
             return null;
         }
-        const decodedToken: any = this.jwtDecode(token);
+        const decodedToken: any = jwtDecode(token);
         return {
             username: decodedToken.context.user.username,
             id: decodedToken.context.user.id,
@@ -75,7 +71,7 @@ export class AuthenticationService {
 
     public selectSchoolyear(schoolyearId) {
         this.http.post(this.apiUrl + `/user/${this.currentUserValue.id}/select-schoolyear`, {schoolyear: schoolyearId}).subscribe(res => {
-            if (res) {;
+            if (res) {
                 const user = this.currentUserValue;
                 user.schoolyear = schoolyearId;
                 this.currentUserSubject.next(user);

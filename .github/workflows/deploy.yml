@@ -1,0 +1,45 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout kódu
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Build Angular app
+      - name: Install Node.js and dependencies
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run build --prod --prefix ./  # Angular project path
+
+      # Deploy Angular app via SFTP
+      - name: Deploy Angular app via SFTP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: your.server.com
+          username: your_username
+          password: Bavu92Iluj! # ${{ secrets.SFTP_PASSWORD }}  # Store SFTP password as a GitHub secret
+          source: ./dist/*  # Path to Angular build output
+          target: /zalesakzdanice.g6.cz/web/test  # Destination directory on server
+
+
+          # Deploy PHP API to the server
+      # - name: Deploy PHP API to server
+        # uses: burnett01/rsync-deployments@5.1
+        # with:
+          #switches: -avz --delete
+          # path: ./api/
+          # remote_path: /path/to/php/api/on/server
+          # remote_host: your.server.com
+          # remote_user: username
+          # remote_key: ${{ secrets.SSH_KEY }}

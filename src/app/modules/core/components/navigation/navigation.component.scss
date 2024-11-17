@@ -1,6 +1,6 @@
-@import '@angular/material/theming';
+@use '@angular/material' as mat;
 
-@include mat-core();
+@include mat.core();
 
 .sidenav-container {
     height: 100%;
