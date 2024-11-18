@@ -30,8 +30,8 @@ jobs:
           protocol: ftp
           username: jirigalis
           password: Bavu92Iluj! # ${{ secrets.SFTP_PASSWORD }}  # Store SFTP password as a GitHub secret
-          local-dir: ./dist/*  # Path to Angular build output
-          server-dir: /zalesakzdanice.g6.cz/web/test  # Destination directory on server
+          local-dir: ./dist/  # Path to Angular build output
+          server-dir: /zalesakzdanice.g6.cz/web/test/  # Destination directory on server
 
 
           # Deploy PHP API to the server
