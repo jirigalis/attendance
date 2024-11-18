@@ -24,13 +24,14 @@ jobs:
 
       # Deploy Angular app via SFTP
       - name: Deploy Angular app via SFTP
-        uses: appleboy/scp-action@v0.1.7
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
         with:
-          host: fenek.endora.cz:21
+          server: fenek.endora.cz
+          protocol: sftp
           username: jirigalis
           password: Bavu92Iluj! # ${{ secrets.SFTP_PASSWORD }}  # Store SFTP password as a GitHub secret
-          source: ./dist/*  # Path to Angular build output
-          target: /zalesakzdanice.g6.cz/web/test  # Destination directory on server
+          local-dir: ./dist/*  # Path to Angular build output
+          server-dir: /zalesakzdanice.g6.cz/web/test  # Destination directory on server
 
 
           # Deploy PHP API to the server
