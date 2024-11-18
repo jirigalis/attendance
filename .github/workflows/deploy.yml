@@ -24,7 +24,7 @@ jobs:
 
       # Deploy Angular app via SFTP
       - name: Deploy Angular app via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: fenek.endora.cz
           protocol: sftp
