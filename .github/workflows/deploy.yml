@@ -27,7 +27,7 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: fenek.endora.cz
-          protocol: sftp
+          protocol: ftp
           username: jirigalis
           password: Bavu92Iluj! # ${{ secrets.SFTP_PASSWORD }}  # Store SFTP password as a GitHub secret
           local-dir: ./dist/*  # Path to Angular build output
