@@ -100,4 +100,20 @@ class InMemoryBadgeRepository implements BadgeRepository
     {
         return Member::has('badge')->with('badge')->get();
     }
+
+    public function addBulkToMembers(int $badgeId, array $members, string $created_at)
+    {
+        $badge = $this->getById($badgeId);
+        $members = Member::find($members);
+
+        if ($badge == null || $members == null) {
+            throw new DomainRecordNotFoundException();
+        }
+
+        foreach ($members as $member) {
+            $member->badge()->attach($badge, ["created_at" => strtotime($created_at)]);
+        }
+
+        return 1;
+    }
 }

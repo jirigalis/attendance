@@ -20,9 +20,10 @@ import { AddBulkPointsDialogComponent } from '../add-bulk-points-dialog/add-bulk
 export class PointsDashboardComponent implements OnInit {
     displayedColumns: string[] = ['name', 'sum_points', 'sum_attendance', 'sum_events', 'sum_overall'];
     displayedBadgesColumns: string[] = ['name', 'badges'];
-    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('pointsSort') sort: MatSort;
+    @ViewChild('badgesSort') badgeSort: MatSort;
     loading = false;
-    dataSource;
+    pointsDataSource;
     badgeDataSource;
     sumParams = {
         currentSchoolyear: true,
@@ -41,10 +42,8 @@ export class PointsDashboardComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.fetchDataFromServer();
-        this.badgeService.getForAllMembers().subscribe((badges) => {
-            this.badgeDataSource = new MatTableDataSource(badges);
-        });
+        this.loadPoints();
+        this.loadBadges();
     }
 
     addBulkPoints() {
@@ -57,28 +56,30 @@ export class PointsDashboardComponent implements OnInit {
                     this.snack.open('Body byly úspěšně přidány', 'X', {
                         duration: 3000,
                     });
-                    this.fetchDataFromServer();
+                    this.loadPoints();
                     this.loading = false;
                 });
             }
         });
     }
 
-    addBadge(member: Member = null) {
+    addBulkBadges(member: Member = null) {
         const dialogRef = this.dialog.open(AddBadgeDialogComponent, {
             data: member,
+            width: '700px',
         });
 
-        dialogRef.afterClosed().subscribe((badge) => {
-            if (badge) {
+        dialogRef.afterClosed().subscribe((badges) => {
+            console.log(badges)
+            if (badges) {
                 this.loading = true;
-                this.memberService
-                    .addBadge(badge.member_id, badge.badge_id)
+                this.badgeService
+                    .addBulkBadgesToMembers(badges.badge, badges.members.map((m) => m.id), badges.created_at)
                     .subscribe((res) => {
-                        this.snack.open('Odznak byl úspěšně přidán', 'X', {
+                        this.snack.open('Odznaky byly úspěšně přidány', 'X', {
                             duration: 3000,
                         });
-                        this.refreshBadges();
+                        this.loadBadges();
                         this.loading = false;
                     });
             }
@@ -94,30 +95,30 @@ export class PointsDashboardComponent implements OnInit {
                     this.snack.open('Body odstraněny', 'X', {
                         duration: 3000,
                     });
-                    this.fetchDataFromServer();
+                    this.loadPoints();
                     this.loading = false;
                 });
             }
         });
     }
 
-    public fetchDataFromServer() {
+    public loadPoints() {
         this.loading = true;
         this.sumParams.schoolyearId = this.authService.getSchoolyear();
         this.pointsService.getSumForAllMembers(this.sumParams).subscribe((points) => {
             points.map(p => {
                 p.sum_overall = parseInt(p.sum_points) + parseInt(p.sum_attendance) + parseInt(p.sum_event_attendance);
-                // p.sum_overall_attendance = parseInt(p.sum_attendance) + parseInt(p.sum_event_attendance);
             })
-            this.dataSource = new MatTableDataSource(points);
-            this.dataSource.sort = this.sort;
+            this.pointsDataSource = new MatTableDataSource(points);
+            this.pointsDataSource.sort = this.sort;
             this.loading = false;
         });
     }
 
-    private refreshBadges() {
-        this.badgeService.getForAllMembers().subscribe((res) => {
-            this.badgeDataSource.data = res;
+    public loadBadges() {
+        this.badgeService.getForAllMembers().subscribe((badges) => {
+            this.badgeDataSource = new MatTableDataSource(badges);
+            this.badgeDataSource.sort = this.badgeSort;
         });
         this.changeDetectorRefs.detectChanges();
     }

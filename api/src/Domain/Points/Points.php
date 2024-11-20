@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Points extends Eloquent {
     protected $table = "points";
-    protected $dateFormat = "U";
+
+    public $timestamps = false;
     
     public static function boot() {
         parent::boot();

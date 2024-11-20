@@ -93,6 +93,10 @@ export class MemberService {
         return this.http.get(this.apiUrl + `/${memberId}/badges`);
     }
 
+    removeBadge(memberId: number, badgeId: number) {
+        return this.http.delete(`${this.apiUrl}/${memberId}/badges/${badgeId}`);
+    }
+
     static getAgeFromRC(rc) {
         const birthdayStr = this.getBirthdayFromRC(rc);
         const birthday = moment(birthdayStr, 'DD. MM. YYYY');

@@ -1,13 +1,21 @@
 <h2 mat-dialog-title>Přidat body členům</h2>
 
 <div mat-dialog-content>
-    <div fxLayout="row" fxLayoutGap="16px">
+    <form #form="ngForm" fxLayout="row" fxLayoutGap="16px">
         <div fxFlex="60" class="member-list-container">
-            <mat-selection-list #memberList [(ngModel)]="selectedMembers" (ngModelChange)="onModelChange($event)">
+            <mat-selection-list
+                #memberList
+                [(ngModel)]="selectedMembers"
+                name="selectedMembers"
+                (ngModelChange)="onModelChange($event)"
+                required>
                 <mat-list-option *ngFor="let m of allMembers" [value]="m">
                     {{m.name}} {{m.surname}}
                 </mat-list-option>
             </mat-selection-list>
+            <p *ngIf="form.submitted && selectedMembers.length === 0" class="error-text">
+                Vyberte alespoň jednoho člena.
+            </p>
             <p>
                 Options selected: {{selectedMembers.length}}
             </p>
@@ -15,21 +23,50 @@
         <div fxLayout="column" fxLayoutGap="8px">
             <mat-form-field appearance="fill">
                 <mat-label>Počet bodů</mat-label>
-                <input type="number" matInput placeholder="Zadejte počet bodů" [(ngModel)]="points">
+                <input
+                        type="number"
+                        matInput
+                        placeholder="Zadejte počet bodů"
+                        [(ngModel)]="points"
+                        name="points"
+                        required>
+                <mat-error *ngIf="form.submitted && !points">Zadejte počet bodů.</mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Důvod</mat-label>
-                <mat-select [(ngModel)]="selectedReason">
+                <mat-select
+                        [(ngModel)]="selectedReason"
+                        name="selectedReason"
+                        required>
                     <mat-option *ngFor="let r of reasons" [value]="r.id">{{ r.name }}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="form.submitted && !selectedReason">Vyberte důvod.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Datum</mat-label>
+                <input
+                        matInput
+                        [matDatepicker]="picker"
+                        placeholder="Vyberte datum"
+                        [(ngModel)]="created_at"
+                        name="date"
+                        required>
+                <mat-hint>DD. MM. RRRR</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="form.submitted && !created_at">Vyberte datum.</mat-error>
             </mat-form-field>
         </div>
-    </div>
+    </form>
 </div>
 
 <div mat-dialog-actions>
     <button mat-raised-button (click)="cancel()">Zrušit</button>
-    <button mat-raised-button (click)="submit()" color="primary">
+    <button
+            mat-raised-button
+            (click)="submit(form)"
+            color="primary"
+            [disabled]="form.invalid">
         <mat-icon>save</mat-icon>
         Uložit
     </button>

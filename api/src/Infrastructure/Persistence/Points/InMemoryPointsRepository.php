@@ -48,6 +48,7 @@ class InMemoryPointsRepository implements PointsRepository
             $points->points = $data->points;
             $points->member_id = $data->member_id;
             $points->reason_id = $data->reason_id;
+            $points->created_at = strtotime($data->created_at);
 
             $points->save();
             return $points->id;
@@ -125,7 +126,7 @@ class InMemoryPointsRepository implements PointsRepository
 
         return Points::
             join("reason", "points.reason_id", "=", "reason.id")
-            ->select("points.points", "points.created_at", "reason.name")
+            ->select("points.id", "points.points", "points.created_at", "reason.name")
             ->where("points.member_id", $memberId)
             ->where("points.created_at", ">=", strtotime($schoolyear->startDate))
             ->where("points.created_at", "<=", strtotime($schoolyear->endDate))

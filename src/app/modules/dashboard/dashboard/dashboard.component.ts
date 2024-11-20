@@ -334,9 +334,12 @@ export class DashboardComponent implements OnInit {
     }
 
     private _getMemberAttendanceStats(member: Member) {
-        const meetingsCount = this.schoolyearMeetings.filter(m => m.date >= member.paid).length;
+        const allMeetingsCount = this.schoolyearMeetings.length;
+        const paidMeetingsCount = this.schoolyearMeetings.filter(m => m.date >= member.paid).length;
         const meetingsAttended = this.membersByAttendance.find((mba) => mba.id === member.id)?.attendance_count || 0;
-        
+
+        const meetingsCount = meetingsAttended > paidMeetingsCount ? allMeetingsCount : paidMeetingsCount;
+
         return {
             meetingsCount : meetingsCount || 0,
             meetingsAttended: meetingsAttended || 0,

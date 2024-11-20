@@ -14,6 +14,10 @@ import { AttendanceService } from '../../core/services/attendance.service';
 import { EventService } from '../../core/services/event.service';
 import { PointsService } from '../../core/services/points.service';
 import { KpiCardColor, KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
+import { Points } from "../../core/models/points";
+import { BasicDialogComponent } from "../../shared/dialog/basic-dialog/basic-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
+import { Badge } from "../../core/models/badge";
 
 @Component({
     selector: 'edit-member',
@@ -23,14 +27,15 @@ import { KpiCardColor, KpiCardSettings } from '../../shared/kpi-card/kpi-card.co
 export class EditMemberComponent implements OnInit {
     memberForm: FormGroup;
     member: Member;
-    displayedColumns: string[] = ['reason', 'points', 'created_at'];
+    displayedColumns: string[] = ['reason', 'points', 'created_at', 'action'];
     dataSource: MatTableDataSource<any>;
-    badgesColumns: string[] = ['badge_name', 'logo', 'created_at'];
+    badgesColumns: string[] = ['badge_name', 'logo', 'created_at', 'action'];
     badgeDataSource: MatTableDataSource<any>;
     eventsColumns: string[] = ['name', 'startDate', 'endDate', 'description'];
     eventsDataSource: MatTableDataSource<any>;
     @ViewChild(MatSort) sort: MatSort;
     loading = false;
+    memberId: number;
 
     kpiAttendancePoints: KpiCardSettings = {
         label: 'Počet bodů za docházku',
@@ -80,7 +85,8 @@ export class EditMemberComponent implements OnInit {
         private attendanceService: AttendanceService,
         private authService: AuthenticationService,
         private route: ActivatedRoute,
-        private location: Location
+        private location: Location,
+        private dialog: MatDialog,
     ) {
         this.memberForm = this.fb.group({
             name: ['', Validators.required],
@@ -96,39 +102,40 @@ export class EditMemberComponent implements OnInit {
             schoolyearId: [this.authService.getSchoolyear()],
             requirements: [],
         });
+
+        const routerParams = this.route.snapshot.paramMap;
+        this.memberId = Number(routerParams.get('memberId'));
     }
 
     ngOnInit() {
         this.loading = true;
-        const routerParams = this.route.snapshot.paramMap;
-        const memberId = Number(routerParams.get('memberId'));
 
-        this.memberService.getByIdAndSchoolyear(memberId, this.authService.getSchoolyear()).subscribe((res) => {
+        this.memberService.getByIdAndSchoolyear(this.memberId, this.authService.getSchoolyear()).subscribe((res) => {
             this.member = res;
             this.memberForm.patchValue(res);
         });
 
-        this.memberService.getBadges(memberId).subscribe((badges) => {
+        this.memberService.getBadges(this.memberId).subscribe((badges) => {
             this.badgeDataSource = new MatTableDataSource(badges);
         });
 
-        const points$ = this.pointsService.getByMemberAndSchoolyear(memberId, this.authService.getSchoolyear());
-        const attendancePoints$ = this.attendanceService.getMembersAttendancePoints(memberId, this.authService.getSchoolyear());
-        const attendancePercentage$ = this.memberService.getAttendanceById(memberId, this.authService.getSchoolyear());
+        const points$ = this.pointsService.getByMemberAndSchoolyear(this.memberId, this.authService.getSchoolyear());
+        const attendancePoints$ = this.attendanceService.getMembersAttendancePoints(this.memberId, this.authService.getSchoolyear());
+        const attendancePercentage$ = this.memberService.getAttendanceById(this.memberId, this.authService.getSchoolyear());
         const meetingCount$ = this.attendanceService.getAllDatesBySchoolyear(this.authService.getSchoolyear());
-        const events$ = this.eventService.getByMemberAndSchoolyear(memberId, this.authService.getSchoolyear());
-        
+        const events$ = this.eventService.getByMemberAndSchoolyear(this.memberId, this.authService.getSchoolyear());
+
         forkJoin([points$, attendancePoints$, attendancePercentage$, meetingCount$, events$]).subscribe(result => {
             // prepare datasource for mat-table
             this.dataSource = new MatTableDataSource(result[0]);
             this.dataSource.sort = this.sort;
             this.loading = false;
-            
+
             // calculate sum
             let sum = 0;
-            result[0].forEach((obj) => sum  += parseInt(obj.points));
+            result[0].forEach((obj) => sum += parseInt(obj.points));
             this.kpiPoints.value = sum;
-            
+
             //calculate overall sum (attendance points, events points and points)  
             this.kpiAttendancePoints.value = Number(result[1]);
             this.kpiSumPoints.value = sum + Number(result[1]) + Number(result[4].length * EVENT_POINTS);
@@ -150,17 +157,47 @@ export class EditMemberComponent implements OnInit {
     onSubmit() {
         if (this.memberForm.valid) {
             this.memberService.update(this.memberForm.value).subscribe(
-                (res) => {
-                    this.snack.open('Změny úspěšně uloženy.', 'X', {
-                        duration: 3000,
-                    });
-                },
-                (err) => {
-                    this.snack.open('Během ukládání změn nastala chyba.', 'X', {
-                        duration: 3000,
-                    });
+                {
+                    next: (res) => {
+                        this.snack.open('Změny úspěšně uloženy.', 'X', {
+                            duration: 3000,
+                        });
+                    },
+                    error: (err) => {
+                        this.snack.open('Během ukládání změn nastala chyba.', 'X', {
+                            duration: 3000,
+                        });
+                    }
                 }
             );
         }
+    }
+
+    deletePoints(points: Points): void {
+        const dialogRef = this.dialog.open(BasicDialogComponent);
+        dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                this.pointsService.delete(points.id).subscribe(() => {
+                    this.snack.open('Body odstraněny', 'X', {
+                        duration: 3000,
+                    });
+                    this.ngOnInit();
+                });
+            }
+        })
+    }
+
+    deleteBadge(badge: Badge): void {
+        const dialogRef = this.dialog.open(BasicDialogComponent);
+        dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                this.memberService.removeBadge(this.memberId, badge.id).subscribe(() => {
+                    this.snack.open('Odznak odstraněn', 'X', {
+                        duration: 3000,
+                    });
+                    this.ngOnInit();
+                });
+            }
+        })
     }
 }

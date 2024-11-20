@@ -10,7 +10,7 @@ class GetPointsByMemberIdAction extends PointsAction
 	
 	protected function action(): Response
 	{
-		$memberId = (int) $this->resolveArg('id');
+		$memberId = (int) $this->resolveArg('memberId');
 		$schoolyearId = null;
 		if (isset($this->args["schoolyearId"])) {
 			$schoolyearId = (int) $this->resolveArg('schoolyearId');

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from './../../../../environments/environment';
-import { Badge } from './../models/badge';
+import { environment } from '../../../../environments/environment';
+import { Badge } from '../models/badge';
 
 @Injectable({
     providedIn: 'root',
@@ -17,6 +17,14 @@ export class BadgeService {
 
     add(badge: Badge) {
         return this.http.post(this.apiUrl + '/create', badge);
+    }
+
+    addBulkBadgesToMembers(badgeId: number, members: number[], createdAt: Date) {
+        return this.http.post(`${this.apiUrl}/add-bulk`, {
+            badgeId: badgeId,
+            created_at: createdAt,
+            memberIds: members,
+        });
     }
 
     update(badge: Badge) {

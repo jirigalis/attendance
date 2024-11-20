@@ -18,4 +18,6 @@ interface BadgeRepository {
     public function delete(int $id);
 
     public function getForAllMembers();
+
+    public function addBulkToMembers(int $badgeId, array $memberIds, string $created_at);
 }

@@ -17,6 +17,7 @@ use App\Application\Actions\Member\GetMemberAttendanceAction;
 use App\Application\Actions\Member\AddMemberAttendanceAction;
 use App\Application\Actions\Member\GetBadgesAction;
 use App\Application\Actions\Member\AddBadgeAction;
+use App\Application\Actions\Member\RemoveBadgeAction;
 use App\Application\Actions\Member\ExportAttendanceAction;
 
 use App\Application\Actions\Attendance\ListAttendanceForDayAction;
@@ -31,6 +32,7 @@ use App\Application\Actions\Badge\CreateBadgeAction;
 use App\Application\Actions\Badge\DeleteBadgeAction;
 use App\Application\Actions\Badge\UpdateBadgeAction;
 use App\Application\Actions\Badge\GetForAllMembersAction;
+use App\Application\Actions\Badge\AddBulkToMembersAction;
 
 use App\Application\Actions\Points\ListPointsAction;
 use App\Application\Actions\Points\CreatePointsAction;
@@ -120,6 +122,7 @@ return function (App $app) {
         $group->delete('/{id}', DeleteMemberAction::class);
         $group->get('/{id}/badges', GetBadgesAction::class);
         $group->post('/{id}/badges', AddBadgeAction::class);
+        $group->delete('/{id}/badges/{badgeId}', RemoveBadgeAction::class);
         $group->get('/{memberId}/schoolyear/{schoolyearId}', GetByIdAndSchoolyearAction::class);
         $group->get('/schoolyear/{schoolyearId}', ListMembersBySchoolyearAction::class);
         $group->get('/schoolyear/{schoolyearId}/attendance', ListMembersWithAttendanceAction::class);
@@ -147,6 +150,7 @@ return function (App $app) {
         $group->delete('/{id}', DeleteBadgeAction::class);
         $group->put('/{id}', UpdateBadgeAction::class);
         $group->get('/members', GetForAllMembersAction::class);
+        $group->post('/add-bulk', AddBulkToMembersAction::class);
     });
 
     $app->group($prefix . '/points', function (Group $group) use ($container) {
@@ -157,7 +161,7 @@ return function (App $app) {
         $group->get('/sum[/role/{role}]', GetSumForAllMembersAction::class);
         $group->get('/sum/public/{schoolyearId}', GetPublicSumAction::class);
         $group->get('/sum/schoolyear/{schoolyearId}', GetSumForAllMembersAction::class);
-        $group->get('/{id}[/{schoolyearId}]', GetPointsByMemberIdAction::class);
+        $group->get('/{memberId}[/{schoolyearId}]', GetPointsByMemberIdAction::class);
         $group->get('/sum/{id}', GetSumByMemberAction::class);
         $group->delete('/{id}', DeletePointsAction::class);
     });

@@ -285,6 +285,23 @@ class InMemoryMemberRepository implements MemberRepository
         return true;
     }
 
+    public function removeBadge($memberId, $badgeId) {
+        if (!V::intVal()->validate($memberId)) {
+            throw new MemberNotFoundException();
+        }
+
+        if (!V::intVal()->validate($badgeId)) {
+            throw new InputNotValidException();
+        }
+
+        $badge = Badge::find($badgeId);
+        $member = Member::find($memberId);
+
+        $member->badge()->detach($badge);
+
+        return true;
+    }
+
     public function exportAttendance(int $schoolyearId, array $members) {
         if (!V::intVal()->validate($schoolyearId)) {
             throw new InputNotValidException();

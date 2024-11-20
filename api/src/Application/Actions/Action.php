@@ -45,10 +45,11 @@ abstract class Action
     {
         $this->logger = $logger;
         $this->db  = $capsule;
-        
 
         $this->db->getConnection()->listen(function($query) {
-            $this->logger->info("MySQL Query: ".$query->sql);
+            if (getenv('LOG_SQL') == 'true') {
+                $this->logger->notice("[MySQL Query]: " .$query->sql);
+            }
         });
     }
 
