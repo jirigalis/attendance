@@ -55,3 +55,14 @@
 .schoolyear-select-wrapper {
     background-color: #263238;
 }
+
+.navigation-fab-button {
+    position: fixed;
+    z-index: 1;
+    left: 50px;
+    bottom: 50px;
+
+    .mat-icon {
+        margin: 0;
+    }
+}

@@ -16,7 +16,7 @@
     <div fxLayout="column" fxFlex="40" fxFill class="list-wrapper">
         <h3 fxFlex="10">{{config.selectedOptionsLabel ? config.selectedOptionsLabel : 'Vybrané položky:'}}</h3>
         <mat-action-list #selectedOptionsList fxFlex="90">
-            <button mat-list-item *ngFor="let item of selectedOptions" selected (click)="itemClicked(item)">
+            <button mat-list-item *ngFor="let item of selectedOptions" (click)="itemClicked(item)">
                 <ng-container *ngIf="config.getLabel">{{config.getLabel(item)}}</ng-container>
             </button>
         </mat-action-list>

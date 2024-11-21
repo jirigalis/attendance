@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { MemberService } from '../../core/services';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
+import { MailingListDialogComponent } from "../dialog/mailing-list-dialog/mailing-list-dialog.component";
 
 @Component({
     selector: 'schoolyear-members',
@@ -54,8 +55,8 @@ export class SchoolyearMembersComponent implements OnInit {
         this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 
-    addMember() {
-        this.r.navigate(['/add-member']);
+    createEmailList() {
+        this.dialog.open(MailingListDialogComponent, { width: '700px', data: this.dataSource.data });
     }
 
     deleteMember(member) {

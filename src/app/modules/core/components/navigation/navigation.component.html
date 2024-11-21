@@ -1,17 +1,18 @@
 <mat-sidenav-container class="sidenav-container" [hasBackdrop]="(isHandset$ | async) === true">
     <mat-sidenav #drawer *ngIf="isLoggedIn()" class="sidenav" fixedInViewport
-        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-        [opened]="(isHandset$ | async) === false">
+                 [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+                 [opened]="(isHandset$ | async) === false">
         <mat-toolbar class="sidepanel-part" color="primary">
             <button mat-icon-button color="accent" (click)="drawer.toggle()">
-            <mat-icon color="accent">menu</mat-icon></button>
+                <mat-icon color="accent">menu</mat-icon>
+            </button>
             <span>Attendance</span>
         </mat-toolbar>
         <div class="schoolyear-select-wrapper">
             <mat-form-field class="schoolyear-select dark-background">
                 <mat-label>Vybraný školní rok</mat-label>
                 <mat-select [(value)]="schoolyear" (selectionChange)="updateSchoolyear($event.value)">
-                    <mat-option *ngFor="let sy of schoolyears" [value]="sy.id">{{sy.label}}</mat-option>
+                    <mat-option *ngFor="let sy of schoolyears" [value]="sy.id">{{ sy.label }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -56,16 +57,20 @@
             </a>
             <divider-with-text>Nástroje</divider-with-text>
             <a mat-list-item [routerLink]="['/games']" routerLinkActive="list-item-active">
-                <mat-icon>extension</mat-icon>Hry
+                <mat-icon>extension</mat-icon>
+                Hry
             </a>
             <a mat-list-item [routerLink]="['/ciphers']" routerLinkActive="list-item-active">
-                <mat-icon>vpn_key</mat-icon>Šifry
+                <mat-icon>vpn_key</mat-icon>
+                Šifry
             </a>
             <a mat-list-item [routerLink]="['/learning']" routerLinkActive="list-item-active">
-                <mat-icon>image_search</mat-icon>Poznávačky
+                <mat-icon>image_search</mat-icon>
+                Poznávačky
             </a>
             <a mat-list-item [routerLink]="['/images']" routerLinkActive="list-item-active">
-                <mat-icon>photo_library</mat-icon>Správa obrázků
+                <mat-icon>photo_library</mat-icon>
+                Správa obrázků
             </a>
             <divider-with-text>Obecné</divider-with-text>
             <a mat-list-item [routerLink]="['/badges']" routerLinkActive="list-item-active">
@@ -102,3 +107,8 @@
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
+@if (drawer && !drawer.opened) {
+    <button mat-fab color="accent" class="navigation-fab-button" (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+    </button>
+}

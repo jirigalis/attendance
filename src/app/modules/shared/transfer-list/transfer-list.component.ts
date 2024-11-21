@@ -1,19 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
     selector: 'transfer-list',
     templateUrl: './transfer-list.component.html',
     styleUrls: ['./transfer-list.component.scss']
 })
-export class TransferListComponent implements OnInit {
+export class TransferListComponent {
     @Input() public allOptions: any[] = [];
     @Input() public selectedOptions: any[] = [];
     @Input() public config: any;
+    @Output() public selectedOptionsChange = new EventEmitter<any[]>();
 
     constructor() { }
-
-    ngOnInit() {
-    }
 
     public itemClicked(item) {
         const allOptionsIndex = this.allOptions.findIndex(op => op.id === item.id);

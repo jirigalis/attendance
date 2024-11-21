@@ -11,6 +11,7 @@ export class Member implements Deserializable {
     application: boolean;
     paid: moment.Moment;
     role: string;
+    email: string;
 
     deserialize(input: any) {
         return Object.assign(this, input);

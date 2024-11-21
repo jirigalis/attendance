@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Napsat e-mail</h2>
+
+<div mat-dialog-content fxLayout="column">
+    @if (this.membersSelected) {
+        <p>Byli vybráni následující členové:</p>
+        <mat-form-field appearance="fill">
+            <textarea class="email-list" matInput id="emails">{{ getEmails() }}</textarea>
+        </mat-form-field>
+    } @else {
+        <p>Vyberte členy, kterým chcete zaslat e-mail:</p>
+        <transfer-list [allOptions]="members" [(selectedOptions)]="selectedMembers"
+                       [config]="listConfig"></transfer-list>
+    }
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Zrušit</button>
+    @if (this.membersSelected) {
+        <button mat-raised-button (click)="back()">Zpět</button>
+        @if (copied) {
+            <button mat-raised-button color="primary">
+                <mat-icon>done</mat-icon>Zkopírováno</button>
+        } @else {
+            <button mat-raised-button color="primary" (click)="copyValues()">
+                <mat-icon size="small">content_copy</mat-icon>Zkopírovat do schránky</button>
+        }
+    } @else {
+        <button mat-raised-button color="primary" (click)="proceed()">Vygenerovat seznam e-mailů</button>
+    }
+</div>
