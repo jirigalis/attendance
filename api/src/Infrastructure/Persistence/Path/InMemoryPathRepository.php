@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+namespace App\Infrastructure\Persistence\Path;
+
 use App\Domain\Path\Path;
 use App\Domain\Path\PathRepository;
 

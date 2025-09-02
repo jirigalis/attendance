@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,6 +37,7 @@ import { ManageCategoriesDialogComponent } from './images/manage-categories-dial
 import { SingleImageDialogComponent } from './images/single-image-dialog/single-image-dialog.component';
 import { ImageDetailComponent } from './learning/image-detail/image-detail.component';
 import { LearningComponent } from './learning/learning.component';
+import { RemoteScreenComponent } from "./remote-screen/remote-screen.component";
 
 @NgModule({
     imports: [
@@ -46,6 +47,7 @@ import { LearningComponent } from './learning/learning.component';
         ReactiveFormsModule,
         MaterialModule,
         SharedModule,
+        NgOptimizedImage,
     ],
     declarations: [
         GamesComponent,
@@ -83,6 +85,7 @@ import { LearningComponent } from './learning/learning.component';
         SingleImageDialogComponent,
         ImageFilterComponent,
         LearningComponent,
+        RemoteScreenComponent,
     ]
 })
 export class ToolsModule { }

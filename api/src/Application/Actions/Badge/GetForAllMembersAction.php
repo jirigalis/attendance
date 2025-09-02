@@ -12,8 +12,9 @@ class GetForAllMembersAction extends BadgeAction
      */
     protected function action(): Response
     {
-        $this->logger->info("Get badges for all members.");        
-        $badges = $this->badgeRepository->getForAllMembers();
+        $schoolyearId = (int) $this->resolveArg('schoolyearId');
+        $this->logger->info("Get badges for all members of schoolyear `$schoolyearId`.");        
+        $badges = $this->badgeRepository->getForAllMembers($schoolyearId);
 
         return $this->respondWithData($badges);
     }

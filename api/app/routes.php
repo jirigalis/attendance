@@ -72,6 +72,8 @@ use App\Application\Actions\Event\UpdateEventAction;
 use App\Application\Actions\Event\ViewEventAction;
 use App\Application\Actions\Event\AddMembersToEventAction;
 use App\Application\Actions\Event\RemoveMemberFromEventAction;
+use App\Application\Actions\Event\GetEventsByMemberAction;
+
 use App\Application\Actions\User\AuthenticateUserAction;
 use App\Application\Actions\User\SelectSchoolyearAction;
 
@@ -80,7 +82,8 @@ use App\Application\Actions\Category\CreateCategoryAction;
 use App\Application\Actions\Category\UpdateCategoryAction;
 use App\Application\Actions\Category\DeleteCategoryAction;
 use App\Application\Actions\Category\GetCategoryByIdAction;
-use App\Application\Actions\Event\GetEventsByMemberAction;
+
+
 use App\Application\Actions\Image\AddPathToImageAction;
 use App\Application\Actions\Image\GetAllImagesAction;
 use App\Application\Actions\Image\GetImageByIdAction;
@@ -90,8 +93,14 @@ use App\Application\Actions\Image\DeleteImageAction;
 use App\Application\Actions\Image\GetByCategoriesAction;
 use App\Application\Actions\Image\GetByCategoryAction;
 use App\Application\Actions\Image\UpdateImagePathAction;
+
 use App\Application\Actions\Member\GetMemberMeetingDatesAction;
+
 use App\Application\Actions\Path\DeletePathAction;
+
+use App\Application\Actions\RemoteScreen\CheckRemoteScreenUpdatesAction;
+use App\Application\Actions\RemoteScreen\UpdateRemoteScreenAction;
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -149,7 +158,7 @@ return function (App $app) {
         $group->post('/create', CreateBadgeAction::class);
         $group->delete('/{id}', DeleteBadgeAction::class);
         $group->put('/{id}', UpdateBadgeAction::class);
-        $group->get('/members', GetForAllMembersAction::class);
+        $group->get('/members/{schoolyearId}', GetForAllMembersAction::class);
         $group->post('/add-bulk', AddBulkToMembersAction::class);
     });
 
@@ -228,6 +237,12 @@ return function (App $app) {
     // Paths
     $app->group($prefix . '/path', function (Group $group) {
         $group->delete('/{id}', DeletePathAction::class);
+    });
+
+    // Remote Screen
+    $app->group($prefix . '/remote-screen', function (Group $group) use ($container) {
+        $group->get('/{userId}/updates', CheckRemoteScreenUpdatesAction::class);
+        $group->put('/{userId}/update', UpdateRemoteScreenAction::class);
     });
 
     $app->get($prefix . '/{test}', function (Request $request, Response $response, $args) {

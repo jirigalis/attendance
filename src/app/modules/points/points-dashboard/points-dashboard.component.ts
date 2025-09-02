@@ -116,7 +116,7 @@ export class PointsDashboardComponent implements OnInit {
     }
 
     public loadBadges() {
-        this.badgeService.getForAllMembers().subscribe((badges) => {
+        this.badgeService.getForAllMembers(this.authService.getSchoolyear()).subscribe((badges) => {
             this.badgeDataSource = new MatTableDataSource(badges);
             this.badgeDataSource.sort = this.badgeSort;
         });

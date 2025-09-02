@@ -13,6 +13,7 @@ use App\Domain\Schoolyear\SchoolyearRepository;
 use App\Domain\Event\EventRepository;
 use App\Domain\Image\ImageRepository;
 use App\Domain\Path\PathRepository;
+use App\Domain\RemoteScreen\RemoteScreenRepository;
 use App\Infrastructure\Persistence\Member\InMemoryMemberRepository;
 use App\Infrastructure\Persistence\Attendance\InMemoryAttendanceRepository;
 use App\Infrastructure\Persistence\User\InMemoryUserRepository;
@@ -25,6 +26,7 @@ use App\Infrastructure\Persistence\Event\InMemoryEventRepository;
 use App\Infrastructure\Persistence\Category\InMemoryCategoryRepository;
 use App\Infrastructure\Persistence\Image\InMemoryImageRepository;
 use App\Infrastructure\Persistence\Path\InMemoryPathRepository;
+use App\Infrastructure\Persistence\RemoteScreen\InMemoryRemoteScreenRepository;
 use DI\ContainerBuilder;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -40,6 +42,7 @@ return function (ContainerBuilder $containerBuilder) {
         SchoolyearRepository::class => \DI\autowire(InMemorySchoolyearRepository::class),
         CategoryRepository::class => \DI\autowire(InMemoryCategoryRepository::class),
         ImageRepository::class => \DI\autowire(InMemoryImageRepository::class),
-        PathRepository::class => \DI\autowire(InMemoryPathRepository::class)
+        PathRepository::class => \DI\autowire(InMemoryPathRepository::class),
+        RemoteScreenRepository::class => \DI\autowire(InMemoryRemoteScreenRepository::class)
     ]);
 };

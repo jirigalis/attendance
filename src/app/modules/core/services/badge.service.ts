@@ -35,7 +35,7 @@ export class BadgeService {
         return this.http.delete(this.apiUrl + '/' + badgeId);
     }
 
-    getForAllMembers() {
-        return this.http.get<any>(this.apiUrl + '/members');
+    getForAllMembers(schoolearId: number) {
+        return this.http.get<any>(this.apiUrl + '/members/' + schoolearId);
     }
 }

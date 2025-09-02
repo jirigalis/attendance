@@ -12,7 +12,7 @@ class ListSchoolyearAction extends SchoolyearAction
      */
     protected function action(): Response
     {
-        $this->logger->info("Schoolyear list was viewed.");
+        // $this->logger->info("Schoolyear list was viewed.");
         
         $schoolyear = $this->schoolyearRepository->findAll();
 

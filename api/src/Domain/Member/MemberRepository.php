@@ -8,7 +8,7 @@ interface MemberRepository
     /**
      * @return Member[]
      */
-    public function findAll(): object;
+    public function findAll(): array;
 
     public function listNames($schoolyearId): object;
 

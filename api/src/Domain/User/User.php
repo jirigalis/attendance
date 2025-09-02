@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Domain\User;
 
 use JsonSerializable;
+use App\Domain\RemoteScreen\RemoteScreen;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -15,6 +16,11 @@ class User extends Eloquent
 
     public static function boot() {
         parent::boot();
+    }
+
+    public function remoteScreen()
+    {
+        return $this->hasOne(RemoteScreen::class);
     }
 
 }

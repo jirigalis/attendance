@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { environment } from './../../../../environments/environment';
-import { Member } from './../models/member';
+import { environment } from '../../../../environments/environment';
+import { Member } from '../models';
 
 @Injectable({
     providedIn: 'root',

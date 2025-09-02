@@ -10,6 +10,7 @@ use App\Domain\Badge\BadgeRepository;
 use App\Domain\DomainException\DomainRecordNotFoundException;
 use App\Domain\DomainException\InputNotValidException;
 use App\Domain\DomainException\CannotCreateDomainRecordException;
+use App\Domain\Schoolyear\Schoolyear;
 use Respect\Validation\Validator as V;
 
 class InMemoryBadgeRepository implements BadgeRepository
@@ -96,9 +97,15 @@ class InMemoryBadgeRepository implements BadgeRepository
         return $res;
     }
 
-    public function getForAllMembers()
+    public function getForAllMembers(int $schoolyearId)
     {
-        return Member::has('badge')->with('badge')->get();
+        return Member::whereHas('schoolyear', function ($query) use ($schoolyearId) {
+            $query->where('schoolyear_id', $schoolyearId);
+        })
+        ->with('badge') // Eager load the badge relationship
+        ->withCount('badge') // Add a badge_count attribute to each member
+        ->orderBy('badge_count', 'desc') // Sort by the count of badges, descending
+        ->get();
     }
 
     public function addBulkToMembers(int $badgeId, array $members, string $created_at)

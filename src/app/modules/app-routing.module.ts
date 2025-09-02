@@ -25,6 +25,7 @@ import { CiphersComponent } from './tools/ciphers/ciphers.component';
 import { GamesComponent } from './tools/games/games.component';
 import { ImagesComponent } from './tools/images/images.component';
 import { LearningComponent } from './tools/learning/learning.component';
+import { RemoteScreenComponent } from "./tools/remote-screen/remote-screen.component";
 
 const routes: Routes = [
     {
@@ -136,7 +137,11 @@ const routes: Routes = [
             {
                 path: 'learning',
                 component: LearningComponent,
-            }
+            },
+            {
+                path: 'remote-screen',
+                component: RemoteScreenComponent,
+            },
         ],
     },
 ];

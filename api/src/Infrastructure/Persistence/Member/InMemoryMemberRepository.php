@@ -34,7 +34,7 @@ class InMemoryMemberRepository implements MemberRepository
     /**
      * {@inheritdoc}
      */
-    public function findAll(): object
+    public function findAll(): array
     {
         return $this->members;
     }

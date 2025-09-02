@@ -1,0 +1,19 @@
+<mat-card class="control-panel">
+    <mat-card-content>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <label id="example-name-label" class="example-name-label">Veliskot písmena</label>
+            <label class="example-value-label">{{fontSize}}</label>
+        </div>
+        <mat-slider min="1" max="10" step="1">
+            <input matSliderThumb [(ngModel)]="fontSize">
+        </mat-slider>
+    </mat-card-content>
+</mat-card>
+
+<div fxLayout="column" fxLayoutAlign="center center">
+    @if (resultSig()?.type === 'text') {
+        <p class="text-wrapper" [ngStyle]="{'font-size.rem': (fontSize+3)}">{{ resultSig().value}}</p>
+    } @else if (resultSig()?.type === 'image') {
+        <img [ngSrc]="resultSig().value" class="image-wrapper" fill="" alt="Remote Screen Image"/>
+    }
+</div>

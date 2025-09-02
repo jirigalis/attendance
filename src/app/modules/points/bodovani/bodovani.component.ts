@@ -14,7 +14,8 @@ import { SchoolyearService } from '../../core/services/schoolyear.service';
     styleUrls: ['./bodovani.component.scss'],
 })
 export class BodovaniComponent implements OnInit {
-    @ViewChild(MatSort) public sort: MatSort;
+    @ViewChild('pointsSort') public pointsSort: MatSort;
+    @ViewChild('badgeSort') public badgeSort: MatSort;
     currentUser: User;
     loading = false;
     displayedColumns: string[] = ['name', 'sum_points_schoolyear'];
@@ -29,9 +30,9 @@ export class BodovaniComponent implements OnInit {
         private pointsService: PointsService,
         private badgeService: BadgeService,
         private schoolyearService: SchoolyearService,
-        private authenticationService: AuthenticationService
+        private authService: AuthenticationService
     ) {
-        this.authenticationService.currentUser.subscribe(
+        this.authService.currentUser.subscribe(
             (x) => (this.currentUser = x)
         );
 
@@ -54,8 +55,8 @@ export class BodovaniComponent implements OnInit {
                 p.sum_points_schoolyear = parseInt(p.sum_points_schoolyear) + parseInt(p.sum_attendance_schoolyear) + parseInt(p.sum_event_attendance);
             })
             this.dataSource = new MatTableDataSource(data);
-            this.sort.sort(({ id: 'sum_points_schoolyear', start: 'desc' }) as MatSortable);
-            this.dataSource.sort = this.sort;
+            this.pointsSort.sort(({ id: 'sum_points_schoolyear', start: 'desc' }) as MatSortable);
+            this.dataSource.sort = this.pointsSort;
 
             // map colors
             data.map((p, i) => {
@@ -67,8 +68,9 @@ export class BodovaniComponent implements OnInit {
 
         this.schoolyearService.getAllSchoolyears().subscribe(schoolyears => this.schoolyears = schoolyears);
 
-        this.badgeService.getForAllMembers().subscribe((badges) => {
+        this.badgeService.getForAllMembers(this.authService.getSchoolyear()).subscribe((badges) => {
             this.badgeDataSource = new MatTableDataSource(badges);
+            this.badgeDataSource.sort = this.badgeSort;
         });
     }
 
