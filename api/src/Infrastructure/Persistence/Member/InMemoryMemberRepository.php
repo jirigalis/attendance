@@ -16,9 +16,6 @@ use Respect\Validation\Validator as V;
 
 class InMemoryMemberRepository implements MemberRepository
 {
-    /**
-     * @var Member[]
-     */
     private $members;
 
     /**
@@ -34,7 +31,7 @@ class InMemoryMemberRepository implements MemberRepository
     /**
      * {@inheritdoc}
      */
-    public function findAll(): array
+    public function findAll(): object
     {
         return $this->members;
     }
