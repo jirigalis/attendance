@@ -1,5 +1,7 @@
 <div class="main-container">
     <div class="mat-app-background nav-container">
-        <navigation *ngIf="showNavigation"></navigation>
+        @if (showNavigation) {
+            <navigation></navigation>
+        }
     </div>
 </div>

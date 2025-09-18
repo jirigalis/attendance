@@ -2,12 +2,16 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthenticationService } from './modules/core/authentication/authentication.service';
-import { User } from './modules/core/models/user';
+import { User } from './modules/core/models';
 import { ToolsEvents, ToolsService } from './modules/core/services/tools.service';
+import { NavigationComponent } from "./modules/core/components/navigation/navigation.component";
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
+    imports: [
+        NavigationComponent,
+    ],
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{

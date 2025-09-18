@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { jwtDecode } from "jwt-decode";
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,8 +12,9 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
     private apiUrl = environment.API_URL;
+    private http = inject(HttpClient);
 
-    constructor(private http: HttpClient) {
+    constructor() {
         const userLS = this.getCurrentUserObjectFromToken()
         if (userLS && this.getSchoolyearFromLS()) {
             userLS.schoolyear = this.getSchoolyearFromLS();

@@ -1,5 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
+import { NgStyle } from "@angular/common";
 
 export interface LetterGeneratorConfig {
     abc?: string|string[]; // character set
@@ -11,6 +12,9 @@ export interface LetterGeneratorConfig {
 @Component({
     selector: 'letter-generator',
     templateUrl: './letter-generator.component.html',
+    imports: [
+        NgStyle
+    ],
     styleUrls: ['./letter-generator.component.scss']
 })
 export class LetterGeneratorComponent implements OnInit {

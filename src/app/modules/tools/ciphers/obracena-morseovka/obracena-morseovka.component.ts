@@ -1,13 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { CiphersComponent } from '../ciphers.component';
+import { Component } from '@angular/core';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { CipherHeadingComponent } from "../cipher-heading/cipher-heading.component";
+import { CipherEncodePartComponent } from "../cipher-encode-part/cipher-encode-part.component";
+import { CipherDecodePartComponent } from "../cipher-decode-part/cipher-decode-part.component";
+import { BaseCipher } from "../base-cipher";
 
 @Component({
     selector: 'obracena-morseovka',
     templateUrl: './obracena-morseovka.component.html',
+    imports: [
+        FlexLayoutModule,
+        CipherHeadingComponent,
+        CipherEncodePartComponent,
+        CipherDecodePartComponent
+    ],
     styleUrls: ['./obracena-morseovka.component.css']
 })
-export class ObracenaMorseovkaComponent extends CiphersComponent {
+export class ObracenaMorseovkaComponent extends BaseCipher {
     public desc: string = 'Obrácená morseovka je varianta morseovky, kde tečky nahrazeny čárkami a čárky zase tečkami.'
     private MORSE_CODE = {
         'A': '-.', 'B': '.---', 'C': '.-.-', 'D': '.--', 'E': '-', 'F': '--.-',

@@ -1,13 +1,23 @@
 import { Component } from '@angular/core';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
-import { CiphersComponent } from '../ciphers.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { CipherHeadingComponent } from "../cipher-heading/cipher-heading.component";
+import { CipherEncodePartComponent } from "../cipher-encode-part/cipher-encode-part.component";
+import { CipherDecodePartComponent } from "../cipher-decode-part/cipher-decode-part.component";
+import { BaseCipher } from "../base-cipher";
 
 @Component({
     selector: 'prvni-posledni',
     templateUrl: './prvni-posledni.component.html',
+    imports: [
+        FlexLayoutModule,
+        CipherHeadingComponent,
+        CipherEncodePartComponent,
+        CipherDecodePartComponent
+    ],
     styleUrls: ['./prvni-posledni.component.css']
 })
-export class PrvniPosledniComponent extends CiphersComponent {
+export class PrvniPosledniComponent extends BaseCipher {
     public desc = 'Text je zašifrován tak, že první písmeno jde na první místo, druhé písmeno na poslední místo, třetí písmeno na druhé místo, čtvrté písmeno na předposlední místo atd.';
 
     constructor(protected tools: ToolsService) {

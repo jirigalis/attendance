@@ -1,17 +1,37 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort, MatSortable } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortable, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { mergeMap } from 'rxjs/operators';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Schoolyear, User } from '../../core/models';
 import { BadgeService } from '../../core/services/badge.service';
 import { PointsService } from '../../core/services/points.service';
 import { SchoolyearService } from '../../core/services/schoolyear.service';
+import { MatTabsModule } from "@angular/material/tabs";
+import { RouterModule } from "@angular/router";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { NgClass } from "@angular/common";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatSelectModule } from "@angular/material/select";
 
 @Component({
     selector: 'bodovani',
     templateUrl: './bodovani.component.html',
     styleUrls: ['./bodovani.component.scss'],
+    imports: [
+        MatTabsModule,
+        MatTableModule,
+        MatSortModule,
+        RouterModule,
+        MatTooltipModule,
+        NgClass,
+        FlexLayoutModule,
+        MatFormFieldModule,
+        MatProgressBarModule,
+        MatSelectModule,
+    ],
 })
 export class BodovaniComponent implements OnInit {
     @ViewChild('pointsSort') public pointsSort: MatSort;

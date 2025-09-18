@@ -1,18 +1,36 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { MemberService } from '../../core/services';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { MailingListDialogComponent } from "../dialog/mailing-list-dialog/mailing-list-dialog.component";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatIconModule } from "@angular/material/icon";
+import { CommonModule, DatePipe } from "@angular/common";
 
 @Component({
     selector: 'schoolyear-members',
     templateUrl: './schoolyear-members.component.html',
-    styleUrls: ['./schoolyear-members.component.scss']
+    styleUrls: ['./schoolyear-members.component.scss'],
+    imports: [
+        FlexLayoutModule,
+        MatButtonModule,
+        MatInputModule,
+        MatTableModule,
+        MatSortModule,
+        RouterModule,
+        MatProgressBarModule,
+        MatIconModule,
+        DatePipe,
+        CommonModule,
+    ],
 })
 export class SchoolyearMembersComponent implements OnInit {
     @ViewChild(MatSort) public sort: MatSort;

@@ -1,16 +1,28 @@
 import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
 import { MemberService } from '../../core/services';
 import { PointsService } from '../../core/services/points.service';
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { CustomDatePipe } from "../../shared/pipes/custom-date.pipe";
+import { NgClass } from "@angular/common";
 
 @Component({
     selector: 'member-detail',
     templateUrl: './member-detail.component.html',
     styleUrls: ['./member-detail.component.scss'],
+    imports: [
+        MatTabsModule,
+        MatProgressBarModule,
+        MatTableModule,
+        MatSortModule,
+        CustomDatePipe,
+        NgClass,
+    ],
 })
 export class MemberDetailComponent implements OnInit {
     member?: Member;

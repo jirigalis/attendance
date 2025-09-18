@@ -2,17 +2,17 @@
 <div fxLayout="column" fxLayoutGap="24px grid">
     <div fxLayout="row wrap" fxLayoutGap="24px grid">
         <kpi-card [settings]="attendanceKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50"
-            fxFlex="100"></kpi-card>
+                  fxFlex="100"></kpi-card>
         <kpi-card [settings]="registeredMembersKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50"
-            fxFlex="100"></kpi-card>
+                  fxFlex="100"></kpi-card>
         <kpi-card [settings]="averageAttendanceKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50"
-            fxFlex="100"></kpi-card>
+                  fxFlex="100"></kpi-card>
         <kpi-card [settings]="birthdayKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50"
-            fxFlex="100"></kpi-card>
+                  fxFlex="100"></kpi-card>
     </div>
     <div fxLayout="row" fxLayoutGap="24px">
         <div fxFlex.gt-lg="66" fxFlex.gt-md="51" fxFlex="100">
-            <mat-card>
+            <mat-card appearance="filled">
                 <mat-card-header>
                     <mat-card-title>Průměrná docházka</mat-card-title>
                     <mat-card-subtitle>V tomto školním roce</mat-card-subtitle>
@@ -21,7 +21,9 @@
                     <div echarts [options]="averageAttendanceOptions" class="demo-chart"></div>
                 </mat-card-content>
                 <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate" *ngIf="membersLoading"></mat-progress-bar>
+                    @if (membersLoading) {
+                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    }
                 </mat-card-footer>
             </mat-card>
         </div>
@@ -35,7 +37,9 @@
                         <div echarts [options]="membersAgeOptions" class="demo-chart"></div>
                     </mat-card-content>
                     <mat-card-footer>
-                        <mat-progress-bar mode="indeterminate" *ngIf="membersLoading"></mat-progress-bar>
+                        @if (membersLoading) {
+                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        }
                     </mat-card-footer>
                 </mat-card>
             </div>
@@ -50,7 +54,9 @@
                     </mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
-                    <mat-progress-bar mode="indeterminate" *ngIf="membersLoading"></mat-progress-bar>
+                    @if (membersLoading) {
+                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    }
                     <table mat-table [dataSource]="membersDatasource" matSort>
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno</th>
@@ -73,8 +79,9 @@
                         <ng-container matColumnDef="attendancePercentage">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>Docházka</th>
                             <td mat-cell *matCellDef="let element">
-                                {{element.attendance.percentage}} % ({{element.attendance.meetingsAttended}}/{{element.attendance.meetingsCount}})
-                                <mat-progress-bar mode="determinate" [ngClass]="getColorClass(element.attendance.percentage)" value="{{ element.attendance.percentage }}"></mat-progress-bar>
+                                {{ element.attendance.percentage }} % ({{ element.attendance.meetingsAttended }}/{{ element.attendance.meetingsCount }})
+                                <mat-progress-bar mode="determinate" [ngClass]="getColorClass(element.attendance.percentage)"
+                                                  value="{{ element.attendance.percentage }}"></mat-progress-bar>
                             </td>
                         </ng-container>
 
@@ -94,7 +101,9 @@
                     </div>
                 </mat-card-content>
                 <mat-card-footer>
-                    <mat-progress-bar mode="indeterminate" *ngIf="membersLoading"></mat-progress-bar>
+                    @if (membersLoading) {
+                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    }
                 </mat-card-footer>
             </mat-card>
         </div>

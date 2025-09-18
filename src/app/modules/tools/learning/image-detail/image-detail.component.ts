@@ -1,9 +1,16 @@
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MatMiniFabButton } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
     selector: 'image-detail',
     templateUrl: './image-detail.component.html',
+    imports: [
+        MatMiniFabButton,
+        MatDialogContent,
+        MatIconModule,
+    ],
     styleUrls: ['./image-detail.component.scss']
 })
 export class ImageDetailComponent implements OnInit {

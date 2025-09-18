@@ -1,16 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
-import * as moment from 'moment';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../core/authentication/authentication.service';
 import { Member } from '../core/models';
 import { MemberService } from '../core/services';
 import { AttendanceService } from '../core/services/attendance.service';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatCardModule } from "@angular/material/card";
+import { TransferListComponent } from "../shared/transfer-list/transfer-list.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { FormsModule } from "@angular/forms";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
     selector: 'app-export-attendance',
     templateUrl: './export-attendance.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatCardModule,
+        TransferListComponent,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatInputModule,
+        MatButtonModule,
+        MatProgressBarModule,
+        MatTableModule,
+        FormsModule,
+        MatIconModule,
+    ],
     styleUrls: ['./export-attendance.component.scss']
 })
 export class ExportAttendanceComponent implements OnInit {
@@ -42,6 +65,11 @@ export class ExportAttendanceComponent implements OnInit {
         this.membersService.getAllBySchoolyear(this.auth.getSchoolyear()).subscribe(members => {
             this.members = members;
         });
+    }
+
+    public getTotalAttendance(data, column) {
+        console.log('data, column', data, column);
+        return 0;
     }
 
     public getDataForExport() {

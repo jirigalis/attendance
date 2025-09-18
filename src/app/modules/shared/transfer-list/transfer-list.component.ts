@@ -1,39 +1,55 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatListModule } from "@angular/material/list";
+import { MatButtonModule } from "@angular/material/button";
+
+export interface TransferListConfig {
+    getLabel: (item: any) => string;
+    selectedOptionsLabel?: boolean; // if true, show labels on selected options
+    showCounter?: boolean; // if true, show counter on selected options
+    height?: string; // height of the lists
+    allOptionsLabel?: string; // label for all options list
+}
 
 @Component({
     selector: 'transfer-list',
     templateUrl: './transfer-list.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatListModule,
+        MatButtonModule,
+    ],
     styleUrls: ['./transfer-list.component.scss']
 })
 export class TransferListComponent {
-    @Input() public allOptions: any[] = [];
+    @Input() public availableOptions: any[] = [];
     @Input() public selectedOptions: any[] = [];
-    @Input() public config: any;
+    @Input() public config: TransferListConfig;
     @Output() public selectedOptionsChange = new EventEmitter<any[]>();
 
     constructor() { }
 
     public itemClicked(item) {
-        const allOptionsIndex = this.allOptions.findIndex(op => op.id === item.id);
+        const allOptionsIndex = this.availableOptions.findIndex(op => op.id === item.id);
         const selectedIndex = this.selectedOptions.findIndex(op => op.id === item.id);
         if (selectedIndex > -1) {
             this.selectedOptions.splice(selectedIndex, 1);
-            this.allOptions.push(item);
+            this.availableOptions.push(item);
         } else {
-            this.allOptions.splice(allOptionsIndex, 1);
+            this.availableOptions.splice(allOptionsIndex, 1);
             this.selectedOptions.push(item);
         }
     }
 
     public selectAll() {
-        this.allOptions.forEach(item => {
+        this.availableOptions.forEach(item => {
             this.selectedOptions.push(item);
         })
-        this.allOptions.length = 0;
+        this.availableOptions.length = 0;
     }
 
     public clear() {
-        this.allOptions = this.allOptions.concat(this.selectedOptions);
+        this.availableOptions = this.availableOptions.concat(this.selectedOptions);
         this.selectedOptions.length = 0;
     }
 

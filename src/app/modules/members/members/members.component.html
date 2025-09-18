@@ -2,20 +2,22 @@
 
 <div fxLayout="row" fxLayoutAlign="space-between center">
     <mat-form-field>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter"/>
     </mat-form-field>
     <button mat-raised-button color="primary" (click)="addMember()">
         <span fxShow.xs="false">Add new member</span>
         <mat-icon fxShow.xs="true" fxShow.gt-xs="false">add</mat-icon>
     </button>
 </div>
-<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+@if (loading) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno</th>
         <td mat-cell *matCellDef="let element">
             <a [routerLink]="['/edit-member/' + element.id]" routerLinkActive="router-link-active"
-                class="link-name">{{ element.name }}
+               class="link-name">{{ element.name }}
                 {{ element.surname }}</a>
         </td>
     </ng-container>
@@ -44,31 +46,15 @@
         </td>
     </ng-container>
 
-    <ng-container matColumnDef="application">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="application">Přihláška</th>
-        <td mat-cell *matCellDef="let element" class="check-column">
-            <mat-icon *ngIf="element.application" color="accent">check</mat-icon>
-            <mat-icon *ngIf="!element.application" class="dash">-</mat-icon>
-        </td>
-    </ng-container>
-
-    <ng-container matColumnDef="paid">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="paid">Platba</th>
-        <td mat-cell *matCellDef="let element" class="check-column">
-            <mat-icon *ngIf="element.paid" color="accent">check</mat-icon>
-            <mat-icon *ngIf="!element.paid" class="dash">-</mat-icon>
-        </td>
-    </ng-container>
-
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Akce</th>
         <td mat-cell *matCellDef="let element">
             <button mat-icon-button matTooltip="Detail člena" matTooltipPosition="right" aria-label="Detail člena"
-                (click)="editMember(element.id)">
+                    (click)="editMember(element.id)">
                 <mat-icon>visibility</mat-icon>
             </button>
             <button mat-icon-button color="warn" matTooltip="Odstranit člena" matTooltipPosition="right"
-                aria-label="Odstranit člena" (click)="openDialog(element)">
+                    aria-label="Odstranit člena" (click)="openDialog(element)">
                 <mat-icon>delete</mat-icon>
             </button>
         </td>

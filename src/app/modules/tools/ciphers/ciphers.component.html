@@ -4,38 +4,54 @@
             <mat-card-content>
                 <mat-action-list>
                     <divider-with-text>Transpoziční šifry</divider-with-text>
-                    <button mat-list-item *ngFor="let item of transpositionCiphers" (click)="selectCipher(item.id)">{{item.name}}</button>
+                    @for (item of transpositionCiphers; track item.id) {
+                        <button mat-list-item (click)="selectCipher(item.id)">
+                            {{ item.name }}
+                        </button>
+                    }
+
                     <divider-with-text>Substituční šifry</divider-with-text>
-                    <button mat-list-item *ngFor="let item of substituteCiphers" (click)="selectCipher(item.id)">{{item.name}}</button>
+                    @for (item of substituteCiphers; track item.id) {
+                        <button mat-list-item (click)="selectCipher(item.id)">
+                            {{ item.name }}
+                        </button>
+                    }
+
                     <divider-with-text>Morseovka</divider-with-text>
-                    <button mat-list-item *ngFor="let item of morseCodeCiphers" (click)="selectCipher(item.id)">{{item.name}}</button>
+                    @for (item of morseCodeCiphers; track item.id) {
+                        <button mat-list-item (click)="selectCipher(item.id)">
+                            {{ item.name }}
+                        </button>
+                    }
                 </mat-action-list>
             </mat-card-content>
         </mat-card>
     </div>
     <div fxFlex>
-        <div fxLayout="column" fxLayoutGap="8px" [ngSwitch]="selectedCipher">
-            <!-- Transpoziční -->
-            <pozpatku *ngSwitchCase="1"></pozpatku>
-            <pozpatku-slova *ngSwitchCase="2"></pozpatku-slova>
-            <pozpatku-znaky *ngSwitchCase="3"></pozpatku-znaky>
-            <vkladani-znaku *ngSwitchCase="4"></vkladani-znaku>
-            <kazde-x-pismeno *ngSwitchCase="5"></kazde-x-pismeno>
-            <prvni-posledni *ngSwitchCase="6"></prvni-posledni>
-            
-            <prvni-pismeno *ngSwitchCase="9"></prvni-pismeno>
-            <!-- Substituční -->
-            <petromilka *ngSwitchCase="10"></petromilka>
-            <posunuta-abeceda *ngSwitchCase="11"></posunuta-abeceda>
-            <otocena-abeceda *ngSwitchCase="12"></otocena-abeceda>
-            <pavouk *ngSwitchCase="13"></pavouk>
-            <zlomky *ngSwitchCase="14"></zlomky>
-            <!-- Morseovka -->
-            <morse-code *ngSwitchCase="17"></morse-code>
-            <obracena-morseovka *ngSwitchCase="18"></obracena-morseovka>
-            <obracena-morseovka-pismena *ngSwitchCase="19"></obracena-morseovka-pismena>
-            <morseovka-suda-licha-cisla *ngSwitchCase="20"></morseovka-suda-licha-cisla>
-            <morseovka-symboly *ngSwitchCase="21"></morseovka-symboly>
+        <div fxLayout="column" fxLayoutGap="8px">
+            @switch (selectedCipher) {
+                @case (1)  { <pozpatku /> }
+                @case (2)  { <pozpatku-slova /> }
+                @case (3)  { <pozpatku-znaky /> }
+                @case (4)  { <vkladani-znaku /> }
+                @case (5)  { <kazde-x-pismeno /> }
+                @case (6)  { <prvni-posledni /> }
+
+                @case (9)  { <prvni-pismeno /> }
+
+                @case (10) { <petromilka /> }
+                @case (11) { <posunuta-abeceda /> }
+                @case (12) { <otocena-abeceda /> }
+                @case (13) { <pavouk /> }
+                @case (14) { <zlomky /> }
+
+                @case (17) { <morse-code /> }
+                @case (18) { <obracena-morseovka /> }
+                @case (19) { <obracena-morseovka-pismena /> }
+                @case (20) { <morseovka-suda-licha-cisla /> }
+                @case (21) { <morseovka-symboly /> }
+                @default { <!-- nic --> }
+            }
         </div>
     </div>
 </div>

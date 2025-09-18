@@ -9,7 +9,7 @@
         <mat-form-field class="full-width">
             <textarea matInput placeholder="Program schůzky" [(ngModel)]="meetingAgenda">{{ meetingAgenda }}</textarea>
         </mat-form-field>
-        <transfer-list [allOptions]="members" [(selectedOptions)]="selectedMembers" [config]="listConfig"></transfer-list>
+        <transfer-list [availableOptions]="members" [(selectedOptions)]="selectedMembers" [config]="listConfig"></transfer-list>
     </mat-card-content>
     <mat-card-actions fxLayout="row" fxLayoutAlign="space-between center">
         <div>

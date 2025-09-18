@@ -1,13 +1,29 @@
 import { Component } from '@angular/core';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
-import { CiphersComponent } from '../ciphers.component';
+import { CipherHeadingComponent } from "../cipher-heading/cipher-heading.component";
+import { CipherEncodePartComponent } from "../cipher-encode-part/cipher-encode-part.component";
+import { CipherDecodePartComponent } from "../cipher-decode-part/cipher-decode-part.component";
+import { FormsModule } from "@angular/forms";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { BaseCipher } from "../base-cipher";
 
 @Component({
     selector: 'posunuta-abeceda',
     templateUrl: './posunuta-abeceda.component.html',
+    imports: [
+        CipherHeadingComponent,
+        CipherEncodePartComponent,
+        MatFormFieldModule,
+        CipherDecodePartComponent,
+        FormsModule,
+        FlexLayoutModule,
+        MatInputModule,
+    ],
     styleUrls: ['./posunuta-abeceda.component.css']
 })
-export class PosunutaAbecedaComponent extends CiphersComponent {
+export class PosunutaAbecedaComponent extends BaseCipher {
     public desc: string = 'Posunutá abeceda, nebo také Caesarova šifra. Každé písmeno v začifrovaném textu je posunuté o předem zadaný počet znaků. Např. při posunu o 3 znaky bude písmeno A nahrazeno písmenem D, B = E, C = F atd.';
     public shift: number = 3;
 

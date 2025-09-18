@@ -1,10 +1,17 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { Category } from 'src/app/modules/core/models/category';
 import { CategoryService } from 'src/app/modules/core/services/category.service';
 import { SnackService } from 'src/app/modules/core/services/snack.service';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { FormsModule } from "@angular/forms";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
 
 interface TreeNode {
     id: number;
@@ -18,6 +25,17 @@ interface TreeNode {
     selector: 'manage-categories-dialog',
     templateUrl: './manage-categories-dialog.component.html',
     styleUrls: ['./manage-categories-dialog.component.scss'],
+    imports: [
+        FlexLayoutModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTreeModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+    ]
 })
 export class ManageCategoriesDialogComponent implements OnInit {
     categories: Category[] = [];

@@ -1,12 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from './../../core/authentication/authentication.service';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
+import { MatCardModule } from "@angular/material/card";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { NgClass } from "@angular/common";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
 
 @Component({
     selector: 'app-login-form',
     templateUrl: './login-form.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatCardModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatIconModule,
+        NgClass,
+    ],
     styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent implements OnInit {

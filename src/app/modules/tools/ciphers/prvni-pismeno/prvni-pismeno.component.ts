@@ -1,13 +1,23 @@
 import { Component } from '@angular/core';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
-import { CiphersComponent } from '../ciphers.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { CipherHeadingComponent } from "../cipher-heading/cipher-heading.component";
+import { CipherEncodePartComponent } from "../cipher-encode-part/cipher-encode-part.component";
+import { CipherDecodePartComponent } from "../cipher-decode-part/cipher-decode-part.component";
+import { BaseCipher } from "../base-cipher";
 
 @Component({
     selector: 'prvni-pismeno',
     templateUrl: './prvni-pismeno.component.html',
+    imports: [
+        FlexLayoutModule,
+        CipherHeadingComponent,
+        CipherEncodePartComponent,
+        CipherDecodePartComponent
+    ],
     styleUrls: ['./prvni-pismeno.component.css']
 })
-export class PrvniPismenoComponent extends CiphersComponent {
+export class PrvniPismenoComponent extends BaseCipher {
     public desc: string = 'První písmeno je šifra, která nahrazuje každé písmeno náhodným slovem začínajícím na toto písmeno. Například písmeno A může být nahrazeno slovem Ahoj.';
 
     constructor(protected tools: ToolsService) {

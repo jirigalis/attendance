@@ -1,4 +1,6 @@
-<h1 *ngIf="member">Upravit člena "{{member.getFullName()}}"</h1>
+@if (member) {
+    <h1>Upravit člena "{{ member.getFullName() }}"</h1>
+}
 <div class="page-actions">
     <button (click)="goBack()" mat-raised-button color="primary">
         <mat-icon>arrow_back</mat-icon>
@@ -13,19 +15,19 @@
                     <div fxLayout="row wrap" fxLayoutGap="40px">
                         <div fxLayout="column" fxFlex="50" fxFlex.lt-sm="100" fxFill>
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Jméno" formControlName="name" required />
+                                <input matInput placeholder="Jméno" formControlName="name" required/>
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Přijmení" formControlName="surname" required />
+                                <input matInput placeholder="Přijmení" formControlName="surname" required/>
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="RC" formControlName="rc" />
+                                <input matInput placeholder="RC" formControlName="rc"/>
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Adresa" formControlName="address" />
+                                <input matInput placeholder="Adresa" formControlName="address"/>
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="E-mail" formControlName="email" />
+                                <input matInput placeholder="E-mail" formControlName="email"/>
                             </mat-form-field>
                             <mat-form-field class="full-width">
                                 <textarea matInput placeholder="Kontakt" formControlName="contact"></textarea>
@@ -72,12 +74,16 @@
     <div fxFill>
         <mat-card>
             <mat-card-header>
-                <mat-card-title *ngIf="member">Bodování člena {{ member.getFullName() }}</mat-card-title>
+                @if (member) {
+                    <mat-card-title>Bodování člena {{ member.getFullName() }}</mat-card-title>
+                }
             </mat-card-header>
             <mat-card-content>
                 <mat-tab-group>
                     <mat-tab label="Body">
-                        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+                        @if (loading) {
+                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        }
                         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
                             <ng-container matColumnDef="reason">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Činnost</th>
@@ -121,7 +127,7 @@
                                 <th mat-header-cell *matHeaderCellDef>Odznak</th>
                                 <td mat-cell *matCellDef="let element">
                                     <img matTooltip="{{element.name}}" matTooltipPosition="above" class="badge-table"
-                                        src="/assets/badges/{{element.logo}}" />
+                                         src="/assets/badges/{{element.logo}}"/>
                                 </td>
                             </ng-container>
 

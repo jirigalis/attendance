@@ -6,7 +6,9 @@
         <span fxShow.xs="false">Vytvořit nový odznak</span>
     </button>
 </div>
-<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+@if (loading) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
     <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -20,28 +22,28 @@
 
     <ng-container matColumnDef="logo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Logo</th>
-        <td mat-cell *matCellDef="let element"><img src="./assets/badges/{{ element.logo }}" class="data-table-img" /></td>
+        <td mat-cell *matCellDef="let element"><img src="./assets/badges/{{ element.logo }}" class="data-table-img"/></td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Akce</th>
         <td mat-cell *matCellDef="let element">
             <button
-                mat-icon-button
-                matTooltip="Upravit"
-                matTooltipPosition="right"
-                aria-label="Upravit"
-                (click)="editBadge(element)"
+                    mat-icon-button
+                    matTooltip="Upravit"
+                    matTooltipPosition="right"
+                    aria-label="Upravit"
+                    (click)="editBadge(element)"
             >
                 <mat-icon>edit</mat-icon>
             </button>
             <button
-                mat-icon-button
-                color="warn"
-                matTooltip="Odstranit"
-                matTooltipPosition="right"
-                aria-label="Odstranit"
-                (click)="deleteBadge(element.id)"
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="Odstranit"
+                    matTooltipPosition="right"
+                    aria-label="Odstranit"
+                    (click)="deleteBadge(element.id)"
             >
                 <mat-icon>delete</mat-icon>
             </button>

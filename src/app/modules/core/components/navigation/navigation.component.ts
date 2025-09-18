@@ -1,17 +1,39 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
-import { NavigationEnd, Router } from '@angular/router';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay, withLatestFrom } from 'rxjs/operators';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { Schoolyear } from '../../models';
 import { SchoolyearService } from '../../services/schoolyear.service';
+import { MatIconModule } from "@angular/material/icon";
+import { AsyncPipe, NgClass } from "@angular/common";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
+import { MatListModule } from "@angular/material/list";
+import { DividerWithTextComponent } from "../../../shared/divider-with-text/divider-with-text.component";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
     selector: 'navigation',
     templateUrl: './navigation.component.html',
-    styleUrls: ['./navigation.component.scss']
+    styleUrls: ['./navigation.component.scss'],
+    imports: [
+        MatIconModule,
+        AsyncPipe,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatListModule,
+        MatIconModule,
+        RouterModule,
+        DividerWithTextComponent,
+        MatButtonModule,
+        NgClass,
+    ],
 })
 export class NavigationComponent implements OnInit {
     @ViewChild('drawer') drawer: MatSidenav;

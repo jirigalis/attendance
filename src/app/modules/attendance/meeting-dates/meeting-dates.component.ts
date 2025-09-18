@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import * as moment from 'moment';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import moment from 'moment';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { MeetingDate } from '../../core/models/meeting-date';
 import { AttendanceService } from '../../core/services/attendance.service';
@@ -9,11 +9,34 @@ import { SchoolyearService } from '../../core/services/schoolyear.service';
 import { SnackService } from '../../core/services/snack.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { MeetingDateDialogComponent } from '../meeting-date-dialog/meeting-date-dialog.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatSortModule } from "@angular/material/sort";
+import { MatIconModule } from "@angular/material/icon";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { FormsModule } from "@angular/forms";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
     selector: 'meeting-dates',
     templateUrl: './meeting-dates.component.html',
     styleUrls: ['./meeting-dates.component.scss'],
+    imports: [
+        FlexLayoutModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatTableModule,
+        MatSortModule,
+        MatIconModule,
+        MatProgressBarModule,
+        FormsModule,
+        MatTooltipModule,
+    ]
 })
 export class MeetingDatesComponent implements OnInit {
     displayedColumns: string[] = ['id', 'date', 'length', 'description', 'actions', 'sign'];

@@ -1,110 +1,115 @@
 <mat-sidenav-container class="sidenav-container" [hasBackdrop]="(isHandset$ | async) === true">
-    <mat-sidenav #drawer *ngIf="isLoggedIn()" class="sidenav" fixedInViewport
-                 [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
-                 [opened]="(isHandset$ | async) === false">
-        <mat-toolbar class="sidepanel-part" color="primary">
-            <button mat-icon-button color="accent" (click)="drawer.toggle()">
-                <mat-icon color="accent">menu</mat-icon>
-            </button>
-            <span>Attendance</span>
-        </mat-toolbar>
-        <div class="schoolyear-select-wrapper">
-            <mat-form-field class="schoolyear-select dark-background">
-                <mat-label>Vybraný školní rok</mat-label>
-                <mat-select [(value)]="schoolyear" (selectionChange)="updateSchoolyear($event.value)">
-                    <mat-option *ngFor="let sy of schoolyears" [value]="sy.id">{{ sy.label }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <mat-nav-list>
-            <a mat-list-item [routerLink]="['/']" routerLinkActive="list-item-active">
-                <mat-icon>dashboard</mat-icon>
-                Dashboard
-            </a>
-            <divider-with-text>Školní rok</divider-with-text>
-            <a mat-list-item [routerLink]="['/schoolyear-members']" routerLinkActive="list-item-active">
-                <mat-icon>supervisor_account</mat-icon>
-                Členové
-            </a>
-            <a mat-list-item [routerLink]="['/attendance']" routerLinkActive="list-item-active">
-                <mat-icon>event_available</mat-icon>
-                Docházka
-            </a>
-            <a mat-list-item [routerLink]="['/add-attendance']" routerLinkActive="list-item-active">
-                <mat-icon>add_task</mat-icon>
-                Zapsat docházku
-            </a>
-            <a mat-list-item [routerLink]="['/meeting-dates']" routerLinkActive="list-item-active">
-                <mat-icon>edit_calendar</mat-icon>
-                Schůzky
-            </a>
-            <a mat-list-item [routerLink]="['/export-attendance']" routerLinkActive="list-item-active">
-                <mat-icon>print</mat-icon>
-                Exportovat docházku
-            </a>
-            <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['/points']" routerLinkActive="list-item-active">
-                <mat-icon>assessment</mat-icon>
-                Bodování
-            </a>
-            <a mat-list-item [routerLink]="['/bodovani']" routerLinkActive="list-item-active">
-                <mat-icon>public</mat-icon>
-                Veřejné bodování
-            </a>
-            <a mat-list-item [routerLink]="['/events']" routerLinkActive="list-item-active">
-                <mat-icon>event</mat-icon>
-                Akce
-            </a>
-            <divider-with-text>Nástroje</divider-with-text>
-            <a mat-list-item [routerLink]="['/games']" routerLinkActive="list-item-active">
-                <mat-icon>extension</mat-icon>
-                Hry
-            </a>
-            <a mat-list-item [routerLink]="['/ciphers']" routerLinkActive="list-item-active">
-                <mat-icon>vpn_key</mat-icon>
-                Šifry
-            </a>
-            <a mat-list-item [routerLink]="['/learning']" routerLinkActive="list-item-active">
-                <mat-icon>image_search</mat-icon>
-                Poznávačky
-            </a>
-            <a mat-list-item [routerLink]="['/images']" routerLinkActive="list-item-active">
-                <mat-icon>photo_library</mat-icon>
-                Správa obrázků
-            </a>
-            <a mat-list-item [routerLink]="['/remote-screen']" routerLinkActive="list-item-active">
-                <mat-icon>desktop_windows</mat-icon>
-                Vzdálená obrazovka
-            </a>
-            <divider-with-text>Obecné</divider-with-text>
-            <a mat-list-item [routerLink]="['/badges']" routerLinkActive="list-item-active">
-                <mat-icon>local_police</mat-icon>
-                Seznam odznaků
-            </a>
-            <a mat-list-item [routerLink]="['/reasons']" routerLinkActive="list-item-active">
-                <mat-icon>list</mat-icon>
-                Kategorie
-            </a>
-            <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['/schoolyear']" routerLinkActive="list-item-active">
-                <mat-icon>school</mat-icon>
-                Školní roky
-            </a>
-            <a mat-list-item [routerLink]="['/members']" routerLinkActive="list-item-active">
-                <mat-icon>groups</mat-icon>
-                Všichni členové
-            </a>
-            <mat-divider></mat-divider>
-            <a mat-list-item [routerLink]="['/settings']" routerLinkActive="list-item-active">
-                <mat-icon>settings_applications</mat-icon>
-                Nastavení
-            </a>
-            <a mat-list-item (click)="logout()">
-                <mat-icon>logout</mat-icon>
-                Odhlásit
-            </a>
-        </mat-nav-list>
-    </mat-sidenav>
+    @if (isLoggedIn()) {
+        <mat-sidenav #drawer class="sidenav" fixedInViewport
+                     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+                     [opened]="(isHandset$ | async) === false">
+            <mat-toolbar class="sidepanel-part" color="primary">
+                <button mat-icon-button color="accent" (click)="drawer.toggle()">
+                    <mat-icon color="accent">menu</mat-icon>
+                </button>
+                <span>Attendance</span>
+            </mat-toolbar>
+            <div class="schoolyear-select-wrapper">
+                <mat-form-field class="schoolyear-select dark-background">
+                    <mat-label>Vybraný školní rok</mat-label>
+                    <mat-select [(value)]="schoolyear" (selectionChange)="updateSchoolyear($event.value)">
+                        @for (sy of schoolyears; track sy.id) {
+                            <mat-option [value]="sy.id">{{ sy.label }}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <mat-nav-list>
+                <a mat-list-item [routerLink]="['/']" routerLinkActive="list-item-active">
+                    <mat-icon>dashboard</mat-icon>
+                    Dashboard
+                </a>
+                <divider-with-text>Školní rok</divider-with-text>
+                <a mat-list-item [routerLink]="['/schoolyear-members']" routerLinkActive="list-item-active">
+                    <mat-icon>supervisor_account</mat-icon>
+                    Členové
+                </a>
+                <a mat-list-item [routerLink]="['/attendance']" routerLinkActive="list-item-active">
+                    <mat-icon>event_available</mat-icon>
+                    Docházka
+                </a>
+                <a mat-list-item [routerLink]="['/add-attendance']" routerLinkActive="list-item-active">
+                    <mat-icon>add_task</mat-icon>
+                    Zapsat docházku
+                </a>
+                <a mat-list-item [routerLink]="['/meeting-dates']" routerLinkActive="list-item-active">
+                    <mat-icon>edit_calendar</mat-icon>
+                    Schůzky
+                </a>
+                <a mat-list-item [routerLink]="['/export-attendance']" routerLinkActive="list-item-active">
+                    <mat-icon>print</mat-icon>
+                    Exportovat docházku
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-list-item [routerLink]="['/points']" routerLinkActive="list-item-active">
+                    <mat-icon>assessment</mat-icon>
+                    Bodování
+                </a>
+                <a mat-list-item [routerLink]="['/bodovani']" routerLinkActive="list-item-active">
+                    <mat-icon>public</mat-icon>
+                    Veřejné bodování
+                </a>
+                <a mat-list-item [routerLink]="['/events']" routerLinkActive="list-item-active">
+                    <mat-icon>event</mat-icon>
+                    Akce
+                </a>
+                <divider-with-text>Nástroje</divider-with-text>
+                <a mat-list-item [routerLink]="['/games']" routerLinkActive="list-item-active">
+                    <mat-icon>extension</mat-icon>
+                    Hry
+                </a>
+                <a mat-list-item [routerLink]="['/ciphers']" routerLinkActive="list-item-active">
+                    <mat-icon>vpn_key</mat-icon>
+                    Šifry
+                </a>
+                <a mat-list-item [routerLink]="['/learning']" routerLinkActive="list-item-active">
+                    <mat-icon>image_search</mat-icon>
+                    Poznávačky
+                </a>
+                <a mat-list-item [routerLink]="['/images']" routerLinkActive="list-item-active">
+                    <mat-icon>photo_library</mat-icon>
+                    Správa obrázků
+                </a>
+                <a mat-list-item [routerLink]="['/remote-screen']" routerLinkActive="list-item-active">
+                    <mat-icon>desktop_windows</mat-icon>
+                    Vzdálená obrazovka
+                </a>
+                <divider-with-text>Obecné</divider-with-text>
+                <a mat-list-item [routerLink]="['/badges']" routerLinkActive="list-item-active">
+                    <mat-icon>local_police</mat-icon>
+                    Seznam odznaků
+                </a>
+                <a mat-list-item [routerLink]="['/reasons']" routerLinkActive="list-item-active">
+                    <mat-icon>list</mat-icon>
+                    Kategorie
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-list-item [routerLink]="['/schoolyear']" routerLinkActive="list-item-active">
+                    <mat-icon>school</mat-icon>
+                    Školní roky
+                </a>
+                <a mat-list-item [routerLink]="['/members']" routerLinkActive="list-item-active">
+                    <mat-icon>groups</mat-icon>
+                    Všichni členové
+                </a>
+                <mat-divider></mat-divider>
+                <!--<a mat-list-item [routerLink]="['/settings']" routerLinkActive="list-item-active">
+                    <mat-icon>settings_applications</mat-icon>
+                    Nastavení
+                </a>-->
+                <a mat-list-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    Odhlásit
+                </a>
+            </mat-nav-list>
+        </mat-sidenav>
+    }
+
     <mat-sidenav-content>
         <div class="content-container" [ngClass]="{ 'fix-height': !isLoggedIn() }">
             <router-outlet></router-outlet>

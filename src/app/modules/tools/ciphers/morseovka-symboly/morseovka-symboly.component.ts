@@ -1,13 +1,29 @@
 import { Component } from '@angular/core';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
-import { CiphersComponent } from '../ciphers.component';
+import { CipherHeadingComponent } from "../cipher-heading/cipher-heading.component";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { CipherEncodePartComponent } from "../cipher-encode-part/cipher-encode-part.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { FormsModule } from "@angular/forms";
+import { MatInputModule } from "@angular/material/input";
+import { CipherDecodePartComponent } from "../cipher-decode-part/cipher-decode-part.component";
+import { BaseCipher } from "../base-cipher";
 
 @Component({
     selector: 'morseovka-symboly',
     templateUrl: './morseovka-symboly.component.html',
+    imports: [
+        CipherHeadingComponent,
+        FlexLayoutModule,
+        CipherEncodePartComponent,
+        MatFormFieldModule,
+        FormsModule,
+        MatInputModule,
+        CipherDecodePartComponent,
+    ],
     styleUrls: ['./morseovka-symboly.component.css']
 })
-export class MorseovkaSymbolyComponent extends CiphersComponent {
+export class MorseovkaSymbolyComponent extends BaseCipher {
     private MORSE_CODE = {
         'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
         'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',

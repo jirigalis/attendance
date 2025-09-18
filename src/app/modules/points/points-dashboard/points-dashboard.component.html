@@ -17,7 +17,9 @@
                 Zobrazit body jen za tento školní rok
             </mat-checkbox>
         </div>
-        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        @if (loading) {
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
         <table mat-table [dataSource]="pointsDataSource" #pointsSort="matSort" matSort>
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
@@ -73,8 +75,9 @@
             <ng-container matColumnDef="badges">
                 <th mat-header-cell *matHeaderCellDef> Získané odznaky </th>
                 <td mat-cell *matCellDef="let row">
-                    <img *ngFor="let b of row.badge" matTooltip="{{b.name}}" matTooltipPosition="above"
-                        class="badge-table" src="/assets/badges/{{b.logo}}" />
+                    @for (b of row.badge; track b.id) {
+                        <img matTooltip="{{b.name}}" matTooltipPosition="above" class="badge-table" src="/assets/badges/{{b.logo}}" />
+                    }
                 </td>
             </ng-container>
 

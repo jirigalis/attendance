@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member, Schoolyear } from '../../core/models';
 import { MemberService } from '../../core/services';
@@ -9,10 +9,25 @@ import { SchoolyearService } from '../../core/services/schoolyear.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { AddMemberToSchoolyearComponent } from '../dialog/add-member-to-schoolyear/add-member-to-schoolyear.component';
 import { SchoolyearDialogComponent } from '../dialog/schoolyear-dialog/schoolyear-dialog.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatIconModule } from "@angular/material/icon";
+import { DatePipe } from "@angular/common";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
     selector: 'app-schoolyear',
     templateUrl: './schoolyear.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatButtonModule,
+        MatTableModule,
+        MatProgressBarModule,
+        MatIconModule,
+        DatePipe,
+        MatTooltipModule,
+    ],
     styleUrls: ['./schoolyear.component.css']
 })
 export class SchoolyearComponent implements OnInit {
@@ -30,6 +45,7 @@ export class SchoolyearComponent implements OnInit {
     public schoolyearLoading = false;
     public schoolyearDataSource: MatTableDataSource<Schoolyear>;
     public schoolyearMembersDataSource: MatTableDataSource<Member>;
+    public schoolyearMembers: Member[];
     public selectedSchoolyear: Schoolyear;
     public allSchoolyears: Schoolyear[];
 
@@ -71,6 +87,7 @@ export class SchoolyearComponent implements OnInit {
     public selectSchoolyear(schoolyearId) {
         this.memberService.getAllBySchoolyear(schoolyearId).subscribe(members => {
             this.schoolyearMembersDataSource = new MatTableDataSource(members);
+            this.schoolyearMembers = members;
             this.selectedSchoolyear = this.findSchoolyear(schoolyearId);
             
         })
@@ -91,7 +108,15 @@ export class SchoolyearComponent implements OnInit {
     }
 
     public addMemberToSchoolyear(schoolyear) {
-        const dialogRef = this.dialog.open(AddMemberToSchoolyearComponent, { data: schoolyear});
+        const dialogRef = this.dialog.open(
+            AddMemberToSchoolyearComponent,
+            {
+                data: {
+                    schoolyear,
+                    selectedMembers: this.schoolyearMembers
+                }
+            }
+        );
         dialogRef.afterClosed().subscribe(res => {
             if (res) {
                 this.schoolyearService.addMemberToSchoolyear(res.memberId, res.schoolyearId).subscribe(() => {

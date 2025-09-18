@@ -1,12 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthenticationService } from "../../../core/authentication/authentication.service";
 import { RemoteScreenService, RemoteScreenType } from "../../../core/services/remote-screen.service";
 import { first } from "rxjs";
+import { MatCardModule } from "@angular/material/card";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatInputModule } from "@angular/material/input";
+import { FormsModule } from "@angular/forms";
 
 @Component({
     selector: 'cipher-decode-part',
     templateUrl: './cipher-decode-part.component.html',
+    imports: [
+        MatCardModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatButtonModule,
+        FlexLayoutModule,
+        MatInputModule,
+        FormsModule,
+    ]
 })
 export class CipherDecodePartComponent {
     @Input() public result: string;

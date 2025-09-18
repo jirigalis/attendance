@@ -1,16 +1,24 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Category } from '../../core/models/category';
 import { CategoryService } from '../../core/services/category.service';
 import { ImageService } from '../../core/services/image.service';
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 import { ManageCategoriesDialogComponent } from './manage-categories-dialog/manage-categories-dialog.component';
 import { SingleImageDialogComponent } from './single-image-dialog/single-image-dialog.component';
+import { ImageFilterComponent } from "./image-filter/image-filter.component";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { RouterModule } from "@angular/router";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatChipsModule } from "@angular/material/chips";
 
 @Component({
     selector: 'images',
@@ -23,13 +31,26 @@ import { SingleImageDialogComponent } from './single-image-dialog/single-image-d
             transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
         ]),
     ],
+    imports: [
+        ImageFilterComponent,
+        FlexLayoutModule,
+        MatButtonModule,
+        MatTableModule,
+        MatSortModule,
+        RouterModule,
+        MatProgressBarModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatPaginatorModule,
+        MatChipsModule,
+    ]
 })
 export class ImagesComponent implements OnInit {
     displayedColumns: string[] = ['id', 'name', 'category', 'checkout', 'actions'];
     displayedColumnsWithExpand = [...this.displayedColumns, 'expand'];
     loading = false;
     dataSource;
-    epxandedElement: any;
+    expandedElement: any;
     filterCategories: any[] = [];
     allCategories: Category[] = [];
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -91,6 +112,10 @@ export class ImagesComponent implements OnInit {
                 });
             }
         });
+    }
+
+    public deleteImage(imageId) {
+        // not implemented yet
     }
 
     public manageCategories() {

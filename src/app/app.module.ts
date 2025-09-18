@@ -8,18 +8,9 @@ import { httpInterceptorProviders } from './modules/core/interceptors/index';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { LoginModule } from './modules/login/login.module';
 import { MembersModule } from './modules/members/members.module';
-
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppComponent } from './app.component';
-
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import {
-    DateAdapter,
-    MAT_DATE_FORMATS,
-    MAT_DATE_LOCALE
-} from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as echarts from 'echarts';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { MomentModule } from 'ngx-moment';
@@ -34,19 +25,16 @@ import { SharedModule } from './modules/shared/shared.module';
 import { ToolsModule } from './modules/tools/tools.module';
 
 @NgModule({
-    declarations: [AppComponent],
     imports: [
         AppRoutingModule,
         AttendanceModule,
         BrowserModule,
-        BrowserAnimationsModule,
         CommonModule,
         CoreModule,
         DashboardModule,
         EventModule,
         FlexLayoutModule,
         FormsModule,
-        HttpClientModule,
         LoginModule,
         MaterialModule,
         MembersModule,
@@ -77,7 +65,6 @@ import { ToolsModule } from './modules/tools/tools.module';
         { provide: MAT_DATE_LOCALE, useValue: 'cs-CZ' },
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true}}
     ],
-    bootstrap: [AppComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import * as moment from "moment";
+import moment from "moment";
 import { Deserializable } from "./deserializable";
 
 export class Member implements Deserializable {

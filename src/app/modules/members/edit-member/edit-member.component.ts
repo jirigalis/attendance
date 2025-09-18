@@ -1,9 +1,9 @@
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
@@ -13,16 +13,47 @@ import { MemberService } from '../../core/services';
 import { AttendanceService } from '../../core/services/attendance.service';
 import { EventService } from '../../core/services/event.service';
 import { PointsService } from '../../core/services/points.service';
-import { KpiCardColor, KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
+import { KpiCardColor, KpiCardComponent, KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
 import { Points } from "../../core/models/points";
 import { BasicDialogComponent } from "../../shared/dialog/basic-dialog/basic-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { Badge } from "../../core/models/badge";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatCardModule } from "@angular/material/card";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { CustomDatePipe } from "../../shared/pipes/custom-date.pipe";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @Component({
     selector: 'edit-member',
     templateUrl: './edit-member.component.html',
     styleUrls: ['./edit-member.component.scss'],
+    imports: [
+        FlexLayoutModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        KpiCardComponent,
+        MatDatepickerModule,
+        MatTabsModule,
+        MatProgressBarModule,
+        MatTableModule,
+        MatSortModule,
+        CustomDatePipe,
+        MatTooltipModule,
+        DatePipe,
+        MatRadioModule,
+        MatCheckboxModule,
+    ],
 })
 export class EditMemberComponent implements OnInit {
     memberForm: FormGroup;

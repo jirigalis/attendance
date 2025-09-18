@@ -4,10 +4,24 @@ import { Category } from "../../core/models/category";
 import { Image } from "../../core/models/image";
 import { ImageService } from "../../core/services/image.service";
 import { ImageDetailComponent } from "./image-detail/image-detail.component";
+import { ImageFilterComponent } from "../images/image-filter/image-filter.component";
+import { MatCheckbox } from "@angular/material/checkbox";
+import { MatButton } from "@angular/material/button";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { FormsModule } from "@angular/forms";
+import { MatSliderModule } from "@angular/material/slider";
 
 @Component({
     selector: "learning",
     templateUrl: "./learning.component.html",
+    imports: [
+        ImageFilterComponent,
+        MatCheckbox,
+        MatButton,
+        FlexLayoutModule,
+        FormsModule,
+        MatSliderModule,
+    ]
 })
 export class LearningComponent implements OnInit {
     loading: boolean = false;

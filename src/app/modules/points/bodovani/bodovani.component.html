@@ -4,7 +4,9 @@
         <mat-form-field appearance="fill" class="schoolyear-select">
             <mat-label>Vybraný školní rok</mat-label>
             <mat-select [(value)]="selectedSchoolyear" (selectionChange)="updateSchoolyear($event.value)">
-                <mat-option *ngFor="let sy of schoolyears" [value]="sy.id">{{sy.label}}</mat-option>
+                @for (sy of schoolyears; track sy.id) {
+                    <mat-option [value]="sy.id">{{sy.label}}</mat-option>
+                }
             </mat-select>
         </mat-form-field>
     </div>
@@ -12,7 +14,9 @@
 <div class="table-container mat-elevation-z4">
     <mat-tab-group>
         <mat-tab label="Bodování">
-            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+            @if (loading) {
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            }
             <table mat-table [dataSource]="dataSource" #pointsSort="matSort" matSort class="mat-elevation-z1">
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
@@ -52,8 +56,9 @@
                 <ng-container matColumnDef="badges">
                     <th mat-header-cell *matHeaderCellDef> Získané odznaky </th>
                     <td mat-cell *matCellDef="let row">
-                        <img *ngFor="let b of row.badge" matTooltip="{{b.name}}" matTooltipPosition="above"
-                            class="badge-table" src="/assets/badges/{{b.logo}}" />
+                        @for (b of row.badge; track b.id) {
+                            <img matTooltip="{{b.name}}" matTooltipPosition="above" class="badge-table" src="/assets/badges/{{b.logo}}" />
+                        }
                     </td>
                 </ng-container>
 

@@ -6,7 +6,9 @@
         <span fxShow.xs="false">Vytvořit novou akci</span>
     </button>
 </div>
-<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+@if (loading) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
     <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -23,12 +25,12 @@
 
     <ng-container matColumnDef="startDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Začátek</th>
-        <td mat-cell *matCellDef="let element">{{ element.startDate | date:'d. M. YYYY'}}</td>
+        <td mat-cell *matCellDef="let element">{{ element.startDate | date:'d. M. yyyy'}}</td>
     </ng-container>
 
     <ng-container matColumnDef="endDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Konec</th>
-        <td mat-cell *matCellDef="let element">{{ element.endDate | date:'d. M. YYYY' }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.endDate | date:'d. M. yyyy' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="description">

@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
@@ -11,12 +11,30 @@ import { Event } from '../../core/models/event';
 import { MemberService } from '../../core/services';
 import { EventService } from '../../core/services/event.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
-import { KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
+import { KpiCardComponent, KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
 import { AddMembersToEventDialogComponent } from '../add-members-to-event-dialog/add-members-to-event-dialog.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
     selector: 'app-event-detail',
     templateUrl: './event-detail.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatProgressBarModule,
+        MatCardModule,
+        MatTableModule,
+        MatIconModule,
+        RouterModule,
+        MatTooltipModule,
+        MatSortModule,
+        MatButtonModule,
+        KpiCardComponent,
+    ],
     styleUrls: ['./event-detail.component.scss']
 })
 export class EventDetailComponent implements OnInit {

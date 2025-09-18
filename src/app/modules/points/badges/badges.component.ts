@@ -1,15 +1,30 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { BadgeService } from '../../core/services/badge.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { BadgeDialogComponent } from '../badge-dialog/badge-dialog.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatSortModule } from "@angular/material/sort";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
     selector: 'badge',
     templateUrl: './badges.component.html',
     styleUrls: ['./badges.component.scss'],
+    imports: [
+        FlexLayoutModule,
+        MatButtonModule,
+        MatTableModule,
+        MatSortModule,
+        MatTooltipModule,
+        MatProgressBarModule,
+        MatIconModule,
+    ]
 })
 export class BadgesComponent implements OnInit {
     displayedColumns: string[] = ['id', 'name', 'logo', 'actions'];

@@ -1,4 +1,6 @@
-<h1 *ngIf="event">Detail akce {{ event.name }}</h1>
+@if (event) {
+    <h1>Detail akce {{ event.name }}</h1>
+}
 <div class="page-actions" fxLayout="row" fxLayoutGap="16px">
     <button (click)="goBack()" mat-raised-button color="primary">
         <mat-icon>arrow_back</mat-icon>
@@ -11,24 +13,30 @@
 </div>
 <div fxLayout="column" fxLayoutGap="24px grid">
     <div fxLayout="row wrap" fxLayoutGap="24px grid">
-        <kpi-card *ngIf="event" [settings]="eventChildKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
-        <kpi-card *ngIf="event" [settings]="eventAdultKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
-        <kpi-card *ngIf="event" [settings]="eventPercentageKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
+        @if (event) {
+            <kpi-card [settings]="eventChildKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
+            <kpi-card [settings]="eventAdultKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
+            <kpi-card [settings]="eventPercentageKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
+        }
     </div>
     <div>
         <mat-card fxFlex.lt-md="100" fxFlex.gt-sm="60" fxFill>
             <mat-card-header>
-                <mat-card-title *ngIf="event">Účastníci akce</mat-card-title>
+                @if (event) {
+                    <mat-card-title>Účastníci akce</mat-card-title>
+                }
             </mat-card-header>
             <mat-card-content>
-                <mat-progress-bar mode="indeterminate" *ngIf="participantsLoading"></mat-progress-bar>
+                @if (participantsLoading) {
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                }
                 <table mat-table [dataSource]="eventMembersDataSource" matSort class="mat-elevation-z1">
 
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno</th>
                         <td mat-cell *matCellDef="let element">
                             <a [routerLink]="['/events/' + element.id]" routerLinkActive="router-link-active"
-                                class="link-name">{{ element.name + ' ' + element.surname }}</a>
+                               class="link-name">{{ element.name + ' ' + element.surname }}</a>
                         </td>
                     </ng-container>
 
@@ -41,7 +49,7 @@
                         <th mat-header-cell *matHeaderCellDef>Akce</th>
                         <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
                             <button mat-icon-button color="warn" matTooltip="Odstranit" matTooltipPosition="right"
-                                aria-label="Odstranit" (click)="removeMember(element.id)">
+                                    aria-label="Odstranit" (click)="removeMember(element.id)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </td>

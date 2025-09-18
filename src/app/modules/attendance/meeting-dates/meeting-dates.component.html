@@ -20,7 +20,9 @@
             <mat-icon>print</mat-icon>Tisk schůzek</button>
     </div>
     <div>
-        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        @if (loading) {
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1" [ngClass]="{'printMe': printMe}">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="printMe">ID</th>

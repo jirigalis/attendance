@@ -1,9 +1,53 @@
 import { Component, OnInit } from '@angular/core';
 import { ToolsService } from '../../core/services/tools.service';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatCardModule } from "@angular/material/card";
+import { MatListModule } from "@angular/material/list";
+import { DividerWithTextComponent } from "../../shared/divider-with-text/divider-with-text.component";
+import { PozpatkuComponent } from "./pozpatku/pozpatku.component";
+import { PozpatkuSlovaComponent } from "./pozpatku-slova/pozpatku-slova.component";
+import { PozpatkuZnakyComponent } from "./pozpatku-znaky/pozpatku-znaky.component";
+import { VkladaniZnakuComponent } from "./vkladani-znaku/vkladani-znaku.component";
+import { KazdeXPismenoComponent } from "./kazde-x-pismeno/kazde-x-pismeno.component";
+import { PrvniPosledniComponent } from "./prvni-posledni/prvni-posledni.component";
+import { PrvniPismenoComponent } from "./prvni-pismeno/prvni-pismeno.component";
+import { PetromilkaComponent } from "./petromilka/petromilka.component";
+import { PosunutaAbecedaComponent } from "./posunuta-abeceda/posunuta-abeceda.component";
+import { OtocenaAbecedaComponent } from "./otocena-abeceda/otocena-abeceda.component";
+import { PavoukComponent } from "./pavouk/pavouk.component";
+import { ZlomkyComponent } from "./zlomky/zlomky.component";
+import { MorseCodeComponent } from "./morse-code/morse-code.component";
+import { ObracenaMorseovkaComponent } from "./obracena-morseovka/obracena-morseovka.component";
+import { ObracenaMorseovkaPismenaComponent } from "./obracena-morseovka-pismena/obracena-morseovka-pismena.component";
+import { MorseovkaSudaLichaCislaComponent } from "./morseovka-suda-licha-cisla/morseovka-suda-licha-cisla.component";
+import { MorseovkaSymbolyComponent } from "./morseovka-symboly/morseovka-symboly.component";
 
 @Component({
     selector: 'app-ciphers',
     templateUrl: './ciphers.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatCardModule,
+        MatListModule,
+        DividerWithTextComponent,
+        PozpatkuComponent,
+        PozpatkuSlovaComponent,
+        PozpatkuZnakyComponent,
+        VkladaniZnakuComponent,
+        KazdeXPismenoComponent,
+        PrvniPosledniComponent,
+        PrvniPismenoComponent,
+        PetromilkaComponent,
+        PosunutaAbecedaComponent,
+        OtocenaAbecedaComponent,
+        PavoukComponent,
+        ZlomkyComponent,
+        MorseCodeComponent,
+        ObracenaMorseovkaComponent,
+        ObracenaMorseovkaPismenaComponent,
+        MorseovkaSudaLichaCislaComponent,
+        MorseovkaSymbolyComponent,
+    ],
     styleUrls: ['./ciphers.component.scss']
 })
 export class CiphersComponent implements OnInit {
@@ -58,17 +102,6 @@ export class CiphersComponent implements OnInit {
 
     public decode() {
         this.input = this.result;
-    }
-
-    protected removeDiacritics(text) {
-        if (text === '') {
-            return '';
-        }
-        const specialLetters = {
-            'á': 'a', 'č': 'c', 'ď': 'd', 'é': 'e', 'ě': 'e', 'í': 'i', 'ň': 'n', 'ó': 'o', 'ř': 'r', 'š': 's', 'ť': 't', 'ú': 'u', 'ů': 'u', 'ý': 'y', 'ž': 'z',
-            'Á': 'A', 'Č': 'C', 'Ď': 'D', 'É': 'E', 'Ě': 'E', 'Í': 'I', 'Ň': 'N', 'Ó': 'O', 'Ř': 'R', 'Š': 'S', 'Ť': 'T', 'Ú': 'U', 'Ů': 'U', 'Ý': 'Y', 'Ž': 'Z'
-        };
-        return text.replace(/[áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g, match => specialLetters[match]);
     }
 
 }

@@ -28,14 +28,18 @@
                 <mat-icon class="mat-18">highlight_off</mat-icon>
                 Odstranit náhodnou
             </button>
-            <button mat-raised-button (click)="dismissInInterval()" *ngIf="!interval">
-                <mat-icon class="mat-18">timer</mat-icon>
-                Automaticky
-            </button>
-            <button mat-raised-button (click)="stopInterval()" *ngIf="interval">
-                <mat-icon class="mat-18">stop</mat-icon>
-                Zastavit
-            </button>
+            @if (!interval) {
+                <button mat-raised-button (click)="dismissInInterval()">
+                    <mat-icon class="mat-18">timer</mat-icon>
+                    Automaticky
+                </button>
+            } @else {
+                <button mat-raised-button (click)="stopInterval()">
+                    <mat-icon class="mat-18">stop</mat-icon>
+                    Zastavit
+                </button>
+            }
+
             <div fxFlex="20">
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                     <label>Počet dlaždic</label>
@@ -48,13 +52,19 @@
         </mat-card-content>
     </mat-card>
     <div class="picture-wrapper" fxFlex="column" fxLayoutAlign="center center" maximize #maximize="maximize">
-        <div class="grid-container" *ngIf="uploadedImage" #gridRef [ngClass]="{ 'fullscreen' : fullscreen}">
-            <img [src]="uploadedImage" #imgRef (load)="onImageUpload($event)" />
-            <div class="tile-grid" #tileGrid>
-                <div *ngFor="let row of getRows(); let i = index;">
-                    <div class="tile" *ngFor="let col of getCols(); let j = index;" #tile (click)="dismiss($event)">{{getPosition(i,j)}}</div>
+        @if (uploadedImage) {
+            <div class="grid-container" #gridRef [ngClass]="{ 'fullscreen' : fullscreen}">
+                <img [src]="uploadedImage" #imgRef (load)="onImageUpload($event)" />
+                <div class="tile-grid" #tileGrid>
+                    @for (row of getRows(); track row; let i = $index) {
+                        <div>
+                            @for (col of getCols(); track col; let j = $index) {
+                                <div class="tile" #tile (click)="dismiss($event)">{{getPosition(i,j)}}</div>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>

@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatCardModule } from "@angular/material/card";
+import { MatIconModule } from "@angular/material/icon";
 
 export interface KpiCardSettings {
     label: string;
@@ -32,6 +35,11 @@ export enum KpiCardColor {
 @Component({
     selector: 'kpi-card',
     templateUrl: './kpi-card.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatCardModule,
+        MatIconModule,
+    ],
     styleUrls: ['./kpi-card.component.scss']
 })
 export class KpiCardComponent implements OnInit {

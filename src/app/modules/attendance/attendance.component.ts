@@ -1,23 +1,29 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import {
-    Component,
-    OnInit,
-    ViewChild
-} from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import * as moment from 'moment';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import moment from 'moment';
 import { forkJoin, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { AuthenticationService } from '../core/authentication/authentication.service';
 import { Member } from '../core/models';
 import { AttendanceService } from '../core/services/attendance.service';
 import { MemberService } from '../core/services/member.service';
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatIconModule } from "@angular/material/icon";
+import { CommonModule } from "@angular/common";
 
 @Component({
     selector: 'app-attendance',
     templateUrl: './attendance.component.html',
     styleUrls: ['./attendance.component.scss'],
+    imports: [
+        MatTableModule,
+        MatProgressBarModule,
+        MatSortModule,
+        MatIconModule,
+        CommonModule,
+    ]
 })
 export class AttendanceComponent implements OnInit {
     dataSource;

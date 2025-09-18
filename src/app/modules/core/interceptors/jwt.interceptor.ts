@@ -1,40 +1,27 @@
-import { Router } from '@angular/router';
-import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+// jwt.interceptor.ts
+import { inject } from '@angular/core';
+import { HttpErrorResponse, HttpEvent, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 
 import { AuthenticationService } from '../authentication/authentication.service';
-import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
-@Injectable()
-export class JwtInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthenticationService, private router: Router) {}
+export const jwtInterceptor: HttpInterceptorFn = (req, next): Observable<HttpEvent<unknown>> => {
+    const auth = inject(AuthenticationService);
+    const router = inject(Router); // pokud chceš po logoutu i redirect, máš ho po ruce
 
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        // add authorization header with jwt token if available
-        const currentUser = this.authenticationService.currentUserValue;
-        if (currentUser && currentUser.token) {
-            const updatedRequest = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${currentUser.token}`
-                }
-            });
+    const token = auth.currentUserValue?.token;
+    const authReq: HttpRequest<unknown> = token
+        ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+        : req;
 
-            return next.handle(updatedRequest).pipe(
-                tap(
-                    () => {},
-                    (err: any) => {
-                        if (err instanceof HttpErrorResponse) {
-                            if (err.status !== 401) {
-                                return;
-                            }
-                            this.authenticationService.logout();
-                        }
-                    }
-                )
-            );
-        }
-
-        return next.handle(request);
-    }
-}
+    return next(authReq).pipe(
+        catchError((err: unknown) => {
+            if (err instanceof HttpErrorResponse && err.status === 401) {
+                auth.logout();
+            }
+            return throwError(() => err);
+        })
+    );
+};

@@ -1,13 +1,23 @@
 import { Component } from '@angular/core';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
-import { CiphersComponent } from '../ciphers.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { CipherHeadingComponent } from "../cipher-heading/cipher-heading.component";
+import { CipherEncodePartComponent } from "../cipher-encode-part/cipher-encode-part.component";
+import { CipherDecodePartComponent } from "../cipher-decode-part/cipher-decode-part.component";
+import { BaseCipher } from "../base-cipher";
 
 @Component({
     selector: 'zlomky',
     templateUrl: './zlomky.component.html',
+    imports: [
+        FlexLayoutModule,
+        CipherHeadingComponent,
+        CipherEncodePartComponent,
+        CipherDecodePartComponent
+    ],
     styleUrls: ['./zlomky.component.css']
 })
-export class ZlomkyComponent extends CiphersComponent {
+export class ZlomkyComponent extends BaseCipher {
     public desc: string = 'Abeceda je rozdělena na pět skupin, každá se označí číslem 1 - 5. Písmeno se zakóduje jako číslo skupiny a číslo písmena v rámci skupiny. Př.: A je 1/1, B je 2/1, C je 3/1, ... , Z je 5/5. Mezery se zakódují jako dvojtečka.';
     public ENCODE_TABLE = {
         'A': ['1/1'],

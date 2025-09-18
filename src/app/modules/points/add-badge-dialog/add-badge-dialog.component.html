@@ -4,24 +4,27 @@
     <form #form="ngForm" fxLayout="row" fxLayoutGap="16px">
         <div fxFlex="60" class="member-list-container">
             <mat-selection-list #memberList [(ngModel)]="selectedMembers" name="selectedMembers" (ngModelChange)="onModelChange($event)" required>
-                <mat-list-option *ngFor="let m of allMembers" [value]="m">
-                    {{m.name}} {{m.surname}}
-                </mat-list-option>
+                @for (m of allMembers; track m.id) {
+                    <mat-list-option [value]="m">{{ m.name }} {{ m.surname }}</mat-list-option>
+                }
             </mat-selection-list>
-            <p *ngIf="form.submitted && selectedMembers.length === 0" class="error-text">
-                Vyberte alespoň jednoho člena.
-            </p>
-            <p>
-                Options selected: {{selectedMembers.length}}
-            </p>
+            @if (form.submitted && selectedMembers.length === 0) {
+                <p>Vyberte alespoň jednoho člena.</p>
+            }
+            <p>Options selected: {{ selectedMembers.length }}</p>
         </div>
+
         <div fxLayout="column" fxLayoutGap="8px">
             <mat-form-field appearance="fill">
                 <mat-label>Odznak</mat-label>
                 <mat-select [(ngModel)]="selectedBadge" name="badge" required>
-                    <mat-option *ngFor="let b of badges" [value]="b.id">{{ b.name }}</mat-option>
+                    @for (b of badges; track b.id) {
+                        <mat-option [value]="b.id">{{ b.name }}</mat-option>
+                    }
                 </mat-select>
-                <mat-error *ngIf="form.submitted && !selectedBadge">Vyberte odznak.</mat-error>
+                @if (form.submitted && !selectedBadge) {
+                    <mat-error>Vyberte odznak.</mat-error>
+                }
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Datum</mat-label>
@@ -35,7 +38,9 @@
                 <mat-hint>DD. MM. RRRR</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="form.submitted && !created_at">Vyberte datum.</mat-error>
+                @if (form.submitted && !created_at) {
+                    <mat-error>Vyberte datum.</mat-error>
+                }
             </mat-form-field>
         </div>
     </form>

@@ -19,11 +19,7 @@ import { MailingListDialogComponent } from "./dialog/mailing-list-dialog/mailing
         SharedModule
     ],
     declarations: [
-        SchoolyearComponent, 
-        SchoolyearDialogComponent,
-        AddMemberToSchoolyearComponent,
-        MailingListDialogComponent,
     ],
-    exports: [SchoolyearComponent],
+    exports: [],
 })
 export class SchoolyearModule { }

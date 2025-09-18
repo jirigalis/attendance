@@ -1,7 +1,12 @@
-<h1 class="main-heading" *ngIf="member">Bodování - {{ member.getFullName() }}</h1>
+@if (member) {
+    <h1 class="main-heading">Bodování - {{ member.getFullName() }}</h1>
+}
 <mat-tab-group class="mat-elevation-z2">
     <mat-tab label="Body">
-        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+        @if (loading) {
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+
         <table mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="reason">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Činnost</th>

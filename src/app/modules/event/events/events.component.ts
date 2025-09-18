@@ -1,15 +1,33 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Router, RouterModule } from '@angular/router';
 import { EventService } from '../../core/services/event.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { EventDialogComponent } from '../event-dialog/event-dialog.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatSortModule } from "@angular/material/sort";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatIconModule } from "@angular/material/icon";
+import { DatePipe } from "@angular/common";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
     selector: 'events',
     templateUrl: './events.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatButtonModule,
+        MatTableModule,
+        MatSortModule,
+        RouterModule,
+        MatProgressBarModule,
+        MatIconModule,
+        DatePipe,
+        MatTooltipModule,
+    ],
     styleUrls: ['./events.component.scss']
 })
 export class EventsComponent implements OnInit {

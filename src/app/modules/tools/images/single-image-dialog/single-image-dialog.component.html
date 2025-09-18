@@ -11,10 +11,9 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Cesta k obrázku</mat-label>
                     <input matInput placeholder="Zadejte název obrázku" [(ngModel)]="imagePath.path" name="path" #path="ngModel" required>
-                    <!-- Validation message -->
-                    <mat-error *ngIf="path.invalid && (path.dirty || path.touched)">
-                        Cesta k obrázku je povinná.
-                    </mat-error>
+                    @if (path.invalid && (path.dirty || path.touched)) {
+                        <mat-error>Cesta k obrázku je povinná.</mat-error>
+                    }
                 </mat-form-field>
                 <!-- Review checkbox -->
                 <mat-checkbox [(ngModel)]="imagePath.review" name="review" #review="ngModel">Kontrola</mat-checkbox>
@@ -23,7 +22,7 @@
     </div>
     
     <div mat-dialog-actions [align]="'end'">
-        <button mat-raised-button (click)="cancel()">Zrušit</button>
+        <button mat-raised-button type="button" (click)="cancel()">Zrušit</button>
         <button mat-raised-button type="submit" [disabled]="!pathForm.valid" color="primary">
             <mat-icon>save</mat-icon>
             Uložit

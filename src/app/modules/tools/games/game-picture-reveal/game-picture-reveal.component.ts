@@ -1,6 +1,15 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { ImageService } from 'src/app/modules/core/services/image.service';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
+import { MatCardModule } from "@angular/material/card";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatIconModule } from "@angular/material/icon";
+import { MatSliderModule } from "@angular/material/slider";
+import { FormsModule } from "@angular/forms";
+import { MaximizeDirective } from "../../../shared/maximize.directive";
 
 export interface GridDimensions {
     numRows: number;
@@ -17,6 +26,17 @@ export interface Dimensions {
     templateUrl: './game-picture-reveal.component.html',
     styleUrls: ['./game-picture-reveal.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    imports: [
+        FlexLayoutModule,
+        MatButtonModule,
+        MatInputModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatSliderModule,
+        FormsModule,
+        MaximizeDirective,
+    ]
 })
 export class GamePictureRevealComponent implements OnInit {
     @ViewChild('fileInput') fileInput: ElementRef;
@@ -33,6 +53,7 @@ export class GamePictureRevealComponent implements OnInit {
     public newImageDimensions: Dimensions;
     public gridContainerDimensions: Dimensions;
     public positionSum: number = 0;
+    public fullscreen: boolean = false;
     public interval;
     private dismissedTiles = [];
     filterCategories: any[] = [];

@@ -1,6 +1,8 @@
 <h2>
     {{cipherName}}
-    <button mat-mini-fab *ngIf="desc" color="default" (click)="showInfo()">
-        <mat-icon>info</mat-icon>
-    </button>
+    @if (desc) {
+        <button mat-mini-fab color="default" (click)="showInfo()">
+            <mat-icon>info</mat-icon>
+        </button>
+    }
 </h2>

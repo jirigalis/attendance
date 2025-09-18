@@ -26,9 +26,11 @@
                 </mat-card-content>
             </mat-card>
 
-            <div class="word-wrapper" *ngIf="useWordCategories" fxFill fxLayoutAlign="center center">
-                <p>{{selectedCategory}}</p>
-            </div>
+            @if (useWordCategories) {
+                <div class="word-wrapper" fxFill fxLayoutAlign="center center">
+                    <p>{{selectedCategory}}</p>
+                </div>
+            }
 
             <div class="letter-wrapper" fxFill fxLayoutAlign="center center">
                 <letter-generator [config]="letterConfig" #letter></letter-generator>
@@ -47,7 +49,9 @@
             </button>
         </div>
         <mat-selection-list [(ngModel)]="allCategories">
-            <mat-list-option *ngFor="let word of wordList" [value]="word" selected>{{word}}</mat-list-option>
+            @for (word of wordList; track word) {
+                <mat-list-option [value]="word" selected>{{ word }}</mat-list-option>
+            }
         </mat-selection-list>
     </mat-drawer>
 

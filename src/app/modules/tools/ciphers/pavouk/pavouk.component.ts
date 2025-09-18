@@ -1,13 +1,23 @@
 import { Component } from '@angular/core';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
-import { CiphersComponent } from '../ciphers.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { CipherHeadingComponent } from "../cipher-heading/cipher-heading.component";
+import { CipherEncodePartComponent } from "../cipher-encode-part/cipher-encode-part.component";
+import { CipherDecodePartComponent } from "../cipher-decode-part/cipher-decode-part.component";
+import { BaseCipher } from "../base-cipher";
 
 @Component({
     selector: 'pavouk',
     templateUrl: './pavouk.component.html',
+    imports: [
+        FlexLayoutModule,
+        CipherHeadingComponent,
+        CipherEncodePartComponent,
+        CipherDecodePartComponent
+    ],
     styleUrls: ['./pavouk.component.css']
 })
-export class PavoukComponent extends CiphersComponent {
+export class PavoukComponent extends BaseCipher {
     public desc: string = 'Místo písmen ze zprávy se píšou dvě písmena sousední buď ve sloupci nebo v řádku. V každé tabulce musíme vynechat minimálně tři písmena. Ty jsou předem dohodnuté a nebo jsou napsány za zašifrovanou zprávou. V této verzi šifry chybí písmena Q, CH, W.'
     public ENCODE_TABLE = {
         'A': ['BC', 'JX'],

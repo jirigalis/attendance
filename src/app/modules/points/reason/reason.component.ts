@@ -1,14 +1,29 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ReasonService } from '../../core/services/reason.service';
 import { BasicDialogComponent } from '../../shared/dialog/basic-dialog/basic-dialog.component';
 import { AddReasonComponent } from '../add-reason/add-reason.component';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatSortModule } from "@angular/material/sort";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
     selector: 'reason',
     templateUrl: './reason.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatButtonModule,
+        MatTableModule,
+        MatProgressBarModule,
+        MatSortModule,
+        MatTooltipModule,
+        MatIconModule,
+    ],
     styleUrls: ['./reason.component.scss']
 })
 export class ReasonComponent implements OnInit {

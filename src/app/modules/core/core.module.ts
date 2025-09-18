@@ -8,9 +8,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedModule } from '../shared/shared.module';
-import { AppRoutingModule } from './../app-routing.module';
-import { MaterialModule } from './../material/material.module';
-import { NavigationComponent } from './components/navigation/navigation.component';
+import { AppRoutingModule } from '../app-routing.module';
+import { MaterialModule } from '../material/material.module';
 
 @NgModule({
   imports: [
@@ -26,11 +25,5 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     MatListModule,
     SharedModule,
   ],
-  declarations: [
-    NavigationComponent
-  ],
-  exports: [
-    NavigationComponent
-  ]
 })
 export class CoreModule { }

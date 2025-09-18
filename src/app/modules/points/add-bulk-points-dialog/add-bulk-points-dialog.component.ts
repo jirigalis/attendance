@@ -1,12 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Points } from '../../core/models/points';
 import { MemberService } from '../../core/services';
 import { ReasonService } from '../../core/services/reason.service';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormField, MatFormFieldModule } from "@angular/material/form-field";
+import { MatListModule, MatSelectionList } from "@angular/material/list";
+import { FormsModule } from "@angular/forms";
+import { MatSelectModule } from "@angular/material/select";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
     selector: 'add-bulk-points-dialog',
+    imports: [
+        MatDialogModule,
+        FlexLayoutModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatSelectionList,
+        FormsModule,
+        MatListModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatIconModule,
+    ],
     templateUrl: './add-bulk-points-dialog.component.html',
     styleUrls: ['./add-bulk-points-dialog.component.scss'],
 })

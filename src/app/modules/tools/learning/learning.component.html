@@ -20,7 +20,7 @@
     </div>
 </div>
 <div fxLayout="row wrap" fxLayoutGap="8px grid" >
-    <ng-container *ngFor="let image of imagePaths; index as i;">
+    @for (image of imagePaths; track image.id; let i = $index) {
         <img [src]="'/assets/images/' + image.path" alt="" [height]="this.imageSize * 100" (click)="openImageDetailDialog(i)"/>
-    </ng-container>
+    }
 </div>

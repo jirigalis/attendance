@@ -2,11 +2,25 @@ import { Component, DestroyRef, inject, OnDestroy, OnInit, signal, WritableSigna
 import { RemoteScreenData, RemoteScreenService } from "../../core/services/remote-screen.service";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { AuthenticationService } from "../../core/authentication/authentication.service";
+import { MatCard, MatCardContent } from "@angular/material/card";
+import { MatSlider, MatSliderThumb } from "@angular/material/slider";
+import { FormsModule } from "@angular/forms";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { NgOptimizedImage } from "@angular/common";
 
 @Component({
     selector: "remote-screen",
     templateUrl: "./remote-screen.component.html",
     styleUrls: ["./remote-screen.component.scss"],
+    imports: [
+        MatCard,
+        MatCardContent,
+        MatSlider,
+        FormsModule,
+        MatSliderThumb,
+        FlexLayoutModule,
+        NgOptimizedImage
+    ]
 })
 export class RemoteScreenComponent implements OnInit, OnDestroy {
     public resultSig: WritableSignal<RemoteScreenData> = signal(null);

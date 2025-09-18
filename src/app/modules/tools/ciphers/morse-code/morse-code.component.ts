@@ -1,13 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
-import { CiphersComponent } from '../ciphers.component';
+import { CipherHeadingComponent } from "../cipher-heading/cipher-heading.component";
+import { CipherEncodePartComponent } from "../cipher-encode-part/cipher-encode-part.component";
+import { CipherDecodePartComponent } from "../cipher-decode-part/cipher-decode-part.component";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { BaseCipher } from "../base-cipher";
 
 @Component({
     selector: 'morse-code',
     templateUrl: './morse-code.component.html',
+    imports: [
+        CipherHeadingComponent,
+        CipherEncodePartComponent,
+        CipherDecodePartComponent,
+        FlexLayoutModule
+    ],
     styleUrls: ['./morse-code.component.scss']
 })
-export class MorseCodeComponent extends CiphersComponent {
+export class MorseCodeComponent extends BaseCipher {
     public desc: string = 'Morseova abeceda je skupina symbolů, která je používána v telegrafii. Kóduje znaky latinské abecedy, číslice a speciální znaky do kombinací krátkých a dlouhých signálů. Ty je možné přenášet na dálku jednodušším způsobem než všechny znaky abecedy.';
     private MORSE_CODE = {
         'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',

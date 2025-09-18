@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { LoginFormComponent } from './login/login-form/login-form.component';
 import { AddMemberComponent } from './members/add-member/add-member.component';
@@ -27,7 +26,7 @@ import { ImagesComponent } from './tools/images/images.component';
 import { LearningComponent } from './tools/learning/learning.component';
 import { RemoteScreenComponent } from "./tools/remote-screen/remote-screen.component";
 
-const routes: Routes = [
+export const routes: Routes = [
     {
         path: '',
         // component: DashboardComponent,
@@ -145,11 +144,3 @@ const routes: Routes = [
         ],
     },
 ];
-
-@NgModule({
-    imports: [
-        RouterModule.forRoot(routes, {}),
-    ],
-    exports: [RouterModule],
-})
-export class AppRoutingModule {}

@@ -1,28 +1,34 @@
 <h1>Attendance</h1>
 <div class="table-container mat-elevation-z4">
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1" *ngIf="!loading">
-        <ng-container matColumnDef="name" sticky>
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-column">Name</th>
-            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-            <td mat-footer-cell *matFooterCellDef> Počet lidí celkem </td>
-        </ng-container>
+    @if (loading) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    } @else {
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+            <ng-container matColumnDef="name" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="sticky-column">Name</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                <td mat-footer-cell *matFooterCellDef> Počet lidí celkem</td>
+            </ng-container>
 
-        <ng-container *ngFor="let column of meetingDates" matColumnDef="{{ column }}">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                {{ column.substr(0,7) }}
-            </th>
-            <td mat-cell *matCellDef="let element" class="check-column">
-                <mat-icon *ngIf="element[column]; else notPresent" color="accent">check</mat-icon>
-                <ng-template #notPresent>
-                    <mat-icon class="dash">-</mat-icon>
-                </ng-template>
-            </td>
-            <td mat-footer-cell *matFooterCellDef> {{ getTotalAttendance(dataSource.data, column) }} </td>
-        </ng-container>
+            @for (column of meetingDates; track column) {
+                <ng-container matColumnDef="{{ column }}">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ column.substr(0, 7) }}
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="check-column">
+                        @if (element[column]) {
+                            <mat-icon color="accent">check</mat-icon>
+                        } @else {
+                            <mat-icon class="dash">-</mat-icon>
+                        }
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> {{ getTotalAttendance(dataSource.data, column) }}</td>
+                </ng-container>
+            }
 
-        <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: allColumns"></tr>
-        <tr mat-footer-row *matFooterRowDef="allColumns"></tr>
-    </table>
+            <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: allColumns"></tr>
+            <tr mat-footer-row *matFooterRowDef="allColumns"></tr>
+        </table>
+    }
 </div>

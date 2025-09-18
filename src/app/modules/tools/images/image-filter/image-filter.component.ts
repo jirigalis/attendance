@@ -1,11 +1,22 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CategoryService } from 'src/app/modules/core/services/category.service';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatIconModule } from "@angular/material/icon";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 
 @Component({
     selector: 'image-filter',
     templateUrl: './image-filter.component.html',
+    imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatChipsModule,
+        MatIconModule,
+        MatAutocompleteModule,
+    ],
     styleUrls: ['./image-filter.component.scss']
 })
 export class ImageFilterComponent implements OnInit {

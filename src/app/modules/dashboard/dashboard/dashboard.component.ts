@@ -1,18 +1,53 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import * as moment from 'moment';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { Member } from '../../core/models';
 import { AttendanceService } from '../../core/services/attendance.service';
-import { KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
-import { MemberService } from './../../core/services/member.service';
+import { KpiCardComponent, KpiCardSettings } from '../../shared/kpi-card/kpi-card.component';
+import { MemberService } from '../../core/services';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatCardModule } from "@angular/material/card";
+import { NgxEchartsDirective, provideEchartsCore } from "ngx-echarts";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { RouterModule } from "@angular/router";
+import * as echarts from 'echarts/core';
+import { BarChart, LineChart, PieChart } from "echarts/charts";
+import { GridComponent, LegendComponent, TitleComponent, TooltipComponent } from "echarts/components";
+import { CanvasRenderer } from "echarts/renderers";
+import { CommonModule } from "@angular/common";
+
+echarts.use([
+    BarChart,
+    PieChart,
+    LineChart,
+    GridComponent,
+    LegendComponent,
+    TitleComponent,
+    TooltipComponent,
+    CanvasRenderer
+]);
 
 @Component({
     selector: 'dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
+    imports: [
+        KpiCardComponent,
+        FlexLayoutModule,
+        MatCardModule,
+        NgxEchartsDirective,
+        MatProgressBarModule,
+        MatTableModule,
+        MatSortModule,
+        RouterModule,
+        CommonModule,
+    ],
+    providers: [
+        provideEchartsCore({ echarts }),
+    ]
 })
 export class DashboardComponent implements OnInit {
 
@@ -234,7 +269,7 @@ export class DashboardComponent implements OnInit {
     }
 
     private _getMembersCountData(data) {
-        let membersCountData = [
+        return [
             {
                 name: 'Dívky',
                 value: [
@@ -261,8 +296,6 @@ export class DashboardComponent implements OnInit {
                 value: [data.filter((val) => val.role == 'V').length],
             },
         ];
-
-        return membersCountData;
     }
 
     private _getAverageAttendanceData(data, membersCount) {
@@ -343,7 +376,7 @@ export class DashboardComponent implements OnInit {
         return {
             meetingsCount : meetingsCount || 0,
             meetingsAttended: meetingsAttended || 0,
-            percentage : Math.floor((meetingsAttended / meetingsCount) * 100)
+            percentage : Math.floor((meetingsAttended / meetingsCount) * 100) || 0,
         }
     }
 

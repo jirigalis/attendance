@@ -50,11 +50,11 @@ import { RemoteScreenComponent } from "./remote-screen/remote-screen.component";
         NgOptimizedImage,
     ],
     declarations: [
-        GamesComponent,
+        /*GamesComponent,
         GameMestoJmenoComponent,
         GamePictureRevealComponent,
         LetterGeneratorComponent,
-        /*** Ciphers ***/
+        /!*** Ciphers ***!/
         CipherHeadingComponent,
         CipherDescDialogComponent,
         CipherEncodePartComponent,
@@ -77,7 +77,7 @@ import { RemoteScreenComponent } from "./remote-screen/remote-screen.component";
         MorseCodeComponent,
         VkladaniZnakuComponent,
         ZlomkyComponent,
-        /*** Images ***/
+        /!*** Images ***!/
         ImagesComponent,
         ImageDialogComponent,
         ImageDetailComponent,
@@ -85,7 +85,7 @@ import { RemoteScreenComponent } from "./remote-screen/remote-screen.component";
         SingleImageDialogComponent,
         ImageFilterComponent,
         LearningComponent,
-        RemoteScreenComponent,
+        RemoteScreenComponent,*/
     ]
 })
 export class ToolsModule { }

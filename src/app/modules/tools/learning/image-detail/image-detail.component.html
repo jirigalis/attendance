@@ -2,8 +2,10 @@
     <mat-icon>close</mat-icon>
 </button>
 <div mat-dialog-content class="image-container">
-    <img [src]="'/assets/images/' + selectedImage.path" />
-    <div class="image-name" *ngIf="showImageName">
-        {{selectedImage.name}}
-    </div>
+    <img [src]="'/assets/images/' + selectedImage.path"/>
+    @if (showImageName) {
+        <div class="image-name">
+            {{ selectedImage.name }}
+        </div>
+    }
 </div>

@@ -15,9 +15,8 @@ import { SettingsComponent } from './settings/settings.component';
         ReactiveFormsModule,
         SharedModule,
     ],
-    declarations: [
-        SettingsComponent
-    ],
-    exports: [SettingsComponent],
+    declarations: [],
+    exports: [],
 })
-export class SettingsModule { }
+export class SettingsModule {
+}

@@ -9,15 +9,18 @@
                 name="selectedMembers"
                 (ngModelChange)="onModelChange($event)"
                 required>
-                <mat-list-option *ngFor="let m of allMembers" [value]="m">
-                    {{m.name}} {{m.surname}}
-                </mat-list-option>
+                @for (m of allMembers; track m.id) {
+                    <mat-list-option [value]="m">{{ m.name }} {{ m.surname }}</mat-list-option>
+                }
+
             </mat-selection-list>
-            <p *ngIf="form.submitted && selectedMembers.length === 0" class="error-text">
-                Vyberte alespoň jednoho člena.
-            </p>
+            @if (form.submitted && selectedMembers.length === 0) {
+                <p class="error-text">
+                    Vyberte alespoň jednoho člena.
+                </p>
+            }
             <p>
-                Options selected: {{selectedMembers.length}}
+                Options selected: {{ selectedMembers.length }}
             </p>
         </div>
         <div fxLayout="column" fxLayoutGap="8px">
@@ -30,17 +33,21 @@
                         [(ngModel)]="points"
                         name="points"
                         required>
-                <mat-error *ngIf="form.submitted && !points">Zadejte počet bodů.</mat-error>
+
+                @if (form.submitted && !points) {
+                    <mat-error>Zadejte počet bodů.</mat-error>
+                }
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Důvod</mat-label>
-                <mat-select
-                        [(ngModel)]="selectedReason"
-                        name="selectedReason"
-                        required>
-                    <mat-option *ngFor="let r of reasons" [value]="r.id">{{ r.name }}</mat-option>
+                <mat-select [(ngModel)]="selectedReason" name="selectedReason" required>
+                    @for (r of reasons; track r.id) {
+                        <mat-option [value]="r.id">{{ r.name }}</mat-option>
+                    }
                 </mat-select>
-                <mat-error *ngIf="form.submitted && !selectedReason">Vyberte důvod.</mat-error>
+                @if (form.submitted && !selectedReason) {
+                    <mat-error>Vyberte důvod.</mat-error>
+                }
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Datum</mat-label>
@@ -54,7 +61,10 @@
                 <mat-hint>DD. MM. RRRR</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-                <mat-error *ngIf="form.submitted && !created_at">Vyberte datum.</mat-error>
+
+                @if (form.submitted && !created_at) {
+                    <mat-error>Vyberte datum.</mat-error>
+                }
             </mat-form-field>
         </div>
     </form>

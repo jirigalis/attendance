@@ -4,9 +4,10 @@
     "baseUrl": "./",
     "module": "es2020",
     "outDir": "./dist/out-tsc",
+    "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "target": "ES2022",
     "typeRoots": [
@@ -17,11 +18,10 @@
       "dom"
     ],
     "useDefineForClassFields": false,
-    "allowSyntheticDefaultImports": true,
     "paths": {
       "core-js/es7/reflect": [
         "node_modules/core-js/proposals/reflect-metadata"
-      ],
+      ]
     }
   }
 }

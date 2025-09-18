@@ -7,7 +7,9 @@
     <button mat-raised-button color="primary" (click)="createEmailList()">
         <mat-icon>mail</mat-icon><span fxShow.xs="false">Poslat e-maily</span></button>
 </div>
-<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+@if (loading) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno</th>
@@ -50,15 +52,18 @@
     <ng-container matColumnDef="application">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="application">Přihláška</th>
         <td mat-cell *matCellDef="let element" class="check-column">
-            <mat-icon *ngIf="element.application" color="accent">check</mat-icon>
-            <mat-icon *ngIf="!element.application" class="dash">-</mat-icon>
+            @if (element.application) {
+                <mat-icon color="accent">check</mat-icon>
+            } @else {
+                <mat-icon class="dash">-</mat-icon>
+            }
         </td>
     </ng-container>
 
     <ng-container matColumnDef="paid">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="paid">Platba</th>
         <td mat-cell *matCellDef="let element">
-            {{ element.paid  | date:'d. M. YYYY'}}
+            {{ element.paid  | date:'d. M. yyyy'}}
         </td>
     </ng-container>
 

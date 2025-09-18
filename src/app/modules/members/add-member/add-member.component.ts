@@ -1,12 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MemberService } from '../../core/services';
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatCardModule } from "@angular/material/card";
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
     selector: 'app-add-member',
     templateUrl: './add-member.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatCardModule,
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        MatButtonModule,
+    ],
     styleUrls: ['./add-member.component.scss']
 })
 export class AddMemberComponent implements OnInit {

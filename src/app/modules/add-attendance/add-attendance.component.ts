@@ -1,16 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AuthenticationService } from '../core/authentication/authentication.service';
 import { MemberService } from '../core/services';
-import { AttendanceService } from './../core/services/attendance.service';
+import { AttendanceService } from '../core/services/attendance.service';
+import { MatCardModule } from "@angular/material/card";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatButtonModule } from "@angular/material/button";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { TransferListComponent } from "../shared/transfer-list/transfer-list.component";
 
 @Component({
     selector: 'add-attendance',
     templateUrl: './add-attendance.component.html',
-    styleUrls: ['./add-attendance.component.scss']
+    styleUrls: ['./add-attendance.component.scss'],
+    imports: [
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FlexLayoutModule,
+        MatButtonModule,
+        MatDatepickerModule,
+        TransferListComponent,
+        ReactiveFormsModule,
+        FormsModule,
+    ],
 })
 export class AddAttendanceComponent implements OnInit {
     date = new FormControl(new Date());
@@ -19,6 +37,7 @@ export class AddAttendanceComponent implements OnInit {
     loading = false;
     listConfig = {
         getLabel: (s) => s.name + ' ' + s.surname,
+        showCounter: true,
     }
     meetingAgenda: string = '';
 
