@@ -10,7 +10,7 @@
                 <span>Attendance</span>
             </mat-toolbar>
             <div class="schoolyear-select-wrapper">
-                <mat-form-field class="schoolyear-select dark-background">
+                <mat-form-field class="schoolyear-select">
                     <mat-label>Vybraný školní rok</mat-label>
                     <mat-select [(value)]="schoolyear" (selectionChange)="updateSchoolyear($event.value)">
                         @for (sy of schoolyears; track sy.id) {

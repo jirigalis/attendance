@@ -91,7 +91,6 @@ export class PointsDashboardComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((badges) => {
-            console.log(badges)
             if (badges) {
                 this.loading = true;
                 this.badgeService

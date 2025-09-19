@@ -172,7 +172,7 @@ export class EditMemberComponent implements OnInit {
             this.kpiSumPoints.value = sum + Number(result[1]) + Number(result[4].length * EVENT_POINTS);
 
             //attendance percentage
-            this.kpiAttendancePercentage.value = Math.floor(((<Array<any>>result[2]).length / result[3].length) * 100) + ' %'
+            this.kpiAttendancePercentage.value = Math.floor((((<Array<any>>result[2]).length / result[3].length ) || 0) * 100) + ' %'
 
             // Events KPI
             this.kpiEvents.value = result[4].length;

@@ -1,11 +1,26 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject } from "@angular/core";
 import { Member } from "../../../core/models";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
+import { FlexLayoutModule } from "@ngbracket/ngx-layout";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { TransferListComponent } from "../../../shared/transfer-list/transfer-list.component";
+import { MatInputModule } from "@angular/material/input";
 
 
 @Component({
     selector: 'mailing-list-dialog',
     templateUrl: './mailing-list-dialog.component.html',
+    imports: [
+        FlexLayoutModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatIconModule,
+        TransferListComponent,
+        MatInputModule,
+    ]
 })
 export class MailingListDialogComponent {
     public selectedMembers: Member[] = [];

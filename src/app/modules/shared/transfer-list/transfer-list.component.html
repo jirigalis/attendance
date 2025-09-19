@@ -1,13 +1,13 @@
 <div fxLayout="column" class="outer-container" fxFill>
     <div fxLayout="row" class="inner-container" fxLayoutAlign="space-between start"
-         [style.height]="config.height ? config.height : '350px'">
-        <div fxLayout="column" fxFlex="40" class="list-wrapper" fxFill>
-            <h3 fxFlex="10">{{ config.allOptionsLabel ? config.allOptionsLabel : 'Všechny položky:' }}</h3>
+         [style.height]="config().height ? config().height : '350px'">
+        <div fxLayout="column" fxFlex="38" class="list-wrapper" fxFill fxLayoutGap="5px">
+            <h3 fxFlex="10">{{ config().allOptionsLabel ? config().allOptionsLabel : 'Všechny položky:' }}</h3>
             <mat-action-list #allOptionsList fxFlex="90">
-                @for (item of availableOptions; track item.id) {
+                @for (item of availableOptions(); track item.id) {
                     <button mat-list-item [value]="item" (click)="itemClicked(item)">
-                        @if (config.getLabel) {
-                            {{ config.getLabel(item) }}
+                        @if (config().getLabel) {
+                            {{ config().getLabel(item) }}
                         } @else {
                             {{ item.label }}
                         }
@@ -15,21 +15,21 @@
                 }
             </mat-action-list>
 
-            <div fxLayout="row" fxFlex="100" fxLayoutAlign="start start" class="selection-info">
-                Počet dostupných: <strong>{{ availableOptions?.length }}</strong>
+            <div fxLayout="row" fxFlex="10" fxLayoutAlign="start start" class="selection-info">
+                Počet dostupných: <strong>{{ availableOptions()?.length }}</strong>
             </div>
         </div>
-        <div fxFlex="20" fxFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <div fxFlex="24" fxFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
             <button mat-raised-button color="primary" (click)="selectAll()">Vybrat vše</button>
             <button mat-raised-button (click)="clear()">Zrušit výběr</button>
         </div>
-        <div fxLayout="column" fxFlex="40" fxFill class="list-wrapper">
-            <h3 fxFlex="10">{{ config.selectedOptionsLabel ? config.selectedOptionsLabel : 'Vybrané položky:' }}</h3>
+        <div fxLayout="column" fxFlex="38" fxFill class="list-wrapper" fxLayoutGap="5px">
+            <h3 fxFlex="10">{{ config().selectedOptionsLabel ? config().selectedOptionsLabel : 'Vybrané položky:' }}</h3>
             <mat-action-list #selectedOptionsList fxFlex="90">
-                @for (item of selectedOptions; track item.id) {
+                @for (item of selectedOptions(); track item.id) {
                     <button mat-list-item [value]="item" (click)="itemClicked(item)">
-                        @if (config.getLabel) {
-                            {{ config.getLabel(item) }}
+                        @if (config().getLabel) {
+                            {{ config().getLabel(item) }}
                         } @else {
                             {{ item.label }}
                         }
@@ -37,8 +37,8 @@
                 }
             </mat-action-list>
 
-            <div fxLayout="row" fxFlex="100" fxLayoutAlign="start start" class="selection-info">
-                Počet vybraných: <strong>{{ selectedOptions.length }}</strong>
+            <div fxLayout="row" fxFlex="10" fxLayoutAlign="start start" class="selection-info">
+                Počet vybraných: <strong>{{ selectedOptions().length }}</strong>
             </div>
         </div>
     </div>

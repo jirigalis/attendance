@@ -1,15 +1,15 @@
-<h2 mat-dialog-title>Přidat člena do školního roku {{schoolyear.label}}</h2>
+<h2 mat-dialog-title>Přidat člena do školního roku {{ schoolyear.label }}</h2>
 
 <div mat-dialog-content>
-    <mat-form-field appearance="fill">
-        <mat-label>Jméno člena</mat-label>
-        <mat-select [(ngModel)]="selectedMember">
-            @for (m of members; track m.id) {
-                <mat-option [value]="m.id">{{ m.name }} {{ m.surname }}</mat-option>
-            }
-        </mat-select>
-    </mat-form-field>
-    <transfer-list [availableOptions]="members" [(selectedOptions)]="selectedMembers" [config]="listConfig"></transfer-list>
+    <div fxFlex fxLayout="column" fxLayoutAlign="center stretch" fxFill>
+        @if (members) {
+            <transfer-list [availableOptions]="members" [(selectedOptions)]="selectedMembers" [config]="listConfig"></transfer-list>
+        } @else {
+            <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                <mat-spinner></mat-spinner>
+            </div>
+        }
+    </div>
 </div>
 
 <div mat-dialog-actions>

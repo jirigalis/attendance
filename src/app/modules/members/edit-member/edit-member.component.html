@@ -9,7 +9,7 @@
 </div>
 <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="24px">
     <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="24px" fxLayoutAlign="start start">
-        <mat-card fxFlex.lt-md="100" fxFlex.md="60" fxFlex.gt-md="50" fxFlexOrder.gt-md="1" fxFlexOrder="2" fxFill>
+        <mat-card fxFlex.lt-md="100" fxFlex.md="60" fxFlex.gt-md="50" fxFlexOrder.gt-md="1" fxFlexOrder="2" fxFill appearance="outlined">
             <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
                 <mat-card-content>
                     <div fxLayout="row wrap" fxLayoutGap="40px">
@@ -72,7 +72,7 @@
         </div>
     </div>
     <div fxFill>
-        <mat-card>
+        <mat-card appearance="outlined">
             <mat-card-header>
                 @if (member) {
                     <mat-card-title>Bodování člena {{ member.getFullName() }}</mat-card-title>

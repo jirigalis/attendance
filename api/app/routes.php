@@ -62,6 +62,7 @@ use App\Application\Actions\Schoolyear\DeleteSchoolyearAction;
 use App\Application\Actions\Schoolyear\UpdateSchoolyearAction;
 use App\Application\Actions\Schoolyear\GetMembersAction;
 use App\Application\Actions\Schoolyear\AddMemberAction;
+use App\Application\Actions\Schoolyear\SetMembersAction;
 use App\Application\Actions\Schoolyear\RemoveMemberAction;
 use App\Application\Actions\Schoolyear\GetCurrentSchoolyearAction;
 
@@ -100,7 +101,6 @@ use App\Application\Actions\Path\DeletePathAction;
 
 use App\Application\Actions\RemoteScreen\CheckRemoteScreenUpdatesAction;
 use App\Application\Actions\RemoteScreen\UpdateRemoteScreenAction;
-
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -199,6 +199,7 @@ return function (App $app) {
         $group->delete('/{id}', DeleteSchoolyearAction::class);
         $group->get('/{id}/members', GetMembersAction::class);
         $group->post('/{id}/add-member', AddMemberAction::class);
+        $group->post('/{id}/set-members', SetMembersAction::class);
         $group->post('/{id}/remove-member', RemoveMemberAction::class);
     });
 

@@ -1,5 +1,5 @@
 <h1>Zapsat docházku</h1>
-<mat-card class="medium">
+<mat-card class="medium" appearance="outlined">
     <mat-card-content>
         <mat-form-field>
             <input matInput [matDatepicker]="attendanceDate" placeholder="Vybrat datum" [formControl]="date" />
@@ -11,10 +11,4 @@
         </mat-form-field>
         <transfer-list [availableOptions]="members" [(selectedOptions)]="selectedMembers" [config]="listConfig"></transfer-list>
     </mat-card-content>
-    <mat-card-actions fxLayout="row" fxLayoutAlign="space-between center">
-        <div>
-            Vybraní členové: <strong>{{ selectedMembers.length }}</strong>
-        </div>
-        <button mat-raised-button color="primary" (click)="onSubmit()">Confirm</button>
-    </mat-card-actions>
 </mat-card>

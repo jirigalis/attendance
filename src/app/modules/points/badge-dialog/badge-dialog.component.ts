@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Badge } from '../../core/models/badge';
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
+import { LayoutDirective, LayoutGapDirective } from "@ngbracket/ngx-layout";
 
 @Component({
     selector: 'badge-dialog',
@@ -16,6 +17,8 @@ import { MatIconModule } from "@angular/material/icon";
         MatButtonModule,
         FormsModule,
         MatIconModule,
+        LayoutDirective,
+        LayoutGapDirective,
     ],
 })
 export class BadgeDialogComponent implements OnInit {

@@ -129,6 +129,20 @@ class InMemorySchoolyearRepository implements SchoolyearRepository
         return $schoolyear->member()->attach($member);
     }
 
+    public function setMembers($schoolyearId, $memberIds) {
+        if (!V::intVal()->validate($schoolyearId)) {
+            throw new InputNotValidException();
+        }
+
+        $schoolyear = Schoolyear::find($schoolyearId);
+        $members = Member::whereIn('id', $memberIds)->get();
+
+        // remove all exsisting members and add the new ones
+        $schoolyear->member()->detach($memberIds);
+
+        return $schoolyear->member()->attach($members);
+    }
+
     public function removeMember($schoolyearId, $memberId) {
         if (!V::intVal()->validate($memberId)) {
             throw new MemberNotFoundException();

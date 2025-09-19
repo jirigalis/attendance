@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // API_URL: 'http://localhost:8000',
-    API_URL: 'https://zalesakzdanice.g6.cz/api'
+    API_URL: 'http://localhost:8000',
+    // API_URL: 'https://zalesakzdanice.g6.cz/api'
 };
 
 /*

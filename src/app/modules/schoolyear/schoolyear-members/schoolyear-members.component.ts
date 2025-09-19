@@ -74,7 +74,7 @@ export class SchoolyearMembersComponent implements OnInit {
     }
 
     createEmailList() {
-        this.dialog.open(MailingListDialogComponent, { width: '700px', data: this.dataSource.data });
+        this.dialog.open(MailingListDialogComponent, { minWidth: '700px', data: this.dataSource.data });
     }
 
     deleteMember(member) {

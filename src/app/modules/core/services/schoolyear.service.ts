@@ -41,6 +41,10 @@ export class SchoolyearService {
         return this.http.post(this.apiUrl + `/${schoolyearId}/add-member`, { memberId: memberId})
     }
 
+    addMembersToSchoolyear(memberIds: number[], schoolyearId: number) {
+        return this.http.post(this.apiUrl + `/${schoolyearId}/set-members`, { memberIds: memberIds})
+    }
+
     removeMemberFromSchoolyear(memberId, schoolyearId) {
         return this.http.post(this.apiUrl + `/${schoolyearId}/remove-member`, { memberId: memberId})
     }

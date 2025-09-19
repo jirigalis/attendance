@@ -4,11 +4,11 @@
     @if (this.membersSelected) {
         <p>Byli vybráni následující členové:</p>
         <mat-form-field appearance="fill">
-            <textarea class="email-list" matInput id="emails">{{ getEmails() }}</textarea>
+            <textarea rows="6" class="email-list" matInput id="emails">{{ getEmails() }}</textarea>
         </mat-form-field>
     } @else {
         <p>Vyberte členy, kterým chcete zaslat e-mail:</p>
-        <transfer-list [allOptions]="members" [(selectedOptions)]="selectedMembers"
+        <transfer-list [availableOptions]="members" [(selectedOptions)]="selectedMembers"
                        [config]="listConfig"></transfer-list>
     }
 </div>

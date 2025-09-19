@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Member, Schoolyear } from 'src/app/modules/core/models';
 import { MemberService } from 'src/app/modules/core/services';
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -8,6 +8,8 @@ import { MatSelectModule } from "@angular/material/select";
 import { FormsModule } from "@angular/forms";
 import { TransferListComponent } from "../../../shared/transfer-list/transfer-list.component";
 import { MatIconModule } from "@angular/material/icon";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { FlexDirective, FlexFillDirective, LayoutAlignDirective, LayoutDirective } from "@ngbracket/ngx-layout";
 
 @Component({
     selector: 'app-add-member-to-schoolyear',
@@ -20,13 +22,18 @@ import { MatIconModule } from "@angular/material/icon";
         FormsModule,
         TransferListComponent,
         MatIconModule,
+        MatProgressSpinnerModule,
+        FlexDirective,
+        LayoutDirective,
+        LayoutAlignDirective,
+        FlexFillDirective,
     ]
 })
 export class AddMemberToSchoolyearComponent implements OnInit {
     public schoolyear: Schoolyear;
     public members: Member[];
-    public selectedMembers = [];
-    public selectedMember;
+    public selectedMembers: Member[] = [];
+    public selectedMember: Member;
     listConfig = {
         getLabel: (s) => s.name + ' ' + s.surname,
         selectedOptionsLabel: 'Přidaní členové',
@@ -41,12 +48,11 @@ export class AddMemberToSchoolyearComponent implements OnInit {
 
     ngOnInit() {
         if (this.data) {
-            console.log(this.data);
             this.schoolyear = this.data.schoolyear;
             this.selectedMembers = this.data.selectedMembers;
         }
         this.memberService.getAll().subscribe(members => {
-            this.members = members;
+            this.members = members.sort((a, b) => a.name.localeCompare(b.name));
         })
     }
 
@@ -55,7 +61,7 @@ export class AddMemberToSchoolyearComponent implements OnInit {
     }
 
     public submit() {
-        this.dialogRef.close({ schoolyearId: this.schoolyear.id, memberId: this.selectedMember});
+        this.dialogRef.close({ schoolyearId: this.schoolyear.id, members: this.selectedMembers});
     }
 
 }

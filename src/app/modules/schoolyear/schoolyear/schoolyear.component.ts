@@ -65,7 +65,7 @@ export class SchoolyearComponent implements OnInit {
             this.schoolyearDataSource = new MatTableDataSource(schoolyears);
             this.schoolyearLoading = false;
             this.selectedSchoolyear = this.findSchoolyear(this.authService.getSchoolyear());
-            this.selectSchoolyear(this.selectedSchoolyear.id)
+            this.selectSchoolyear(this.selectedSchoolyear?.id)
         })
     }
 
@@ -107,24 +107,33 @@ export class SchoolyearComponent implements OnInit {
         });
     }
 
-    public addMemberToSchoolyear(schoolyear) {
+    public addMembersToSchoolyear(schoolyear) {
+        const sortedMembers = this.schoolyearMembers.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         const dialogRef = this.dialog.open(
             AddMemberToSchoolyearComponent,
             {
                 data: {
                     schoolyear,
-                    selectedMembers: this.schoolyearMembers
-                }
+                    selectedMembers: sortedMembers
+                },
+                minWidth: '700px',
             }
         );
         dialogRef.afterClosed().subscribe(res => {
             if (res) {
-                this.schoolyearService.addMemberToSchoolyear(res.memberId, res.schoolyearId).subscribe(() => {
+                console.log(res);
+                this.schoolyearService.addMembersToSchoolyear(res.members.map(m => m.id), res.schoolyearId).subscribe(() => {
+                    if (schoolyear.id === this.selectedSchoolyear.id) {
+                        this.refreshMembers();
+                    }
+                    this.snack.open('Členové úspěšně upraveni', 'X', { duration: 3000});
+                })
+                /*this.schoolyearService.addMemberToSchoolyear(res.memberId, res.schoolyearId).subscribe(() => {
                     if (schoolyear.id === this.selectedSchoolyear.id) {
                         this.refreshMembers();
                     }
                     this.snack.open('Člen úspěšně přidán', 'X', { duration: 3000});
-                })
+                })*/
             }
         })
     }
