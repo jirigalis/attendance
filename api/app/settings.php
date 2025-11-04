@@ -41,15 +41,9 @@ return function (ContainerBuilder $containerBuilder) {
                 'username' => getenv('DB_USER'),
                 'password' => getenv('DB_PWD'),
                 'database' => getenv('DATABASE_NAME'),
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
             ]
-
-            /*'db' => [
-                'host' => 'localhost',
-                //'port' => 3311,
-                'user' => 'jirigalis',
-                'pass' => 'i62kgbtr',
-                'dbname' => 'zlocinci',
-            ]*/
         ],
     ]);
 };

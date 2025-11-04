@@ -11,4 +11,7 @@
         </mat-form-field>
         <transfer-list [availableOptions]="members" [(selectedOptions)]="selectedMembers" [config]="listConfig"></transfer-list>
     </mat-card-content>
+    <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+        <button matButton="filled" (click)="onSubmit()">Confirm</button>
+    </mat-card-actions>
 </mat-card>
