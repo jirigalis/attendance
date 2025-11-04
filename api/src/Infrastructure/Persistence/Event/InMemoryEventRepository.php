@@ -40,7 +40,7 @@ class InMemoryEventRepository implements EventRepository
 
     public function create(object $data): int
     {
-        $valid = V::alnumCZ()->validate($data->name);
+        $valid = V::alnumCZ('.-')->validate($data->name);
 
         if ($valid) {
             $event = new Event();
