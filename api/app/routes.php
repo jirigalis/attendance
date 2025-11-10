@@ -67,6 +67,9 @@ use App\Application\Actions\Schoolyear\RemoveMemberAction;
 use App\Application\Actions\Schoolyear\GetCurrentSchoolyearAction;
 
 use App\Application\Actions\Event\ListEventsAction;
+use App\Application\Actions\Event\GetOpenEventsAction;
+use App\Application\Actions\Event\OpenRegistrationAction;
+use App\Application\Actions\Event\CloseRegistrationAction;
 use App\Application\Actions\Event\CreateEventAction;
 use App\Application\Actions\Event\DeleteEventAction;
 use App\Application\Actions\Event\UpdateEventAction;
@@ -74,6 +77,11 @@ use App\Application\Actions\Event\ViewEventAction;
 use App\Application\Actions\Event\AddMembersToEventAction;
 use App\Application\Actions\Event\RemoveMemberFromEventAction;
 use App\Application\Actions\Event\GetEventsByMemberAction;
+use App\Application\Actions\Event\MarkEventParticipationAction;
+use App\Application\Actions\Event\SendRegistrationCodeAction;
+use App\Application\Actions\Event\VerifyRegistrationTokenAction;
+use App\Application\Actions\Event\RegisterToEventAction;
+use App\Application\Actions\Event\RegisterByEmailAction;
 
 use App\Application\Actions\User\AuthenticateUserAction;
 use App\Application\Actions\User\SelectSchoolyearAction;
@@ -205,6 +213,13 @@ return function (App $app) {
 
     $app->group($prefix . '/event', function (Group $group) use ($container) {
         $group->get('', ListEventsAction::class);
+        $group->get('/open', GetOpenEventsAction::class);
+        $group->post('/{id}/open-registration', OpenRegistrationAction::class);
+        $group->post('/{id}/close-registration', CloseRegistrationAction::class);
+        $group->post('/send-code', SendRegistrationCodeAction::class);
+        $group->post('/verify-token', VerifyRegistrationTokenAction::class);
+        $group->post('/register', RegisterToEventAction::class);
+        $group->post('/register-by-email', RegisterByEmailAction::class);
         $group->post('/create', CreateEventAction::class);
         $group->get('/{id}', ViewEventAction::class);
         $group->delete('/{id}', DeleteEventAction::class);
@@ -212,6 +227,7 @@ return function (App $app) {
         $group->post('/{id}/add-members', AddMembersToEventAction::class);
         $group->post('/{id}/remove-member', RemoveMemberFromEventAction::class);
         $group->get('/member/{memberId}/{schoolyearId}', GetEventsByMemberAction::class);
+        $group->post('/{id}/mark-participation', MarkEventParticipationAction::class);
     });
 
     $app->group($prefix . '/category', function (Group $group) use ($container) {

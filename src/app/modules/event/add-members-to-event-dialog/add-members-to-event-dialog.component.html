@@ -1,14 +1,15 @@
 <h2 mat-dialog-title>Přidat členy k akci</h2>
 
 <div mat-dialog-content>
-    <mat-form-field appearance="fill">
-        <mat-label>Členové</mat-label>
-        <mat-select [formControl]="selectedMembers" multiple>
-            @for (m of allMembers; track m.id) {
-                <mat-option [value]="m.id">{{ m.name }} {{ m.surname }}</mat-option>
-            }
-        </mat-select>
-    </mat-form-field>
+    <div fxFlex fxLayout="column" fxLayoutAlign="center stretch" fxFill>
+        @if (members) {
+            <transfer-list [availableOptions]="members" [(selectedOptions)]="selectedMembers" [config]="listConfig"></transfer-list>
+        } @else {
+            <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+                <mat-spinner></mat-spinner>
+            </div>
+        }
+    </div>
 </div>
 
 <div mat-dialog-actions>

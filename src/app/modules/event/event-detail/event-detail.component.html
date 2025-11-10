@@ -10,17 +10,26 @@
         <mat-icon>person_add</mat-icon>
         Přidat členy
     </button>
+    @if (event?.openRegistration) {
+        <button (click)="closeRegistration()" mat-raised-button>
+            <mat-icon>lock</mat-icon>
+            Uzavřít registraci
+        </button>
+    } @else {
+        <button (click)="openRegistration()" mat-raised-button>
+            <mat-icon>lock_open</mat-icon>
+            Otevřít registraci
+        </button>
+    }
 </div>
 <div fxLayout="column" fxLayoutGap="24px grid">
     <div fxLayout="row wrap" fxLayoutGap="24px grid">
-        @if (event) {
-            <kpi-card [settings]="eventChildKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
-            <kpi-card [settings]="eventAdultKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
-            <kpi-card [settings]="eventPercentageKpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
+        @for (kpi of eventKpis; track kpi.label) {
+            <kpi-card [settings]="kpi" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100"></kpi-card>
         }
     </div>
     <div>
-        <mat-card fxFlex.lt-md="100" fxFlex.gt-sm="60" fxFill>
+        <mat-card fxFlex.lt-md="100" fxFlex.gt-sm="60" fxFill appearance="outlined">
             <mat-card-header>
                 @if (event) {
                     <mat-card-title>Účastníci akce</mat-card-title>
@@ -30,7 +39,7 @@
                 @if (participantsLoading) {
                     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                 }
-                <table mat-table [dataSource]="eventMembersDataSource" matSort class="mat-elevation-z1">
+                <table mat-table [dataSource]="eventMembersDataSource" matSort class="mat-elevation-z1" matSortActive="name" matSortDirection="asc">
 
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno</th>
@@ -45,12 +54,36 @@
                         <td mat-cell *matCellDef="let element">{{ element.role }}</td>
                     </ng-container>
 
+                    <ng-container matColumnDef="participated">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Účastnil se</th>
+                        <td mat-cell *matCellDef="let member">
+                            @if (member.pivot.participated) {
+                                <mat-icon color="accent">check</mat-icon>
+                            } @else {
+                                <mat-icon class="dash">-</mat-icon>
+                            }
+                        </td>
+                    </ng-container>
+
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef>Akce</th>
-                        <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
-                            <button mat-icon-button color="warn" matTooltip="Odstranit" matTooltipPosition="right"
-                                    aria-label="Odstranit" (click)="removeMember(element.id)">
-                                <mat-icon>delete</mat-icon>
+                        <td mat-cell *matCellDef="let member" (click)="$event.stopPropagation()">
+                            @if (member.pivot.participated) {
+                                <button mat-icon-button color="primary" matTooltip="Označit jako nezúčastněný"
+                                        matTooltipPosition="right" aria-label="Označit jako nezúčastněný"
+                                        (click)="markAsNotParticipated(member.id)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            } @else {
+                                <button mat-icon-button color="primary" matTooltip="Označit jako přítomný"
+                                        matTooltipPosition="right" aria-label="Označit jako přítomný"
+                                        (click)="markAsParticipated(member.id)">
+                                    <mat-icon>check</mat-icon>
+                                </button>
+                            }
+                            <button mat-icon-button color="error" matTooltip="Odebrat osobu" matTooltipPosition="right"
+                                    aria-label="Odebrat osobu" (click)="removeMember(member.id)">
+                                <mat-icon>person_off</mat-icon>
                             </button>
                         </td>
                     </ng-container>

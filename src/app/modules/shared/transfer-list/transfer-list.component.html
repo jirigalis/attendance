@@ -4,7 +4,7 @@
         <div fxLayout="column" fxFlex="38" class="list-wrapper" fxFill fxLayoutGap="5px">
             <h3 fxFlex="10">{{ config().allOptionsLabel ? config().allOptionsLabel : 'Všechny položky:' }}</h3>
             <mat-action-list #allOptionsList fxFlex="90">
-                @for (item of availableOptions(); track item.id) {
+                @for (item of filteredAvailableOptions(); track item.id) {
                     <button mat-list-item [value]="item" (click)="itemClicked(item)">
                         @if (config().getLabel) {
                             {{ config().getLabel(item) }}
@@ -16,7 +16,7 @@
             </mat-action-list>
 
             <div fxLayout="row" fxFlex="10" fxLayoutAlign="start start" class="selection-info">
-                Počet dostupných:&nbsp;<strong>{{ availableOptions()?.length }}</strong>
+                Počet dostupných:&nbsp;<strong>{{ filteredAvailableOptions()?.length }}</strong>
             </div>
         </div>
         <div fxFlex="24" fxFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
@@ -26,7 +26,7 @@
         <div fxLayout="column" fxFlex="38" fxFill class="list-wrapper" fxLayoutGap="5px">
             <h3 fxFlex="10">{{ config().selectedOptionsLabel ? config().selectedOptionsLabel : 'Vybrané položky:' }}</h3>
             <mat-action-list #selectedOptionsList fxFlex="90">
-                @for (item of selectedOptions(); track item.id) {
+                @for (item of internalSelectedOptions(); track item.id) {
                     <button mat-list-item [value]="item" (click)="itemClicked(item)">
                         @if (config().getLabel) {
                             {{ config().getLabel(item) }}
@@ -38,7 +38,7 @@
             </mat-action-list>
 
             <div fxLayout="row" fxFlex="10" fxLayoutAlign="start start" class="selection-info">
-                Počet vybraných:&nbsp;<strong>{{ selectedOptions().length }}</strong>
+                Počet vybraných:&nbsp;<strong>{{ internalSelectedOptions().length }}</strong>
             </div>
         </div>
     </div>

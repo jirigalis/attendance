@@ -12,6 +12,7 @@ export class Member implements Deserializable {
     paid: moment.Moment;
     role: string;
     email: string;
+    pivot?: any;
 
     deserialize(input: any) {
         return Object.assign(this, input);

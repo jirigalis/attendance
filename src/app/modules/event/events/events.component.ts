@@ -31,7 +31,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     styleUrls: ['./events.component.scss']
 })
 export class EventsComponent implements OnInit {
-    displayedColumns: string[] = ['id', 'name', 'startDate', 'endDate', 'description', 'actions'];
+    displayedColumns: string[] = ['id', 'name', 'startDate', 'endDate', 'description', 'openRegistration', 'actions'];
     loading = false;
     dataSource;
 

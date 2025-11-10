@@ -27,7 +27,12 @@ return function (ContainerBuilder $containerBuilder) {
                     getenv("API_PREFIX") . '/badges/members',
                     getenv("API_PREFIX") . '/schoolyear',
                     getenv("API_PREFIX") . '/schoolyear/current',
-                    getenv("API_PREFIX") . '/aaa'
+                    getenv("API_PREFIX") . '/aaa',
+                    getenv("API_PREFIX") . '/event/open',
+                    getenv("API_PREFIX") . '/event/send-code',
+                    getenv("API_PREFIX") . '/event/verify-token',
+                    getenv("API_PREFIX") . '/event/register',
+                    getenv("API_PREFIX") . '/event/register-by-email',
                 ],
                 'passthrough' => ['/user/authenticate', '/points/sum/role/D'],
                 'secret' => getenv('JWT_SECRET'),

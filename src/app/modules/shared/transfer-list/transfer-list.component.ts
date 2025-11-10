@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, OnInit, Output } from '@angular/core';
+import { Component, effect, EventEmitter, input, OnInit, Output, signal } from '@angular/core';
 import { FlexLayoutModule } from "@ngbracket/ngx-layout";
 import { MatListModule } from "@angular/material/list";
 import { MatButtonModule } from "@angular/material/button";
@@ -27,21 +27,44 @@ export class TransferListComponent implements OnInit {
     public config = input<TransferListConfig>();
     @Output() public selectedOptionsChange = new EventEmitter<any[]>();
 
-    constructor() { }
+    public filteredAvailableOptions = signal<any[]>([]);
+    protected internalSelectedOptions = signal<any[]>([]);
 
-    ngOnInit() {
-        if (this.selectedOptions().length > 0) {
-            this.availableOptions().forEach((option, index) => {
-                const selectedIndex = this.selectedOptions().findIndex(selected => selected.id === option.id);
-                if (selectedIndex > -1) {
-                    this.availableOptions().splice(index, 1);
-                }
-            });
-        }
+    constructor() {
+        effect(() => {
+            this.internalSelectedOptions.set(this.selectedOptions());
+        });
+
+        // filter available options to exclude selected options
+        effect(() => {
+            const available = this.availableOptions();
+            const selected = this.selectedOptions();
+
+            const filtered = available.filter(option =>
+                !selected.some(selectedOption => selectedOption.id === option.id)
+            );
+            this.filteredAvailableOptions.set(filtered);
+        })
+    }
+
+    ngOnInit(): void {
+
+        console.log('Available options:', this.availableOptions());
+        console.log('Selected options:', this.selectedOptions());
     }
 
     public itemClicked(item) {
-        const allOptionsIndex = this.availableOptions().findIndex(op => op.id === item.id);
+        const selectedIndex = this.internalSelectedOptions().findIndex(o => o.id === item.id);
+
+        if (selectedIndex > -1) {
+            this.internalSelectedOptions.update(selected => selected.filter(o => o.id !== item.id));
+        } else {
+            this.internalSelectedOptions.update(selected => [...selected, item]);
+        }
+
+        this.selectedOptionsChange.emit(this.internalSelectedOptions());
+
+        /*const allOptionsIndex = this.availableOptions().findIndex(op => op.id === item.id);
         const selectedIndex = this.selectedOptions().findIndex(op => op.id === item.id);
         if (selectedIndex > -1) {
             this.selectedOptions().splice(selectedIndex, 1);
@@ -49,19 +72,21 @@ export class TransferListComponent implements OnInit {
         } else {
             this.availableOptions().splice(allOptionsIndex, 1);
             this.selectedOptions().push(item);
-        }
+        }*/
     }
 
     public selectAll() {
-        this.availableOptions().forEach(item => {
-            this.selectedOptions().push(item);
-        })
-        this.availableOptions().length = 0;
+        this.internalSelectedOptions.update(selected => [
+            ...selected,
+            ...this.filteredAvailableOptions(),
+        ]);
+
+        this.selectedOptionsChange.emit(this.internalSelectedOptions());
     }
 
     public clear() {
-        this.availableOptions().push(...this.selectedOptions());
-        this.selectedOptions().length = 0;
+        this.internalSelectedOptions.set([]);
+        this.selectedOptionsChange.emit(this.internalSelectedOptions());
     }
 
 }

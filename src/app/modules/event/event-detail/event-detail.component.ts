@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -19,6 +19,8 @@ import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatButtonModule } from "@angular/material/button";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { SnackService } from "../../core/services/snack.service";
 
 @Component({
     selector: 'app-event-detail',
@@ -34,20 +36,21 @@ import { MatButtonModule } from "@angular/material/button";
         MatSortModule,
         MatButtonModule,
         KpiCardComponent,
+
     ],
     styleUrls: ['./event-detail.component.scss']
 })
 export class EventDetailComponent implements OnInit {
+    destroyRef = inject(DestroyRef);
+
     @ViewChild(MatSort) sort: MatSort;
-    displayedColumns: string[] = ['name', 'role', 'actions'];
+    displayedColumns: string[] = ['name', 'role', 'participated', 'actions'];
     event: Event;
-    members: Member[];
-    filteredMembers
+    eventId: number;
+    private members: Member[];
     eventMembersDataSource: MatTableDataSource<any>;
     participantsLoading = true;
-    eventChildKpi: KpiCardSettings;
-    eventAdultKpi: KpiCardSettings;
-    eventPercentageKpi: KpiCardSettings;
+    eventKpis: KpiCardSettings[] = [];
 
     constructor(
         private route: ActivatedRoute,
@@ -56,39 +59,46 @@ export class EventDetailComponent implements OnInit {
         private authService: AuthenticationService,
         private dialog: MatDialog,
         private location: Location,
+        private snack: SnackService,
     ) { }
 
     ngOnInit() {
-        const eventId = this.route.snapshot.paramMap.get('eventId');
-        const event$ = this.eventService.getById(eventId);
+        this.eventId = Number(this.route.snapshot.paramMap.get('eventId'));
+        this.loadData();
+    }
+
+    private loadData() {
+        const event$ = this.eventService.getById(this.eventId);
         const members$ = this.memberService.listNames(this.authService.getSchoolyear());
 
         forkJoin([event$, members$]).subscribe(results => {
             this.eventMembersDataSource = new MatTableDataSource(results[0].members);
             this.eventMembersDataSource.sort = this.sort;
             this.event = results[0];
-            this.participantsLoading = false;
             this.members = results[1];
-            this.eventChildKpi = {
-                label: 'Počet dětí',
-                value: this.event.members.filter(m => m.role === 'D').length,
-                icon: 'group'
-            };
-            this.eventAdultKpi = {
-                label: 'Počet vedoucích',
-                value: this.event.members.filter(m => m.role === 'V').length,
-                icon: 'group'
-            };
-            this.eventPercentageKpi = {
-                label: 'Účast v procentech',
-                value: Math.floor((this.event.members.length / this.members.length) * 100) + ' %',
-                icon: 'percent'
-            }
-        })
 
-        this.memberService.listNames(this.authService.getSchoolyear()).subscribe((members) => {
-            this.members = members;
-        });
+            this.participantsLoading = false;
+
+            const membersParticipated = this.event.members.filter(m => m.pivot.participated === 1).length;
+            const totalAttendance = Math.round((membersParticipated / this.members.length) * 100);
+            this.eventKpis = [
+                {
+                    label: 'Počet registrovaných',
+                    value: this.event.members.length,
+                    icon: 'percent'
+                },
+                {
+                    label: 'Počet zúčastěných',
+                    value: this.event.members.filter(m => m.pivot.participated === 1).length,
+                    icon: 'group'
+                },
+                {
+                    label: 'Účast v procentech',
+                    value: totalAttendance > 100 ? '100 %' : totalAttendance + ' %',
+                    icon: 'percent'
+                },
+            ];
+        })
     }
 
     goBack() {
@@ -96,13 +106,26 @@ export class EventDetailComponent implements OnInit {
     }
 
     public addMembersToEvent() {
-        const dialogRef = this.dialog.open(AddMembersToEventDialogComponent, { data: this.event.members.map(m => m.id) });
+        const dialogRef = this.dialog.open(AddMembersToEventDialogComponent, {
+            data: {
+                selectedMembers: [...this.event.members],
+                allMembers: [...this.members],
+        },
+            width: '700px',
+        });
         dialogRef.afterClosed().subscribe(res => {
             if (res) {
-                this.eventService.addMembersToEvent({ eventId: this.event.id, members: res})
-                    .subscribe(() => {
-                        this.refreshMembers();
-                    })
+                const originalMemberIds = this.event.members.map(m => m.id);
+                const newMemberIds = res.map(m => m.id);
+                const selectedMemberIds = newMemberIds.filter(id => !originalMemberIds.includes(id));
+
+                if (selectedMemberIds.length !== 0) {
+                    this.eventService.addMembersToEvent({ eventId: this.event.id, members: selectedMemberIds })
+                        .subscribe(() => {
+                            this.refreshMembers();
+                            this.loadData();
+                        });
+                }
             }
         });
     }
@@ -114,6 +137,7 @@ export class EventDetailComponent implements OnInit {
                 this.eventService.removeMember(this.event.id, memberId)
                     .subscribe(() => {
                         this.refreshMembers();
+                        this.loadData();
                     })
             }
         })
@@ -127,4 +151,46 @@ export class EventDetailComponent implements OnInit {
         })
     }
 
+    private markParticipation(memberId: number, participated: boolean) {
+        this.eventService.markParticipation(this.event.id, memberId, participated)
+            .pipe(
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe(() => {
+                this.refreshMembers();
+                this.loadData();
+            })
+    }
+
+    public markAsNotParticipated(memberId: number) {
+        this.markParticipation(memberId, false);
+    }
+
+    public markAsParticipated(memberId: number) {
+        this.markParticipation(memberId, true);
+    }
+
+    public openRegistration() {
+        this.eventService.openRegistration(this.event.id)
+            .pipe(
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe(() => {
+                this.snack.open('Registrace byla úspěšně oteřena.');
+                this.event.openRegistration = 1;
+            })
+    }
+
+    public closeRegistration() {
+        this.eventService.closeRegistration(this.event.id)
+            .pipe(
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe(() => {
+                this.snack.open('Registrace byla úspěšně zavřena.');
+                this.event.openRegistration = 0;
+            })
+    }
+
+    protected readonly close = close;
 }

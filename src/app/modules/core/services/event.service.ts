@@ -49,4 +49,15 @@ export class EventService {
         return this.http.get<Event[]>(this.apiUrl + '/member/' + memberId + '/' + schoolyearId);
     }
 
+    markParticipation(eventId: number, memberId: number, participated: boolean) {
+        return this.http.post(this.apiUrl + `/${eventId}/mark-participation`, { memberId, participated });
+    }
+
+    openRegistration(eventId: number) {
+        return this.http.post(this.apiUrl + `/${eventId}/open-registration`, {});
+    }
+
+    closeRegistration(eventId: number) {
+        return this.http.post(this.apiUrl + `/${eventId}/close-registration`, {});
+    }
 }

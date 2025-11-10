@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, signal } from '@angular/core';
 import { FlexLayoutModule } from "@ngbracket/ngx-layout";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
@@ -44,6 +44,7 @@ export enum KpiCardColor {
 })
 export class KpiCardComponent implements OnInit {
     @Input() settings: KpiCardSettings;
+    color = signal<KpiCardColor>(KpiCardColor.AMBER);
 
     constructor() { }
 
@@ -54,7 +55,9 @@ export class KpiCardComponent implements OnInit {
 
         if (!this.settings.color) {
             const enumValues = Object.values(KpiCardColor);
-            this.settings.color = enumValues[Math.floor(Math.random() * (Object.keys(KpiCardColor).length))];
+            this.color.set(enumValues[Math.floor(Math.random() * (Object.keys(KpiCardColor).length))]);
+        } else {
+            this.color.set(this.settings.color);
         }
     }
 

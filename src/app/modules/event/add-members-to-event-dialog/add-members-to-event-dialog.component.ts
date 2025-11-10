@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { MemberService } from '../../core/services';
@@ -7,6 +7,10 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSelectModule } from "@angular/material/select";
 import { MatIconModule } from "@angular/material/icon";
+import { FlexDirective, FlexFillDirective, LayoutAlignDirective, LayoutDirective } from "@ngbracket/ngx-layout";
+import { TransferListComponent } from "../../shared/transfer-list/transfer-list.component";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { Member } from "../../core/models";
 
 @Component({
     selector: 'app-add-members-to-event-dialog',
@@ -19,11 +23,22 @@ import { MatIconModule } from "@angular/material/icon";
         MatSelectModule,
         ReactiveFormsModule,
         MatIconModule,
+        FlexDirective,
+        FlexFillDirective,
+        LayoutAlignDirective,
+        LayoutDirective,
+        MatProgressSpinnerModule,
+        TransferListComponent,
     ],
 })
 export class AddMembersToEventDialogComponent implements OnInit {
-    selectedMembers = new FormControl();
-    allMembers;
+    members: Member[];
+    public selectedMembers: Member[] = [];
+    listConfig = {
+        getLabel: (s) => s.name + ' ' + s.surname,
+        selectedOptionsLabel: 'Přidaní členové',
+        showCounter: true,
+    }
 
     constructor(
         private memberService: MemberService,
@@ -33,13 +48,14 @@ export class AddMembersToEventDialogComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.memberService.listNames(this.a.getSchoolyear()).subscribe(members => {
-            this.allMembers = members.filter(m => !this.data.includes(m.id))
-        })
+        if (this.data) {
+            this.members = this.data.allMembers.sort((a, b) => a.name.localeCompare(b.name));
+            this.selectedMembers = this.data.selectedMembers.sort((a, b) => a.name.localeCompare(b.name));
+        }
     }
 
     submit() {
-        this.dialogRef.close(this.selectedMembers.value);
+        this.dialogRef.close(this.selectedMembers);
     }
 
     cancel() {

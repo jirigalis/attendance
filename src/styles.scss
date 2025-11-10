@@ -1,5 +1,10 @@
 @use '@angular/material' as mat;
 
+// redefine css variable for dialog:
+:root {
+    --mat-dialog-container-max-width: 90vw;
+}
+
 html,
 body {
     height: 100%;

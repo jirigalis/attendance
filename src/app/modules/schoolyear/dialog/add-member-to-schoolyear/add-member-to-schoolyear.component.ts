@@ -33,7 +33,6 @@ export class AddMemberToSchoolyearComponent implements OnInit {
     public schoolyear: Schoolyear;
     public members: Member[];
     public selectedMembers: Member[] = [];
-    public selectedMember: Member;
     listConfig = {
         getLabel: (s) => s.name + ' ' + s.surname,
         selectedOptionsLabel: 'Přidaní členové',
@@ -48,6 +47,7 @@ export class AddMemberToSchoolyearComponent implements OnInit {
 
     ngOnInit() {
         if (this.data) {
+            console.log(this.data);
             this.schoolyear = this.data.schoolyear;
             this.selectedMembers = this.data.selectedMembers;
         }
