@@ -17,7 +17,7 @@ class InMemoryBadgeRepository implements BadgeRepository
 {
     private $badges;
 
-    public function __construct(array $badges = null)
+    public function __construct(?array $badges = null)
     {
         $this->badges = Badge::all();
     }

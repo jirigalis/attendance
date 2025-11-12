@@ -23,7 +23,7 @@ class InMemoryMemberRepository implements MemberRepository
      *
      * @param object|null $members
      */
-    public function __construct(array $members = null)
+    public function __construct(?array $members = null)
     {
         $this->members = Member::all();
     }

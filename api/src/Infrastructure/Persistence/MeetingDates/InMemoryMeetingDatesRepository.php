@@ -14,7 +14,7 @@ class InMemoryMeetingDatesRepository implements MeetingDatesRepository
 {
     private $meetingDates;
 
-    public function __construct(array $meetingDates = null) {
+    public function __construct(?array $meetingDates = null) {
         $this->meetingDates = MeetingDates::all();
     }
 

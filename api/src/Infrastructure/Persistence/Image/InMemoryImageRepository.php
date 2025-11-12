@@ -20,7 +20,7 @@ class InMemoryImageRepository implements ImageRepository
      */
     private $images;
 
-    public function __construct(array $images = null)
+    public function __construct(?array $images = null)
     {
         $this->images = Image::all();
     }

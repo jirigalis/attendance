@@ -26,7 +26,7 @@ class InMemorySchoolyearRepository implements SchoolyearRepository
      *
      * @param object|null $schoolyears
      */
-    public function __construct(array $schoolyears = null)
+    public function __construct(?array $schoolyears = null)
     {
         $this->schoolyears = Schoolyear::all();
     }

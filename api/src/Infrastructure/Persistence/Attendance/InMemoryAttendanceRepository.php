@@ -27,7 +27,7 @@ class InMemoryAttendanceRepository implements AttendanceRepository
      *
      * @param array|null $attendance
      */
-	public function __construct(array $attendance = null)
+	public function __construct(?array $attendance = null)
 	{
 		$this->attendance = Attendance::all();
 	}

@@ -10,7 +10,7 @@ class InMemoryPathRepository implements PathRepository
 {
     private $paths;
 
-    public function __construct(array $paths = null) {
+    public function __construct(?array $paths = null) {
         $this->paths = Path::all();
     }
 

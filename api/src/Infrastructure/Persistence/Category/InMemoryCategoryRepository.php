@@ -21,7 +21,7 @@ class InMemoryCategoryRepository implements CategoryRepository
      *
      * @param array|null $categories
      */
-    public function __construct(array $categories = null)
+    public function __construct(?array $categories = null)
     {
         $this->categories = Category::all();
     }

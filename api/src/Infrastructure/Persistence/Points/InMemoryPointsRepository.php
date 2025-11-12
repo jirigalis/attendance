@@ -18,7 +18,7 @@ class InMemoryPointsRepository implements PointsRepository
 {
     private $points;
 
-    public function __construct(array $points = null) {
+    public function __construct(?array $points = null) {
         $this->points = Points::all();
     }
 

@@ -14,7 +14,7 @@ class InMemoryReasonRepository implements ReasonRepository
 {
     private $reason;
 
-    public function __construct(array $reason = null) {
+    public function __construct(?array $reason = null) {
         $this->reason = Reason::all();
     }
 

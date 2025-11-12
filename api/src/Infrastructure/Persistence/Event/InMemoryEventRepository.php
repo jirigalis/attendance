@@ -20,7 +20,7 @@ class InMemoryEventRepository implements EventRepository
 {
     private $events;
 
-    public function __construct(array $events = null) {
+    public function __construct(?array $events = null) {
         $this->events = Event::all();
     }
 
@@ -188,14 +188,14 @@ class InMemoryEventRepository implements EventRepository
         // find members by email of parent
         $members = Member::where('email', $email)->get();
 
-        if (count($members) == 0) {
+        /* if (count($members) == 0) {
             $openEvents = Event::where('openRegistration', 1)->get();
 
             return (object)[
                 'success' => true,
                 'message' => 'No members found for this email.',
             ];
-        }
+        } */
 
         $payload = [
             'email' => $email,
@@ -215,10 +215,10 @@ class InMemoryEventRepository implements EventRepository
             $mail->SMTPAuth   = true;
             $mail->Username   = getenv('SMTP_USER');
             $mail->Password   = getenv('SMTP_PWD');
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = 465;
 
-            $mail->setFrom('zalesakzdanice@seznam.cz', 'Zálesák Ždánice');
+            $mail->setFrom(getenv('SMTP_USER'), 'Zálesák Ždánice');
             $mail->addAddress($email);
             $mail->CharSet = 'UTF-8';
             $mail->Encoding = 'base64';
@@ -328,10 +328,10 @@ class InMemoryEventRepository implements EventRepository
             $mail->SMTPAuth   = true;
             $mail->Username   = getenv('SMTP_USER');
             $mail->Password   = getenv('SMTP_PWD');
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = 465;
 
-            $mail->setFrom('zalesakzdanice@seznam.cz', 'Registrace na akci');
+            $mail->setFrom(getenv('SMTP_USER'), 'Zálesák Ždánice');
             $mail->addAddress($to);
             $mail->CharSet = 'UTF-8';
             $mail->Encoding = 'base64';

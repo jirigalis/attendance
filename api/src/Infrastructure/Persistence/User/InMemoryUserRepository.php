@@ -22,7 +22,7 @@ class InMemoryUserRepository implements UserRepository
      *
      * @param object|null $users
      */
-    public function __construct(array $users = null)
+    public function __construct(?array $users = null)
     {
         $this->users = User::all();
     }
