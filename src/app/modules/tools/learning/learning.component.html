@@ -4,23 +4,54 @@
         <image-filter [selectedCategories]="categories"></image-filter>
     </div>
     <div fxFlex="50" fxFlex="row" fxLayoutGap="16px">
-        <button mat-raised-button color="primary" (click)="loadImages()">
+        <button mat-raised-button color="primary" (click)="loadImages()" [disabled]="loading">
             <span fxShow.xs="false">Zobrazit obrázky</span>
         </button>
-        <mat-checkbox [(ngModel)]="randomize" (ngModelChange)="shuffleImages()">Náhodně</mat-checkbox>
-        <div fxFlex="20">
+
+        <mat-checkbox
+                [ngModel]="randomize$ | async"
+                (ngModelChange)="toggleRandomize($event)">
+            Náhodně
+        </mat-checkbox>
+
+        <div fxFlex="40">
             <div fxLayout="row" fxLayoutAlign="space-between center">
                 <label>Velikost obrázků</label>
                 <label>{{imageSize}}</label>
             </div>
-            <mat-slider min="1" max="5" step="1" fxLayoutAlign="start stretch">
+            <mat-slider min="1" max="50" step="1" fxLayoutAlign="start stretch">
                 <input matSliderThumb [(ngModel)]="imageSize">
             </mat-slider>
         </div>
     </div>
 </div>
 <div fxLayout="row wrap" fxLayoutGap="8px grid" >
-    @for (image of imagePaths; track image.id; let i = $index) {
-        <img [src]="'/assets/images/' + image.path" alt="" [height]="this.imageSize * 100" (click)="openImageDetailDialog(i)"/>
+    @if (loading) {
+        <div class="spinner-container" fxLayout="row" fxLayoutAlign="center center" style="width: 100%; margin-top: 20px;">
+            <mat-spinner diameter="50"></mat-spinner>
+        </div>
+    } @else {
+        @if (displayImages$ | async; as images) {
+            @for (image of images; track image.id) {
+                <img
+                    [src]="'/assets/images/' + image.path"
+                    [alt]="image.name"
+                    [style.height.px]="imageSize * 25"
+                    class="gallery-image"
+                    (click)="openImageDetailDialog(image, images)"
+                />
+            }
+
+            @if (images.length === 0 && !loading) {
+                <p style="padding: 20px; color: #777;">
+                    Zatím nejsou načteny žádné obrázky. Vyberte kategorii a klikněte na "Zobrazit obrázky".
+                </p>
+            }
+        }
+
+
+        <!--@for (image of imagePaths; track image.id; let i = $index) {
+            <img [src]="'/assets/images/' + image.path" alt="" [height]="this.imageSize * 50" (click)="openImageDetailDialog(i)"/>
+        }-->
     }
 </div>

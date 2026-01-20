@@ -4,20 +4,31 @@
         <mat-chip-grid #chipGrid aria-label="Výběr kategorie">
             @for (category of selectedCategories; track category.id) {
                 <mat-chip-row (removed)="remove(category)">
-                    {{category.name}}
+                    {{ category.name }}
                     <button matChipRemove>
                         <mat-icon>cancel</mat-icon>
                     </button>
                 </mat-chip-row>
             }
         </mat-chip-grid>
-        
-        
-        <input placeholder="Nová kategorie..." #categoryInput [formControl]="categoryCtrl" [matChipInputFor]="chipGrid"
-            [matAutocomplete]="auto" (blur)="onBlur()" />
+
+
+        <input placeholder="Nová kategorie..."
+               #categoryInput
+               [formControl]="categoryCtrl"
+               [matChipInputFor]="chipGrid"
+               [matAutocomplete]="auto"
+        />
+
+        @if (selectedCategories.length > 0) {
+            <button mat-icon-button matSuffix (click)="clearAll($event)" aria-label="Clear all">
+                <mat-icon>close</mat-icon>
+            </button>
+        }
+
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            @for (category of categories; track category.id) {
-                <mat-option [value]="category">{{category.name}}</mat-option>
+            @for (category of filteredCategories | async; track category.id) {
+                <mat-option [value]="category">{{ category.name }}</mat-option>
             }
         </mat-autocomplete>
     </mat-form-field>

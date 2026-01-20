@@ -43,8 +43,8 @@ export class GamePictureRevealComponent implements OnInit {
     @ViewChild('imgRef') imgRef: ElementRef;
     @ViewChild('tileGrid') tileGrid: ElementRef;
     @ViewChildren('tile') tiles: QueryList<ElementRef>;
-    fileAttr = 'Choose File';
-    public tilesCount = 18;
+    fileAttr = 'Vybrat soubor';
+    public tilesCount = 80;
     public gridDimensions: GridDimensions;
     public uploadedImage;
     public imgFile;

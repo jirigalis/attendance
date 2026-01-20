@@ -45,7 +45,7 @@
                     <label>Počet dlaždic</label>
                     <label>{{tilesCount}}</label>
                 </div>
-                <mat-slider min="10" max="80" step="2" fxLayoutAlign="start stretch">
+                <mat-slider min="10" max="200" step="2" fxLayoutAlign="start stretch">
                     <input matSliderThumb [(ngModel)]="tilesCount" (ngModelChange)="updateTiles()">
                 </mat-slider>
             </div>
