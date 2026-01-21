@@ -254,7 +254,6 @@ export class GamePictureRevealComponent implements OnInit {
         this.loading = true;
         const api = this.filterCategories.length > 0 ? this.imageService.getByCategories(ids) : this.imageService.getAll();
         api.subscribe(images => {
-            console.log(images);
             this.loading = false;
         });
     }

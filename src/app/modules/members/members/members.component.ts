@@ -39,6 +39,8 @@ export class MembersComponent implements OnInit {
         'age',
         'address',
         'contact',
+        'email',
+        'phone',
         'actions',
     ];
     loading = false;

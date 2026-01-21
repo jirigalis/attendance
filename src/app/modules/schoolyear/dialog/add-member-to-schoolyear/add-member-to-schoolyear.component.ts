@@ -47,7 +47,6 @@ export class AddMemberToSchoolyearComponent implements OnInit {
 
     ngOnInit() {
         if (this.data) {
-            console.log(this.data);
             this.schoolyear = this.data.schoolyear;
             this.selectedMembers = this.data.selectedMembers;
         }

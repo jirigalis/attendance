@@ -41,6 +41,7 @@ export class SchoolyearMembersComponent implements OnInit {
         'address',
         'contact',
         'email',
+        'phone',
         'application',
         'paid',
     ];

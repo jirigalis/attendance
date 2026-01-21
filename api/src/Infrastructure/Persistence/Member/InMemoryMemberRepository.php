@@ -94,6 +94,7 @@ class InMemoryMemberRepository implements MemberRepository
         $valid = $valid && V::alphaCZ()->validate($data->surname);
         $valid = $valid && V::optional(V::alnum("- ,ěščřžýáíéďťňúůĚŠČŘŽÝÁÍÉĎŤŇÚŮ"))->validate($data->address);
         $valid = $valid && V::optional(V::email())->validate($data->email);
+        $valid = $valid && V::optional(V::phone('CZ'))->validate($data->phone);
         $valid = $valid && V::optional(V::digit("/"))->validate($data->rc);
         $valid = $valid && V::anyOf(V::equals("D"), V::equals("V"))->validate($data->role);
         $valid = $valid && V::optional(V::alnum("- ,ěščřžýáíéďťňúůĚŠČŘŽÝÁÍÉĎŤŇÚŮ"))->validate($data->requirements);
@@ -105,6 +106,7 @@ class InMemoryMemberRepository implements MemberRepository
             $member->rc = htmlspecialchars($data->rc);
             $member->address = htmlspecialchars($data->address);
             $member->email = htmlspecialchars($data->email);
+            $member->phone = htmlspecialchars($data->phone);
             $member->contact = htmlspecialchars($data->contact);
             if (isset($data->requirements)){
                 $member->requirements = htmlspecialchars($data->requirements);
@@ -158,6 +160,15 @@ class InMemoryMemberRepository implements MemberRepository
             }
 
             $member->email = htmlspecialchars($data->email);
+            $update = true;
+        }
+
+        if (isset($data->phone) && $member->phone != $data->phone) {
+            if (!V::optional(V::phone('CZ'))->validate($data->phone)) {
+                throw new CannotCreateMemberException("phone");
+            }
+
+            $member->phone = htmlspecialchars($data->phone);
             $update = true;
         }
 

@@ -121,7 +121,6 @@ export class SchoolyearComponent implements OnInit {
         );
         dialogRef.afterClosed().subscribe(res => {
             if (res) {
-                console.log(res);
                 this.schoolyearService.addMembersToSchoolyear(res.members.map(m => m.id), res.schoolyearId).subscribe(() => {
                     if (schoolyear.id === this.selectedSchoolyear.id) {
                         this.refreshMembers();

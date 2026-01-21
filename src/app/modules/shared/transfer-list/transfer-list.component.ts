@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, input, OnInit, Output, signal } from '@angular/core';
+import { Component, effect, EventEmitter, input, Output, signal } from '@angular/core';
 import { FlexLayoutModule } from "@ngbracket/ngx-layout";
 import { MatListModule } from "@angular/material/list";
 import { MatButtonModule } from "@angular/material/button";
@@ -21,7 +21,7 @@ export interface TransferListConfig {
     ],
     styleUrls: ['./transfer-list.component.scss']
 })
-export class TransferListComponent implements OnInit {
+export class TransferListComponent {
     public availableOptions = input<any[]>([]);
     public selectedOptions = input<any[]>([]);
     public config = input<TransferListConfig>();
@@ -45,12 +45,6 @@ export class TransferListComponent implements OnInit {
             );
             this.filteredAvailableOptions.set(filtered);
         })
-    }
-
-    ngOnInit(): void {
-
-        console.log('Available options:', this.availableOptions());
-        console.log('Selected options:', this.selectedOptions());
     }
 
     public itemClicked(item) {

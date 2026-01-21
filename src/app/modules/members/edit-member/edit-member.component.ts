@@ -124,6 +124,7 @@ export class EditMemberComponent implements OnInit {
             surname: ['', Validators.required],
             address: [''],
             email: [''],
+            phone: [''],
             contact: [''],
             rc: ['', Validators.minLength(10)],
             role: ['D', Validators.required],

@@ -68,7 +68,6 @@ export class ExportAttendanceComponent implements OnInit {
     }
 
     public getTotalAttendance(data, column) {
-        console.log('data, column', data, column);
         return 0;
     }
 
