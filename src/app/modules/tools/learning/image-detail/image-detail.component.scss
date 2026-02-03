@@ -33,6 +33,39 @@
     justify-content: center;
     align-items: stretch;
     margin-top: 20px;
+    position: relative;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.nav-zone {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+
+  &.left, &.right {
+    top: 0;
+    bottom: 0;
+    width: 50%;
+  }
+
+  &.left {
+    left: 0;
+  }
+
+  &.right {
+    right: 0;
+  }
+
+  &.bottom {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    z-index: 15;
+    cursor: help;
+  }
 }
 
 .image-name {
@@ -41,4 +74,6 @@
     text-align: center;
     font-size: 3em;
     text-shadow: 0 0 10px #ffffff;
+    z-index: 20;
+    pointer-events: none;
 }

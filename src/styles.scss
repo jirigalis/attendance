@@ -3,6 +3,19 @@
 // redefine css variable for dialog:
 :root {
     --mat-dialog-container-max-width: 90vw;
+
+  @include mat.fab-overrides((
+      container-color: var(--mat-sys-surface),
+      small-container-color: var(--mat-sys-surface),
+      small-container-elevation-shadow: var(--mat-sys-level1),
+      container-shape: var(--mat-sys-corner-full),
+      small-container-shape: var(--mat-sys-corner-full),
+  ));
+
+  @include mat.chips-overrides((
+      container-height: 24px,
+      label-text-size: 12px,
+  ))
 }
 
 html,

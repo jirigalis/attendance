@@ -1,70 +1,105 @@
 <div class="game-wrapper" fxLayout="column" fxLayoutAlign="space-between stretch" maximize #maximize="maximize">
-    <!-- <mat-card fxFill>
-        <mat-card-content>
-            <image-filter [selectedCategories]="filterCategories" (filterChange)="refresh()"></image-filter>
-        </mat-card-content>
-    </mat-card> -->
     <mat-card fxFill>
-        <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px">
-            <mat-form-field fxFlex="30">
-                <div>
-                    <mat-toolbar>
-                        <input matInput [(ngModel)]="fileAttr" readonly name="name">
-                        <button mat-flat-button color="primary">Vybrat obrázek</button>
-                    </mat-toolbar>
-                    <input type="file" #fileInput id="uploadFile" (change)="uploadFileEvt($event)" name="uploadFile"
-                        multiple="multiple" accept="image/*" />
+        <mat-card-content fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="12px">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                <mat-form-field fxFlex="16" fxLayout="column" fxLayoutAlign="center stretch" fxFill>
+                    <div>
+                        <mat-toolbar>
+                            <input matInput [(ngModel)]="fileAttr" readonly name="name">
+                            <button matMiniFab>
+                                <mat-icon>image</mat-icon>
+                            </button>
+                        </mat-toolbar>
+                        <input type="file" #fileInput id="uploadFile" (change)="uploadFileEvt($event)" name="uploadFile"
+                               multiple="multiple" accept="image/*"/>
+                    </div>
+                </mat-form-field>
+                <div fxFlex="24" fxLayout="column">
+                    <image-filter [selectedCategories]="filteredCategories" (filterChange)="onCategoryLoad($event)"></image-filter>
                 </div>
-            </mat-form-field>
-            <button mat-raised-button (click)="resetTiles()">
-                <mat-icon class="mat-18">restart_alt</mat-icon>
-                Resetovat
-            </button>
-            <button mat-raised-button (click)="revealPicture()">
-                <mat-icon class="mat-18">visibility</mat-icon>
-                Odhalit
-            </button>
-            <button mat-raised-button (click)="dismissRandomTile()">
-                <mat-icon class="mat-18">highlight_off</mat-icon>
-                Odstranit náhodnou
-            </button>
-            @if (!interval) {
-                <button mat-raised-button (click)="dismissInInterval()">
-                    <mat-icon class="mat-18">timer</mat-icon>
-                    Automaticky
+                <button matMiniFab (click)="restartPicture()" [disabled]="!uploadedImage" matTooltip="Resetovat obrázek">
+                    <mat-icon class="mat-18">restart_alt</mat-icon>
                 </button>
-            } @else {
-                <button mat-raised-button (click)="stopInterval()">
-                    <mat-icon class="mat-18">stop</mat-icon>
-                    Zastavit
+                <button matMiniFab (click)="revealPicture()" [disabled]="!uploadedImage" matTooltip="Odhalit obrázek">
+                    <mat-icon class="mat-18">visibility</mat-icon>
                 </button>
-            }
+                <button matMiniFab (click)="dismissRandomTile()" [disabled]="!uploadedImage" matTooltip="Odstranit náhodnou dlaždici">
+                    <mat-icon class="mat-18">extension_off</mat-icon>
+                </button>
 
-            <div fxFlex="20">
-                <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <label>Počet dlaždic</label>
-                    <label>{{tilesCount}}</label>
+                <button
+                        matMiniFab
+                        [disabled]="!uploadedImage"
+                        (click)="interval ? stopInterval() : startInterval()"
+                        [matTooltip]="interval ? 'Zastavit' : 'Spustit automaticky'"
+                        [class.pulsing]="interval">
+                    <mat-icon class="mat-18">
+                        {{ interval ? 'stop_circle' : 'play_circle_outline' }}
+                    </mat-icon>
+                </button>
+
+                <div fxFlex="16">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <label>Počet dlaždic</label>
+                        <label>{{ tilesCount }}</label>
+                    </div>
+                    <mat-slider min="40" max="320" step="4" fxLayoutAlign="start stretch">
+                        <input matSliderThumb [(ngModel)]="tilesCount" (ngModelChange)="updateTiles()">
+                    </mat-slider>
                 </div>
-                <mat-slider min="10" max="200" step="2" fxLayoutAlign="start stretch">
-                    <input matSliderThumb [(ngModel)]="tilesCount" (ngModelChange)="updateTiles()">
-                </mat-slider>
+
+                <div fxFlex="14">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <label>Rychlost</label>
+                        <label>{{ intervalSpeedLabel }}</label>
+                    </div>
+                    <mat-slider min="1" max="10" step="1" fxLayoutAlign="start stretch">
+                        <input matSliderThumb [(ngModel)]="intervalSpeed" (ngModelChange)="updateIntervalSpeed()">
+                    </mat-slider>
+                </div>
             </div>
+            @if (categoryImages.length > 0) {
+                <div class="category-images-control-panel" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                    <button matButton="elevated" (click)="showNextCategoryImage()">
+                        Další obrázek
+                    </button>
+                    <div>
+                        Zbývá obrázků: {{ originalImageCount - this.usedImages.length }}/{{ originalImageCount }}
+                    </div>
+                    @if (selectedCategoryImage) {
+                        <div>
+                            <mat-icon class="mt-18" [matTooltip]="imageName">help_outline</mat-icon>
+                        </div>
+                    }
+                </div>
+            }
         </mat-card-content>
     </mat-card>
     <div class="picture-wrapper" fxFlex="column" fxLayoutAlign="center center" maximize #maximize="maximize">
-        @if (uploadedImage) {
-            <div class="grid-container" #gridRef [ngClass]="{ 'fullscreen' : fullscreen}">
-                <img [src]="uploadedImage" #imgRef (load)="onImageUpload($event)" />
+        <div class="grid-container" #gridRef [ngClass]="{ 'fullscreen' : fullscreen}">
+            <img
+                [src]="uploadedImage"
+                #imgRef
+                (load)="onImageUpload($event)"
+                [style.visibility]="uploadedImage ? 'visible' : 'hidden'"/>
+            @if (uploadedImage) {
                 <div class="tile-grid" #tileGrid>
                     @for (row of getRows(); track row; let i = $index) {
                         <div>
                             @for (col of getCols(); track col; let j = $index) {
-                                <div class="tile" #tile (click)="dismiss($event)">{{getPosition(i,j)}}</div>
+                                <div class="tile"
+                                     #tile
+                                     [class.small-font]="tilesCount > 132"
+                                     [class.xsmall-font]="tilesCount > 180"
+                                     (click)="dismiss($event)"
+                                >
+                                    {{ getPosition(i, j) }}
+                                </div>
                             }
                         </div>
                     }
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>

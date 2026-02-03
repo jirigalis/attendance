@@ -10,6 +10,11 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatSliderModule } from "@angular/material/slider";
 import { FormsModule } from "@angular/forms";
 import { MaximizeDirective } from "../../../shared/maximize.directive";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { ImageFilterComponent } from "../../images/image-filter/image-filter.component";
+import { Category } from "../../../core/models/category";
+import { Image as CategoryImage } from "../../../core/models/image";
+import { ImagePath } from "../../../core/models/image-path";
 
 export interface GridDimensions {
     numRows: number;
@@ -36,28 +41,41 @@ export interface Dimensions {
         MatSliderModule,
         FormsModule,
         MaximizeDirective,
+        MatTooltipModule,
+        ImageFilterComponent,
+
+
     ]
 })
 export class GamePictureRevealComponent implements OnInit {
     @ViewChild('fileInput') fileInput: ElementRef;
     @ViewChild('imgRef') imgRef: ElementRef;
+    @ViewChild('gridRef') gridRef: ElementRef;
     @ViewChild('tileGrid') tileGrid: ElementRef;
     @ViewChildren('tile') tiles: QueryList<ElementRef>;
     fileAttr = 'Vybrat soubor';
-    public tilesCount = 80;
+    public tilesCount = 160;
     public gridDimensions: GridDimensions;
-    public uploadedImage;
+    public uploadedImage: string;
     public imgFile;
     public originalImageDimensions: Dimensions;
     public originalTileGridDimensions: Dimensions;
     public newImageDimensions: Dimensions;
-    public gridContainerDimensions: Dimensions;
-    public positionSum: number = 0;
+    public initialGridDimensions: Dimensions;
     public fullscreen: boolean = false;
     public interval;
+    public intervalSpeed: number = 5;
+    private readonly INTERVAL_SPEEDS: number[] = [5, 4, 3, 2, 1, 0.75, 0.5, 0.3, 0.2, 0.1];
     private dismissedTiles = [];
-    filterCategories: any[] = [];
     loading: boolean = false;
+
+    filteredCategories: Category[] = [];
+    categoryImages: CategoryImage[] = [];
+    selectedCategoryImage: CategoryImage;
+    usedImages: string[] = [];
+    availableImages: ImagePath[] = [];
+    originalImageCount: number = 0;
+    selectedImage: CategoryImage;
 
     constructor(public tools: ToolsService, private imageService: ImageService) { }
 
@@ -89,28 +107,38 @@ export class GamePictureRevealComponent implements OnInit {
     }
 
     public onImageUpload(event: Event) {
-        const img = new Image();
-        img.src = this.imgRef.nativeElement.src;
-        img.onload = () => {
-            // save original tile grid dimensions
-            if (!this.originalTileGridDimensions) {
-                this.originalTileGridDimensions = {
-                    width: this.tileGrid.nativeElement.offsetWidth,
-                    height: this.tileGrid.nativeElement.offsetHeight,
-                }
-            }
-            
-            // adjust grid-container
-            this.saveOriginalImageDimensions();
-            this.newImageDimensions = this.calculateNewImageDimensions();
-            this.tileGrid.nativeElement.style.width = this.newImageDimensions.width + 'px';
-            this.tileGrid.nativeElement.style.height = this.newImageDimensions.height + 'px';
-            this.updateTiles();
+        const imgEl = event.target as HTMLImageElement;
+
+        // Safety guard
+        if (!imgEl || imgEl.naturalWidth === 0 || imgEl.naturalHeight === 0) {
+            return;
         }
+
+        if (!this.originalTileGridDimensions) {
+            this.originalTileGridDimensions = {
+                width: this.tileGrid.nativeElement.offsetWidth,
+                height: this.tileGrid.nativeElement.offsetHeight,
+            };
+        }
+
+        this.originalImageDimensions = {
+            width: imgEl.naturalWidth,
+            height: imgEl.naturalHeight,
+        };
+
+        this.newImageDimensions = this.calculateNewImageDimensions();
+        this.tileGrid.nativeElement.style.width = this.newImageDimensions.width + 'px';
+        this.tileGrid.nativeElement.style.height = this.newImageDimensions.height + 'px';
+
+        this.updateTiles();
+        this.stopInterval();
     }
 
 
     public updateTiles() {
+        if (!this.uploadedImage) {
+            return;
+        }
         this.updateGridDimensions();
         
         const tileWidth = this.newImageDimensions.width / this.gridDimensions.numCols;
@@ -160,36 +188,27 @@ export class GamePictureRevealComponent implements OnInit {
         this.gridDimensions = this.calculateDimensions(this.tilesCount);
     }
 
-    private saveOriginalImageDimensions() {
-        if (this.imgRef) {
-            this.originalImageDimensions = {
-                width: this.imgRef.nativeElement.naturalWidth,
-                height: this.imgRef.nativeElement.naturalHeight,
-            };
-        }
-    }
-
     public calculateNewImageDimensions(): Dimensions {
-        const gridRatio = this.originalTileGridDimensions.width / this.originalTileGridDimensions.height;
+        this.initialGridDimensions ??= this.originalTileGridDimensions;
+
+        const gridRatio = this.initialGridDimensions.width / this.initialGridDimensions.height;
         const imageRatio = this.originalImageDimensions.width / this.originalImageDimensions.height;
-        const newTileGridDimensions = {
-            width: this.tileGrid.nativeElement.offsetWidth,
-            height: this.tileGrid.nativeElement.offsetHeight
-        };
 
         if (gridRatio > imageRatio) {
-            // the grid is wider than image - height of the image and grid is equal
-            const resizeRatio = this.originalImageDimensions.height / this.tileGrid.nativeElement.offsetHeight;
-            const newWidth = this.originalImageDimensions.width / resizeRatio;
-            newTileGridDimensions.width = newWidth;
-
-        } else {
-            // the grid is higher than image - width of the image and grid is equal
-            const resizeRatio = this.originalImageDimensions.width / this.tileGrid.nativeElement.offsetWidth;
-            const newHeight = this.originalImageDimensions.height / resizeRatio;
-            newTileGridDimensions.height = newHeight;
+            // Grid is wider than image — fit to height
+            const scale = this.initialGridDimensions.height / this.originalImageDimensions.height;
+            return {
+                width: this.originalImageDimensions.width * scale,
+                height: this.initialGridDimensions.height
+            };
         }
-        return newTileGridDimensions;
+
+        // Grid is taller than image — fit to width
+        const scale = this.initialGridDimensions.width / this.originalImageDimensions.width;
+        return {
+            width: this.initialGridDimensions.width,
+            height: this.originalImageDimensions.height * scale
+        };
     }
 
     public getPosition(row, col) {
@@ -205,6 +224,11 @@ export class GamePictureRevealComponent implements OnInit {
             tile.nativeElement.classList.remove('dismissed')
         })
         this.dismissedTiles = [];
+    }
+
+    public restartPicture() {
+        this.stopInterval();
+        this.resetTiles();
     }
 
     public revealPicture() {
@@ -229,16 +253,26 @@ export class GamePictureRevealComponent implements OnInit {
         const randomTile = this.tiles.toArray()[randomNumber];
         randomTile.nativeElement.classList.add('dismissed');
         this.dismissedTiles.push(randomTile);
+
+        if (this.dismissedTiles.length === this.tiles.length) {
+            this.stopInterval();
+        }
     }
 
-    public dismissInInterval() {
+    public startInterval() {
+        if (!(this.uploadedImage)) {
+            return;
+        }
+
+        const speed = this.INTERVAL_SPEEDS[this.intervalSpeed - 1] * 1000;
+
         this.interval = setInterval(() => {
             this.dismissRandomTile();
             // stop interval if all tiles are dismissed
             if (this.dismissedTiles.length === this.tiles.length) {
                 clearInterval(this.interval);
             }
-        }, 1000);
+        }, speed );
     }
 
     public stopInterval() {
@@ -246,15 +280,68 @@ export class GamePictureRevealComponent implements OnInit {
         this.interval = null;
     }
 
-    public refresh() {
-        // convert filterCategories to array of ids
+    public updateIntervalSpeed() {
+        if (!this.uploadedImage || !this.interval) {
+            return;
+        }
+        this.stopInterval();
+        this.startInterval();
+    }
+
+    get intervalSpeedLabel(): string {
+        return `${this.INTERVAL_SPEEDS[this.intervalSpeed - 1] ?? 1}s`;
+    }
+
+    public onCategoryLoad(data) {
+        if (this.filteredCategories.length === 0) {
+            return;
+        }
+        // convert filteredCategories to array of ids
         const ids = {
-            categories: this.filterCategories.map(category => category.id)
+            categories: this.filteredCategories.map(category => category.id)
         };
         this.loading = true;
-        const api = this.filterCategories.length > 0 ? this.imageService.getByCategories(ids) : this.imageService.getAll();
-        api.subscribe(images => {
+        const api = this.filteredCategories.length > 0 ? this.imageService.getByCategories(ids) : this.imageService.getAll();
+        api.subscribe((images: CategoryImage[]) => {
+            this.categoryImages = images;
+            this.availableImages = this.getAvailableImages();
+            this.originalImageCount = this.availableImages.length;
             this.loading = false;
         });
+    }
+
+    public showNextCategoryImage(): void {
+        this.availableImages = this.getAvailableImages();
+
+        if (this.availableImages.length === 0) {
+            this.resetImageHistory();
+            this.availableImages = this.categoryImages.flatMap((item: CategoryImage) => item.path);
+        }
+
+        const selectedImage: ImagePath = this.pickRandom(this.availableImages);
+        this.selectedCategoryImage = this.categoryImages.find((image: CategoryImage) => image.id === selectedImage.image_id);
+
+        this.originalTileGridDimensions = undefined;
+        this.uploadedImage = '/assets/images/' + selectedImage.path;
+        this.usedImages.push(selectedImage.path);
+        this.resetTiles();
+    }
+
+    private pickRandom<T>(items: T[]): T {
+        return items[Math.floor(Math.random() * items.length)];
+    }
+
+    public resetImageHistory(): void {
+        this.usedImages = [];
+    }
+
+    public getAvailableImages(): ImagePath[] {
+        return this.categoryImages
+            .flatMap((item: CategoryImage) => item.path)
+            .filter((pathObj: ImagePath) => !this.usedImages.includes(pathObj.path));
+    }
+
+    get imageName(): string {
+        return this.selectedCategoryImage.name;
     }
 }

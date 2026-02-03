@@ -2,6 +2,19 @@
     <mat-icon>close</mat-icon>
 </button>
 <div mat-dialog-content class="image-container">
+    <div class="nav-zone left" (click)="previousImage()"></div>
+    <div class="nav-zone right" (click)="nextImage()"></div>
+
+    <div class="nav-zone bottom"
+         (mousedown)="startShowingName($event)"
+         (mouseup)="stopShowingName($event)"
+         (mouseleave)="stopShowingName($event)"
+         (touchstart)="startShowingName($event)"
+         (touchend)="stopShowingName($event)"
+         (touchcancel)="stopShowingName($event)"
+         (contextmenu)="$event.preventDefault()">
+    </div>
+
     <img [src]="'/assets/images/' + selectedImage.path"/>
     @if (showImageName) {
         <div class="image-name">

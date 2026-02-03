@@ -28,12 +28,12 @@ export class ImageDetailComponent implements OnInit {
         this.selectedImage = this.data.allImages[this.index];
     }
 
-    private previousImage() {
+    public previousImage() {
         this.index = this.index === 0 ? this.data.allImages.length - 1 : this.index - 1;
         this.selectedImage = this.data.allImages[this.index];
     }
 
-    private nextImage() {
+    public nextImage() {
         this.index = this.index === this.data.allImages.length - 1 ? 0 : this.index + 1;
         this.selectedImage = this.data.allImages[this.index];
     }
@@ -55,6 +55,17 @@ export class ImageDetailComponent implements OnInit {
         if (event.key === ' ') {
             this.showImageName = false
         }
+    }
+
+    public startShowingName(event: Event) {
+        if (event.cancelable) {
+            event.preventDefault();
+        }
+        this.showImageName = true;
+    }
+
+    public stopShowingName(event: Event) {
+        this.showImageName = false;
     }
 
     public closeDialog() {

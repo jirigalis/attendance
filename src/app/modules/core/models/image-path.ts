@@ -2,6 +2,7 @@ import { Deserializable } from "./deserializable";
 
 export class ImagePath implements Deserializable {
     id: number;
+    image_id: number;
     path: string;
     review: number;
     createdAt: Date;
