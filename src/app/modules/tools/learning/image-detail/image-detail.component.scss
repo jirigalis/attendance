@@ -44,6 +44,11 @@
   z-index: 10;
   cursor: pointer;
 
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent;
+
   &.left, &.right {
     top: 0;
     bottom: 0;
@@ -76,4 +81,10 @@
     text-shadow: 0 0 10px #ffffff;
     z-index: 20;
     pointer-events: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
 }

@@ -244,11 +244,11 @@ return function (App $app) {
         $group->get('/category/{id}', GetByCategoryAction::class);
         $group->get('/{id}', GetImageByIdAction::class);
         $group->post('/create', CreateImageAction::class);
-        $group->put('/{id}', UpdateImageAction::class);
+        $group->post('/get-by-categories', GetByCategoriesAction::class);
+        $group->post('/{id}', UpdateImageAction::class);
         $group->delete('/{id}', DeleteImageAction::class);
         $group->post('/{id}/add-path', AddPathToImageAction::class);
         $group->put('/{id}/update-path', UpdateImagePathAction::class);
-        $group->post('/get-by-categories', GetByCategoriesAction::class);
     });
 
     // Paths

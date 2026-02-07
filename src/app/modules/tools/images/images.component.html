@@ -31,7 +31,7 @@
 
     <ng-container matColumnDef="category">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Kategorie</th>
-        <td mat-cell *matCellDef="let element" fxLayout="row">
+        <td mat-cell *matCellDef="let element">
 
             <mat-chip-set>
                 <mat-chip color="accent">{{ getCategoryName(element.category_id) }}</mat-chip>

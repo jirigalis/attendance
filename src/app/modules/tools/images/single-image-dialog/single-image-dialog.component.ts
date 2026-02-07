@@ -26,7 +26,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
     ]
 })
 export class SingleImageDialogComponent implements OnInit {
-    imagePath: ImagePath = new ImagePath();
+    imagePath: ImagePath;
     image: Image;
 
     constructor(

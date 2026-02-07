@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, signal, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { ImageService } from 'src/app/modules/core/services/image.service';
 import { ToolsService } from 'src/app/modules/core/services/tools.service';
 import { FlexLayoutModule } from "@ngbracket/ngx-layout";
@@ -76,6 +76,7 @@ export class GamePictureRevealComponent implements OnInit {
     availableImages: ImagePath[] = [];
     originalImageCount: number = 0;
     selectedImage: CategoryImage;
+    showImageName = signal(false);
 
     constructor(public tools: ToolsService, private imageService: ImageService) { }
 
@@ -343,5 +344,35 @@ export class GamePictureRevealComponent implements OnInit {
 
     get imageName(): string {
         return this.selectedCategoryImage.name;
+    }
+
+    @HostListener('window:keydown.space', ['$event'])
+    public onSpacebarDown(event: KeyboardEvent): void {
+        if (!this.uploadedImage) {
+            return;
+        }
+        event.preventDefault();
+        if (!this.showImageName()) {
+            this.showImageName.set(true);
+        }
+    }
+
+    @HostListener('window:keyup.space', ['$event'])
+    public onSpacebarUp(event: KeyboardEvent): void {
+        event.preventDefault();
+        this.showImageName.set(false);
+    }
+
+    onHelpMouseDown(event: MouseEvent): void {
+        event.preventDefault();
+        this.showImageName.set(true);
+    }
+
+    onHelpTouchStart(event: TouchEvent): void {
+        event.preventDefault();
+        this.showImageName.set(true);}
+
+    onHelpMouseUp(): void {
+        this.showImageName.set(false);
     }
 }

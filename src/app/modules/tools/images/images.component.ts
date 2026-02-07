@@ -2,7 +2,6 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Category } from '../../core/models/category';
@@ -19,6 +18,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatChipsModule } from "@angular/material/chips";
+import { SnackService } from "../../core/services/snack.service";
 
 @Component({
     selector: 'images',
@@ -59,7 +59,7 @@ export class ImagesComponent implements OnInit {
     constructor(
         private imageService: ImageService,
         private categoryService: CategoryService,
-        private snack: MatSnackBar,
+        private snack: SnackService,
         private cd: ChangeDetectorRef,
         private dialog: MatDialog,
     ) { }
@@ -78,7 +78,7 @@ export class ImagesComponent implements OnInit {
     }
 
     public getCategoryName(categoryId) {
-        return this.allCategories.find(category => category.id === categoryId).name;
+        return this.allCategories.find(category => category.id === categoryId)?.name;
     }
 
     public addImage() {
@@ -88,7 +88,7 @@ export class ImagesComponent implements OnInit {
             if (image) {
                 this.loading = true;
                 this.imageService.create(image).subscribe((res) => {
-                    this.snack.open('Obrázek vytvořen', 'X', { duration: 3000 });
+                    this.snack.open('Obrázek vytvořen');
                     this.refresh();
                     this.loading = false;
                 });
@@ -100,18 +100,36 @@ export class ImagesComponent implements OnInit {
         const dialogRef = this.dialog.open(ImageDialogComponent, {
             data: image,
         });
-        dialogRef.afterClosed().subscribe((image) => {
-            if (image) {
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
                 this.loading = true;
-                this.imageService.update(image).subscribe((res) => {
-                    this.snack.open('Obrázek byl aktualizován', 'X', {
-                        duration: 3000,
-                    });
-                    this.refresh();
-                    this.loading = false;
+                const { image, filesToUpload } = result;
+
+                const formData = new FormData();
+                formData.append('id', image.id.toString());
+                formData.append('name', image.name);
+                formData.append('category_id', image.category_id.toString());
+
+                filesToUpload.forEach((file: File, pathId: number) => {
+                    formData.append(`file_${pathId}`, file);
                 });
+
+                this.imageService.update(formData).subscribe({
+                    next: () => {
+                        this.snack.open('Obrázek byl aktualizován');
+                        this.refresh();
+                        this.loading = false;
+                    },
+                    error: err => {
+                        this.loading = false;
+                        console.log(err);
+                        this.snack.error('Chyba při upravování obrázku.');
+                    }
+                })
+
             }
-        });
+        })
     }
 
     public deleteImage(imageId) {
@@ -135,9 +153,7 @@ export class ImagesComponent implements OnInit {
             if (imagePath) {
                 this.loading = true;
                 this.imageService.updatePath(image.id, imagePath).subscribe((res) => {
-                    this.snack.open('Obrázek byl aktualizován', 'X', {
-                        duration: 3000,
-                    });
+                    this.snack.open('Obrázek byl aktualizován');
                     this.refresh();
                     this.loading = false;
                 });

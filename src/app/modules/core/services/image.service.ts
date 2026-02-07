@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Image } from '../models/image';
+import { Observable } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -23,8 +24,9 @@ export class ImageService {
         return this.http.get<Image>(this.apiUrl + `/${imageId}`);
     }
 
-    update(image: Image) {
-        return this.http.put(this.apiUrl + '/' + image.id, image);
+    update(formData: FormData): Observable<Image> {
+        const imageId = formData.get('id');
+        return this.http.post<Image>(`${this.apiUrl}/${imageId}`, formData);
     }
 
     updatePath(imageId, path) {

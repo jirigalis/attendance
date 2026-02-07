@@ -67,8 +67,19 @@
                         Zbývá obrázků: {{ originalImageCount - this.usedImages.length }}/{{ originalImageCount }}
                     </div>
                     @if (selectedCategoryImage) {
-                        <div>
-                            <mat-icon class="mt-18" [matTooltip]="imageName">help_outline</mat-icon>
+                        <div (mousedown)="onHelpMouseDown($event)"
+                             (mouseup)="onHelpMouseUp()"
+                             (mouseleave)="onHelpMouseUp()"
+                             (touchstart)="onHelpTouchStart($event)"
+                             (touchend)="onHelpMouseUp()"
+                             (touchcancel)="onHelpMouseUp()"
+                        >
+                            <mat-icon class="mt-18">help_outline</mat-icon>
+                        </div>
+                    }
+                    @if (showImageName()) {
+                        <div class="image-name">
+                            {{ imageName  }}
                         </div>
                     }
                 </div>

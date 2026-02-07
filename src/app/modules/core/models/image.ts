@@ -1,15 +1,10 @@
-import { Deserializable } from "./deserializable";
 import { ImagePath } from "./image-path";
 
-export class Image implements Deserializable {
+export interface Image {
     id: number;
     name: string;
     path: ImagePath[];
-    category: number;
+    category_id: number;
     createdAt: Date;
     updatedAt: Date;
-
-    deserialize(input: any) {
-        return Object.assign(this, input);
-    }
 }

@@ -120,8 +120,8 @@ export class LearningComponent {
             autoFocus: false,
             maxWidth: '96vw',
             width: '96vw',
-            height: '96vh',
-            maxHeight: '96vh',
+            height: '94vh',
+            maxHeight: '94vh',
         });
     }
 

@@ -1,18 +1,38 @@
 <h2 mat-dialog-title>Obrázek</h2>
 
-<div mat-dialog-content>
-    <mat-form-field appearance="fill">
-        <mat-label>Název obrázku</mat-label>
-        <input matInput placeholder="Zadejte název obrázku" [(ngModel)]="image.name">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Kategorie</mat-label>
-        <mat-select [(ngModel)]="image.category" placeholder="">
-            <mat-option [value]=""></mat-option>
-        </mat-select>
-    </mat-form-field>
-    Category
-    tdFileSelect 
+<div mat-dialog-content fxLayout="column" class="content-container">
+    <div fxLayout="row" fxLayoutGap="12px">
+        <mat-form-field appearance="fill">
+            <mat-label>Název obrázku</mat-label>
+            <input matInput placeholder="Zadejte název obrázku" [(ngModel)]="image().name">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Kategorie</mat-label>
+            <mat-select [(ngModel)]="image().category_id" placeholder="">
+                @for(c of categories$ | async; track c.id) {
+                    <mat-option [value]="c.id">{{ c.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutGap="12px">
+        @for (path of image().path; track path.id; let i = $index) {
+           <div class="image-thumbnail-wrapper" fxLayout="column" fxFlex="20" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+                <div class="image-thumbnail" fxLayout="column">
+                    <img [src]="path.path.startsWith('data:') ? path.path : 'assets/images/' + path.path"
+                         [title]="path.path"
+                         [class.review]="path.review"/>
+                </div>
+               <input
+                       type="file"
+                       [id]="'file-input-' + path.id"
+                       (change)="onFileSelected($event, path.id, i)"
+                       accept="image/*"
+                       style="display: none;">
+                <button mat-raised-button (click)="triggerFileInput(path.id)">Vyměnit</button>
+           </div>
+        }
+    </div>
 </div>
 
 <div mat-dialog-actions>

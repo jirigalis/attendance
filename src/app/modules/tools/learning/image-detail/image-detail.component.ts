@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { MatMiniFabButton } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
@@ -15,8 +15,8 @@ import { MatIconModule } from "@angular/material/icon";
 })
 export class ImageDetailComponent implements OnInit {
     public selectedImage;
-    public index;
-    public showImageName: boolean = false;
+    public index: number;
+    public showImageName = signal(false);
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data,
@@ -44,28 +44,30 @@ export class ImageDetailComponent implements OnInit {
             this.previousImage();
         } else if (event.key === 'ArrowRight') {
             this.nextImage();
-        } else if (event.key === ' ') {
-            this.showImageName = true;
-            event.preventDefault();
         }
     }
 
-    @HostListener('document:keyup', ['$event'])
-    public handleKeyup(event: KeyboardEvent) {
-        if (event.key === ' ') {
-            this.showImageName = false
-        }
+    @HostListener('window:keydown.space', ['$event'])
+    public onSpacebarDown(event: KeyboardEvent) {
+        event.preventDefault();
+        this.showImageName.set(true);
+    }
+
+    @HostListener('window:keyup.space', ['$event'])
+    public onSpacebarUp(event: KeyboardEvent) {
+        event.preventDefault();
+        this.showImageName.set(false);
     }
 
     public startShowingName(event: Event) {
         if (event.cancelable) {
             event.preventDefault();
         }
-        this.showImageName = true;
+        this.showImageName.set(true);
     }
 
     public stopShowingName(event: Event) {
-        this.showImageName = false;
+        this.showImageName.set(false);
     }
 
     public closeDialog() {

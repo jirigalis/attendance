@@ -69,7 +69,7 @@ class InMemoryImageRepository implements ImageRepository
         }
 
         if (!V::alphaCZ()->validate($data->name)) {
-            throw new WrongParameterException('name');
+            throw new WrongParameterException('missing name');
         }
 
         if (isset($data->name)) {
@@ -85,6 +85,33 @@ class InMemoryImageRepository implements ImageRepository
         if ($update) {
             $image->save();
         }
+
+        return $image->fresh()->load('path');
+    }
+
+    /**
+     * Update path file on filesystem
+     * @param int $pathId The path ID to update
+     * @param string $newFilePath The new file path after upload
+     */
+    public function updatePathFile(int $pathId, string $newFilePath) {
+        $path = Path::find($pathId);
+
+        if (!$path) {
+            throw new DomainRecordNotFoundException();
+        }
+
+        // Delete old file from filesystem
+        $oldFilePath = __DIR__ . '/../../../assets/' . $path->path;
+        if (file_exists($oldFilePath)) {
+            unlink($oldFilePath);
+        }
+
+        // Update path in database - remove in the future, file path in DB should stay unchanged
+        $path->path = $newFilePath;
+        $path->save();
+
+        return $path;
     }
 
     public function delete(int $id)

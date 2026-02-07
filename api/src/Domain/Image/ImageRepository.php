@@ -14,6 +14,8 @@ interface ImageRepository {
 
     public function update(int $id, object $data);
 
+    public function updatePathFile(int $pathId, string $newFilePath);
+
     public function delete(int $id);
 
     public function getByCategory(int $categoryId);
