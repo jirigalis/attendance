@@ -162,7 +162,8 @@ class InMemoryEventRepository implements EventRepository
         $schoolyear = Schoolyear::find($schoolyearId);
 
         $events = Event::whereHas('members', function($q) use ($memberId) {
-            $q->where('member_id', $memberId);
+            $q->where('member_id', $memberId)
+              ->where('participated', 1);
         })->where('startDate', '>=', $schoolyear->startDate)->where('endDate', '<=', $schoolyear->endDate)->get();
 
         return $events;

@@ -18,6 +18,13 @@
                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
             }
             <table mat-table [dataSource]="dataSource" #pointsSort="matSort" matSort class="mat-elevation-z1">
+                <ng-container matColumnDef="rank">
+                    <th mat-header-cell *matHeaderCellDef>Pořadí</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.rank }}.
+                    </td>
+                </ng-container>
+
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno člena</th>
                     <td mat-cell *matCellDef="let element">

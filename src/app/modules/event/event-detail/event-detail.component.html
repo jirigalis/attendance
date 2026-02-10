@@ -44,7 +44,7 @@
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Jméno</th>
                         <td mat-cell *matCellDef="let element">
-                            <a [routerLink]="['/events/' + element.id]" routerLinkActive="router-link-active"
+                            <a [routerLink]="['/edit-member/' + element.id]" routerLinkActive="router-link-active"
                                class="link-name">{{ element.name + ' ' + element.surname }}</a>
                         </td>
                     </ng-container>
